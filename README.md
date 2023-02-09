@@ -1,16 +1,56 @@
-# Template Projekt
+# Template Project
 
-## Wie bereite ich meine Projekt vor ?
+[[_TOC_]]
 
-Bearbeite folgende Dateien:
-- [settings.gradle.kts](settings.gradle.kts)
-- [build.gradle.kts](build.gradle.kts)
+## How to prepare my project
 
-Optional für AutoDeployment(Bukkit/Velocity/Paper/Minestom)
-- [.gitlab-ci.yml](.gitlab-ci.yml)
+Edit following files:
+- settings.gradle.kts
+- build.gradle.kts
+- .gitlab-ci.yml
 
-## Zusätzliche Hilfestellungen
-- [Lokale Entwicklungsumgebung mit Docker](onelitefeather/templateproject$1)
-- [Hilfreiche Abhängikeiten oder Plugins](onelitefeather/templateproject$2)
 
+---
+### runPaper plugin configuration
+
+Tasks section
+```kt
+tasks {
+    runServer {
+       minecraftVersion("1.19.3")
+    }
+}
+```
+
+
+### shadowJar plugin configuration
+
+Tasks section
+```kt
+tasks {
+    shadowJar {
+        archiveFileName.set("${rootProject.name}.${archiveExtension.getOrElse("jar")}")
+    }
+}
+```
+
+### bukkit plugin configuration
+
+Bukkit section
+
+```kt
+tasks {
+    TODO("")
+}
+bukkit {
+    main = "${rootProject.group}.MAINCLASS"
+    apiVersion = "1.19"
+    author = "ExampleDeveloper"
+    depend = listOf("FastAsyncWorldEdit")
+}
+
+```
+### sonarqube plugin configuration
+
+sonarqube section
 
