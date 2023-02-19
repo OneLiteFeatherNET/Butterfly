@@ -3,6 +3,7 @@ package net.onelitefeather.butterfly;
 import cloud.commandframework.annotations.AnnotationParser;
 import cloud.commandframework.arguments.parser.ParserParameters;
 import cloud.commandframework.arguments.parser.StandardParameters;
+import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +27,13 @@ public class Butterfly extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        try{
+            PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
+                    CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
+        } catch (final Exception e) {
+            this.getLogger().warning("Failed to initialize Brigadier support: " + e.getMessage());
+            this.getServer().getPluginManager().disablePlugin(this);
+        }
     }
 
 
