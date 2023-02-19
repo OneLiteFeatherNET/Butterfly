@@ -5,19 +5,15 @@ import cloud.commandframework.arguments.parser.ParserParameters;
 import cloud.commandframework.arguments.parser.StandardParameters;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
+import cloud.commandframework.paper.PaperCommandManager;
 import net.onelitefeather.butterfly.listeners.PlayerJoinListener;
 import net.onelitefeather.butterfly.listeners.PlayerLeaveListener;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import cloud.commandframework.paper.PaperCommandManager;
 
 import java.util.function.Function;
 
 public class Butterfly extends JavaPlugin {
-
-
-
-
 
 
     @Override
@@ -33,12 +29,9 @@ public class Butterfly extends JavaPlugin {
         AnnotationParser<CommandSender> annotationParser = new AnnotationParser<>(paperCommandManager, CommandSender.class, commandMetaFunction);
 
 
-
-
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(), this);
     }
-
 
 
     @Override
