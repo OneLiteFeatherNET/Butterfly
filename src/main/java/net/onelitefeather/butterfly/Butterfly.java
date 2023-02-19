@@ -16,26 +16,24 @@ import java.util.function.Function;
 public class Butterfly extends JavaPlugin {
 
 
-    private final PaperCommandManager<CommandSender> paperCommandManager;
-    private final AnnotationParser<CommandSender> annotationParser;
 
-    final Function<ParserParameters, CommandMeta> commandMetaFunction = p ->
-            CommandMeta.simple().with(CommandMeta.DESCRIPTION, p.get(StandardParameters.DESCRIPTION, "No description")).build();
 
-    public Butterfly(PaperCommandManager<CommandSender> paperCommandManager) {
-        this.paperCommandManager = paperCommandManager;
-        this.annotationParser = new AnnotationParser<>(paperCommandManager, CommandSender.class, commandMetaFunction);
-    }
+
 
     @Override
     public void onEnable() {
-        try{
-            PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
-                    CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
-        } catch (final Exception e) {
-            this.getLogger().warning("Failed to initialize Brigadier support: " + e.getMessage());
-            this.getServer().getPluginManager().disablePlugin(this);
+        Function<ParserParameters, CommandMeta> commandMetaFunction = p ->
+                CommandMeta.simple().with(CommandMeta.DESCRIPTION, p.get(StandardParameters.DESCRIPTION, "No description")).build();
+        PaperCommandManager<CommandSender> paperCommandManager = null;
+        try {
+            paperCommandManager = new PaperCommandManager<>(this, CommandExecutionCoordinator.simpleCoordinator(), Function.identity(), Function.identity());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+        AnnotationParser<CommandSender> annotationParser = new AnnotationParser<>(paperCommandManager, CommandSender.class, commandMetaFunction);
+
+
+
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(), this);
