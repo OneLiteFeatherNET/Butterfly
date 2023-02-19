@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerLeaveListener implements Listener {
     @EventHandler
-    public void playerLeave(PlayerQuitEvent event){
+    public void playerLeave(PlayerQuitEvent event) {
         event.quitMessage(null);
     }
 }
