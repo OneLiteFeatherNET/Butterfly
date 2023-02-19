@@ -5,6 +5,8 @@ import cloud.commandframework.arguments.parser.ParserParameters;
 import cloud.commandframework.arguments.parser.StandardParameters;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
+import net.onelitefeather.butterfly.listeners.PlayerJoinListener;
+import net.onelitefeather.butterfly.listeners.PlayerLeaveListener;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import cloud.commandframework.paper.PaperCommandManager;
@@ -34,6 +36,9 @@ public class Butterfly extends JavaPlugin {
             this.getLogger().warning("Failed to initialize Brigadier support: " + e.getMessage());
             this.getServer().getPluginManager().disablePlugin(this);
         }
+
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerLeaveListener(), this);
     }
 
 
