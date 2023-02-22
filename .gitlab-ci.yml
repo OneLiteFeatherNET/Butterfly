@@ -9,9 +9,3 @@ variables:
   JAR_FILE: "Butterfly.jar"
   BUCKET: "olf-dev"
   TEMPLATE: "default"
-
-
-deploy:
-  stage: deploy
-  script:
-    - gradle shadowJar
