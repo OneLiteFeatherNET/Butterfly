@@ -68,6 +68,9 @@ tasks {
     getByName<org.sonarqube.gradle.SonarTask>("sonar") {
         dependsOn(rootProject.tasks.test)
     }
+    shadowJar {
+        archiveFileName.set("${rootProject.name}.${archiveExtension.getOrElse("jar")}")
+    }
 }
 
 sonarqube {
