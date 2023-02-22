@@ -1,8 +1,11 @@
 include:
-  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
-  - template: Jobs/SAST.gitlab-ci.yml
-  - template: Jobs/Secret-Detection.gitlab-ci.yml
-  - component: gitlab.themeinerlp.dev/onelitefeather/ci-components/paper-plugin@0.0.3
+  - project: onelitefeather/ci-template
+    ref: Better-Pipelines
+    file: s3-upload.yaml
+  - project: onelitefeather/ci-template
+    ref: Better-Pipelines
+    file: sonarqube.yaml
 variables:
-  SECURE_ANALYZERS_PREFIX: "${HTL_NEXUS_PROXY}/security-products"
-  GRADLE_IMAGE: "${HTL_NEXUS_PROXY}/gradle:8.7.0-jdk21"
+  JAR_FILE: "Butterfly.jar"
+  BUCKET: "olf-dev"
+  TEMPLATE: "default"
