@@ -3,6 +3,8 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("xyz.jpenilla.run-paper") version "2.0.0"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("org.sonarqube") version "4.0.0.2929"
+    jacoco
 
 }
 
@@ -48,5 +50,29 @@ tasks {
         options.release.set(17)
         options.encoding = "UTF-8"
     }
+    jacocoTestReport {
+        dependsOn(rootProject.tasks.test)
+        reports {
+            xml.required.set(true)
+        }
+    }
+
+    test {
+        finalizedBy(rootProject.tasks.jacocoTestReport)
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+    getByName<org.sonarqube.gradle.SonarTask>("sonar") {
+        dependsOn(rootProject.tasks.test)
+    }
 }
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "onelitefeather_projects_butterfly_AYZ5KHlm528bDWin57d_")
+    }
+}
+
 
