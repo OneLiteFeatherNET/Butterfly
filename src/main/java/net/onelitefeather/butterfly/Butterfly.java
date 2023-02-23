@@ -46,7 +46,7 @@ public class Butterfly extends JavaPlugin {
 
         tablistManager = new TablistManager(this);
 
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(), this);
     }
 
