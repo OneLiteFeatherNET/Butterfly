@@ -1,10 +1,7 @@
 package net.onelitefeather.butterfly.tablist;
 
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
 import net.onelitefeather.butterfly.Butterfly;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -20,30 +17,31 @@ public class TablistManager {
     }
 
 
+    public void setAllPlayerTeams() {
+        Bukkit.getOnlinePlayers().forEach(this::setTablist);
+    }
+
     public void setTablist(Player player) {
-
-        LuckPerms api = butterfly.getApi();
-        User user = api.getPlayerAdapter(Player.class).getUser(player);
-
-        System.out.println("SetTablist 28");
-
-        // Add the permission
-        if (!player.hasPermission("permission.player")) {
-            user.data().add(Node.builder("permission.player").build());
-            api.getUserManager().saveUser(user);
-            System.out.println("hasPermission check");
-        }
 
         Scoreboard scoreboard = player.getScoreboard();
 
-        Team admins = scoreboard.getTeam("admins");
+        // ---- create here your roles ----
 
-        if (admins == null) {
-            admins = scoreboard.registerNewTeam("admins");
+        Team admin = scoreboard.getTeam("operators");
+
+        if (admin == null) {
+            admin = scoreboard.registerNewTeam("operators");
         }
 
-        admins.setPrefix(ChatColor.RED + "[Admin] ");
-        admins.setColor(ChatColor.RED);
+        admin.setPrefix(ChatColor.DARK_RED + "ADMIN " + ChatColor.DARK_GRAY + "| ");
 
+        for (Player target : Bukkit.getOnlinePlayers()) {
+            if (target.hasPermission("")) { // Add here you luckPerms permission <--
+                admin.addEntry(target.getName());
+                continue;
+            }
+
+            // ---- Add here more roles ----
+        }
     }
 }
