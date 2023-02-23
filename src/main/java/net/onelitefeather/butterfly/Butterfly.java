@@ -19,20 +19,18 @@ import java.util.function.Function;
 
 public class Butterfly extends JavaPlugin {
 
-    RegisteredServiceProvider<LuckPerms> provider;
-
+    RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
     LuckPerms api;
-
     private TablistManager tablistManager;
 
     @Override
     public void onEnable() {
-        provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if (provider != null) {
-             api = provider.getProvider();
-             System.out.println("api loaded/provider not null");
+
+        if(provider != null){
+            api = provider.getProvider();
         }
 
+        tablistManager = new TablistManager(this);
 
         Function<ParserParameters, CommandMeta> commandMetaFunction = p ->
                 CommandMeta.simple().with(CommandMeta.DESCRIPTION, p.get(StandardParameters.DESCRIPTION, "No description")).build();
@@ -44,9 +42,7 @@ public class Butterfly extends JavaPlugin {
         }
         AnnotationParser<CommandSender> annotationParser = new AnnotationParser<>(paperCommandManager, CommandSender.class, commandMetaFunction);
 
-        tablistManager = new TablistManager(this);
-
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveListener(), this);
     }
 
