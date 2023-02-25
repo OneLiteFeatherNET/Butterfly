@@ -1,5 +1,7 @@
 package net.onelitefeather.butterfly.tablist;
 
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.user.User;
 import net.onelitefeather.butterfly.Butterfly;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,25 +25,26 @@ public class TablistManager {
 
     public void setTablist(Player player) {
 
+        LuckPerms api = butterfly.getApi();
+
         Scoreboard scoreboard = player.getScoreboard();
 
-        // ---- create here your roles ----
-
-        Team admin = scoreboard.getTeam("operators");
-
-        if (admin == null) {
-            admin = scoreboard.registerNewTeam("operators");
-        }
-
-        admin.setPrefix(ChatColor.DARK_RED + "ADMIN " + ChatColor.DARK_GRAY + "| ");
-
         for (Player target : Bukkit.getOnlinePlayers()) {
-            if (target.hasPermission("")) { // Add here you luckPerms permission <--
-                admin.addEntry(target.getName());
-                continue;
-            }
+            String prefix = api.getUserManager().getUser(target.getUniqueId()).getCachedData().getMetaData().getPrefix();
 
-            // ---- Add here more roles ----
+            if(prefix != null){
+                System.out.println("Test");
+
+                Team prefixTeam = scoreboard.getTeam(prefix);
+
+                if (prefixTeam == null) {
+                    prefixTeam = scoreboard.registerNewTeam(prefix);
+                }
+
+                prefixTeam.setPrefix(prefix);
+
+                prefixTeam.addEntry(target.getName());
+            }
         }
     }
 }
