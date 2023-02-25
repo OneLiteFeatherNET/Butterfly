@@ -19,12 +19,14 @@ import java.util.function.Function;
 
 public class Butterfly extends JavaPlugin {
 
-    RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+    RegisteredServiceProvider<LuckPerms> provider;
     LuckPerms api;
     private TablistManager tablistManager;
 
     @Override
     public void onEnable() {
+
+        provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 
         if(provider != null){
             api = provider.getProvider();
