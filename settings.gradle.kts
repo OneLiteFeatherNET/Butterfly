@@ -1,4 +1,3 @@
-rootProject.name = "Butterfly"
-include("api")
-include("bukkit")
-include("minestom")
+//TODO: Change project
+rootProject.name = "Stardust"
+
