@@ -5,18 +5,38 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.scoreboard.Team;
 
 public final class PlayerListener implements Listener {
     @EventHandler
-    public void handlePlayerJoin(PlayerJoinEvent event) {
+    public void handlePlayerLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
-        String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUniqueId())) + player.getName();
+        var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUniqueId());
+        String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group) + player.getName();
         player.displayName(MiniMessage.miniMessage().deserialize(displayName));
+        player.playerListName(MiniMessage.miniMessage().deserialize(displayName));
+        var mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        var team = mainScoreboard.getTeam(group.getName());
+        if (team == null) {
+            team = mainScoreboard.registerNewTeam(group.getName());
+            team.prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
+            team.displayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
+            team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
+            team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        }
+        if (!team.hasPlayer(player)) {
+            team.removePlayer(player);
+        }
+
+        team.addPlayer(player);
+
     }
+
     @EventHandler
     public void handleChat(AsyncChatEvent event) {
         event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
