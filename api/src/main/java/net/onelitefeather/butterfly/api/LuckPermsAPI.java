@@ -34,4 +34,8 @@ public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation{
         throw new NullPointerException("Group prefix is null");
     }
 
+    void subscribeEvents();
+
+    void unsubscribeEvents();
+
 }
