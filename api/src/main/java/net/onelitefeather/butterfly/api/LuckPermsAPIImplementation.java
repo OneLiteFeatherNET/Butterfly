@@ -1,6 +1,7 @@
 package net.onelitefeather.butterfly.api;
 
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.EventSubscription;
 import net.luckperms.api.event.user.UserDataRecalculateEvent;
@@ -15,10 +16,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 final class LuckPermsAPIImplementation implements LuckPermsAPI {
+    static final LuckPerms LUCK_PERMS = LuckPermsProvider.get();
 
-    private static final Optional<LuckPermsService> SERVICE = Services.service(LuckPermsService.class);
-    static final LuckPermsService LUCK_PERMS_SERVICE = SERVICE.orElseThrow();
-    static final LuckPerms LUCK_PERMS = LUCK_PERMS_SERVICE.getLuckPerms();
+    static LuckPermsService LUCK_PERMS_SERVICE = new DummyLuckPermsService();
 
     static LuckPermsAPI INSTANCE = new LuckPermsAPIImplementation();
 

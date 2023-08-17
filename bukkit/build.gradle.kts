@@ -35,8 +35,9 @@ java {
 
 
 paper {
-    main = "net.onelitefeather.butterfly.bukkit.Butter"
-    apiVersion = "1.20"
+    name = "Butterfly"
+    main = "net.onelitefeather.butterfly.bukkit.Butterfly"
+    apiVersion = "1.19"
     author = "TheMeinerLP"
     authors = listOf("theShadowsDust")
     serverDependencies {
