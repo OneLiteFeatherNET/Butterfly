@@ -6,6 +6,7 @@ import net.onelitefeather.butterfly.api.LuckPermsAPI;
 public class Butterfly extends Extension {
     @Override
     public void initialize() {
+        LuckPermsAPI.setLuckPermsService(new MinestomLuckPermsService());
         LuckPermsAPI.luckPermsAPI().subscribeEvents();
     }
 

@@ -15,8 +15,6 @@ repositories {
 }
 
 dependencies {
-    // Service Loader
-    implementation("com.google.auto.service:auto-service:1.1.1")
     // LuckPerms API
     compileOnly("net.luckperms:api:5.4")
     // API
