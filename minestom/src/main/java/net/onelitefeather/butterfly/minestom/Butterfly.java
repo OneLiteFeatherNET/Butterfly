@@ -36,13 +36,15 @@ public class Butterfly extends Extension {
     private void playerLogin(PlayerLoginEvent playerLoginEvent) {
         Player player = playerLoginEvent.getPlayer();
         var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
+        var weight = group.getWeight().orElse(9999);
+        var teamName = String.format("%04d", weight) + group.getName();
         String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group) + player.getUsername();
         Team team;
-        if (MinecraftServer.getTeamManager().exists(group.getName())) {
-            team = MinecraftServer.getTeamManager().getTeam(group.getName());
+        if (MinecraftServer.getTeamManager().exists(teamName)) {
+            team = MinecraftServer.getTeamManager().getTeam(teamName);
         } else {
             team = MinecraftServer.getTeamManager()
-                    .createBuilder(group.getName())
+                    .createBuilder(teamName)
                     .prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)))
                     .teamDisplayName(MiniMessage.miniMessage().deserialize(displayName))
                     .nameTagVisibility(TeamsPacket.NameTagVisibility.ALWAYS)
