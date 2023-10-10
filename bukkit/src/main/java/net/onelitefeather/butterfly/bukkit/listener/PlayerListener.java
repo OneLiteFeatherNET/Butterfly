@@ -21,9 +21,11 @@ public final class PlayerListener implements Listener {
         player.displayName(MiniMessage.miniMessage().deserialize(displayName));
         player.playerListName(MiniMessage.miniMessage().deserialize(displayName));
         var mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        var team = mainScoreboard.getTeam(group.getName());
+        var weight = group.getWeight().orElse(9999);
+        var teamName = String.format("%04d", weight) + group.getName();
+        var team = mainScoreboard.getTeam(teamName);
         if (team == null) {
-            team = mainScoreboard.registerNewTeam(group.getName());
+            team = mainScoreboard.registerNewTeam(teamName);
             team.prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
             team.displayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
