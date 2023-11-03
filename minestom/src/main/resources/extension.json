@@ -1,0 +1,8 @@
+{
+  "entrypoint": "net.onelitefeather.butterfly.minestom.Butterfly",
+  "name": "ButterFly",
+  "version": "1.0.0",
+  "dependencies": [
+    "LuckPerms"
+  ]
+}
