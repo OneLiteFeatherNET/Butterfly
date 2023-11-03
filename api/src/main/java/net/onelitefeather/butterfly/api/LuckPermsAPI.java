@@ -14,6 +14,10 @@ public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation{
         return LuckPermsAPIImplementation.INSTANCE;
     }
 
+    static void setLuckPermsService(LuckPermsService service) {
+        LuckPermsAPIImplementation.LUCK_PERMS_SERVICE = service;
+    }
+
     /**
      * Gets the primary group of a player
      * @param playerUUID to fetch the group
