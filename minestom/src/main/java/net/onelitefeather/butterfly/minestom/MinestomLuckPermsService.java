@@ -1,16 +1,15 @@
-package net.onelitefeather.butterfly.bukkit;
+package net.onelitefeather.butterfly.minestom;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
+import net.minestom.server.MinecraftServer;
+import net.minestom.server.entity.Player;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.api.LuckPermsService;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
-public final class BukkitLuckPermsService implements LuckPermsService {
-
+public class MinestomLuckPermsService implements LuckPermsService {
     @Override
     public Group getDefaultGroup() {
         return LuckPermsProvider.get().getGroupManager().getGroup("default");
@@ -18,8 +17,9 @@ public final class BukkitLuckPermsService implements LuckPermsService {
 
     @Override
     public void setDisplayName(User user) {
-        Player player = Bukkit.getPlayer(user.getUniqueId());
+        Player player = MinecraftServer.getConnectionManager().getPlayer(user.getUniqueId());
         if (player != null)
-            player.displayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUniqueId())) + player.getName()));
+            player.setDisplayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid())) + player.getName()));
+
     }
 }
