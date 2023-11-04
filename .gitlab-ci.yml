@@ -1,4 +1,6 @@
 include:
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
   - project: onelitefeather/ci-template
     ref: template
     file: gradle-build.yml
