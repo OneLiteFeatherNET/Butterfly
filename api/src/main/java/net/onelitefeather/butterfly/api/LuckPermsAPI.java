@@ -1,6 +1,8 @@
 package net.onelitefeather.butterfly.api;
 
+import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
 import net.luckperms.api.query.QueryOptions;
 
 import java.util.UUID;
@@ -8,7 +10,7 @@ import java.util.UUID;
 /**
  * Luckperms API for internal access
  */
-public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation{
+public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation {
 
     static LuckPermsAPI luckPermsAPI() {
         return LuckPermsAPIImplementation.INSTANCE;
@@ -36,6 +38,14 @@ public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation{
             return prefix;
         }
         throw new NullPointerException("Group prefix is null");
+    }
+
+    default User getUser(UUID uuid) {
+        return LuckPermsProvider.get().getUserManager().getUser(uuid);
+    }
+
+    default void setDisplayName(User user) {
+        LuckPermsAPIImplementation.LUCK_PERMS_SERVICE.setDisplayName(user);
     }
 
     void subscribeEvents();
