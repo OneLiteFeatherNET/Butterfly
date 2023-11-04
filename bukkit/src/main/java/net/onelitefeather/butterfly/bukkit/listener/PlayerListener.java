@@ -8,15 +8,15 @@ import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 public final class PlayerListener implements Listener {
     @EventHandler
-    public void handlePlayerJoin(PlayerJoinEvent event) {
+    public void handlePlayerLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
-        String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUniqueId())) + player.getName();
-        player.displayName(MiniMessage.miniMessage().deserialize(displayName));
+        LuckPermsAPI.luckPermsAPI().setDisplayName(LuckPermsAPI.luckPermsAPI().getUser(player.getUniqueId()));
     }
+
     @EventHandler
     public void handleChat(AsyncChatEvent event) {
         event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
