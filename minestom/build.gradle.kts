@@ -17,7 +17,7 @@ dependencies {
     implementation(project(":api"))
     // Minestom
     compileOnly("net.onelitefeather.microtus:Minestom:1.1.1-SNAPSHOT+a8e43bb")
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
