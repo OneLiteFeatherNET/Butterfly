@@ -1,7 +1,6 @@
 package net.onelitefeather.butterfly.minestom;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
@@ -9,10 +8,6 @@ import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.extensions.Extension;
-import net.minestom.server.network.packet.server.play.TeamsPacket;
-import net.minestom.server.scoreboard.BelowNameTag;
-import net.minestom.server.scoreboard.Scoreboard;
-import net.minestom.server.scoreboard.Team;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 
 public class Butterfly extends Extension {
@@ -28,31 +23,12 @@ public class Butterfly extends Extension {
 
     private void playerSpawn(PlayerSpawnEvent playerSpawnEvent) {
         Player player = playerSpawnEvent.getPlayer();
-        var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
-        String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group) + player.getUsername();
-        player.setDisplayName(MiniMessage.miniMessage().deserialize(displayName));
+        LuckPermsAPI.luckPermsAPI().setDisplayName(LuckPermsAPI.luckPermsAPI().getUser(player.getUuid()));
     }
 
     private void playerLogin(PlayerLoginEvent playerLoginEvent) {
         Player player = playerLoginEvent.getPlayer();
-        var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
-        var weight = group.getWeight().orElse(9999);
-        var teamName = String.format("%04d", weight) + group.getName();
-        String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group) + player.getUsername();
-        Team team;
-        if (MinecraftServer.getTeamManager().exists(teamName)) {
-            team = MinecraftServer.getTeamManager().getTeam(teamName);
-        } else {
-            team = MinecraftServer.getTeamManager()
-                    .createBuilder(teamName)
-                    .prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)))
-                    .teamDisplayName(MiniMessage.miniMessage().deserialize(displayName))
-                    .nameTagVisibility(TeamsPacket.NameTagVisibility.ALWAYS)
-                    .collisionRule(TeamsPacket.CollisionRule.NEVER)
-                    .updateTeamPacket()
-                    .build();
-        }
-        player.setTeam(team);
+        LuckPermsAPI.luckPermsAPI().setDisplayName(LuckPermsAPI.luckPermsAPI().getUser(player.getUuid()));
     }
 
     private void playerChat(PlayerChatEvent playerChatEvent) {
