@@ -3,9 +3,9 @@ import net.minecrell.pluginyml.paper.PaperPluginDescription
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("xyz.jpenilla.run-paper") version "2.1.0"
+    id("xyz.jpenilla.run-paper") version "2.2.0"
     id("net.minecrell.plugin-yml.paper") version "0.6.0"
-    id("org.sonarqube") version "4.3.0.3225"
+    id("org.sonarqube") version "4.4.1.3373"
     jacoco
 }
 
@@ -22,7 +22,7 @@ dependencies {
     // Paper API
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
     // Testing
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
