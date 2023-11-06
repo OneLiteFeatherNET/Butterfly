@@ -7,12 +7,13 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public final class PlayerListener implements Listener {
-    @EventHandler
-    public void handlePlayerLogin(PlayerLoginEvent event) {
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void handlePlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         LuckPermsAPI.luckPermsAPI().setDisplayName(LuckPermsAPI.luckPermsAPI().getUser(player.getUniqueId()));
     }
