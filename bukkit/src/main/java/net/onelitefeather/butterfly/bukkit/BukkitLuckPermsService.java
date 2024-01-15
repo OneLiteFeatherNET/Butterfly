@@ -10,8 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
-import java.util.Optional;
-
 public final class BukkitLuckPermsService implements LuckPermsService {
 
     @Override
@@ -36,7 +34,7 @@ public final class BukkitLuckPermsService implements LuckPermsService {
                 team.prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
                 team.displayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
                 team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
-                team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+                team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.ALWAYS);
             }
             if (team.hasPlayer(player)) {
                 team.removePlayer(player);
