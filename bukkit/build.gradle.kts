@@ -60,8 +60,8 @@ tasks {
 
 publishData {
     addBuildData()
-    addRepo(Repo(Regex(".*"), " SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/butterfly/packages/maven", false, Repo.Type.SNAPSHOT))
-    addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/butterfly/packages/maven", false, Repo.Type.STABLE))
+    addRepo(Repo(Regex(".*"), " SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.SNAPSHOT))
+    addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
     publishTask("shadowJar")
 }
 
