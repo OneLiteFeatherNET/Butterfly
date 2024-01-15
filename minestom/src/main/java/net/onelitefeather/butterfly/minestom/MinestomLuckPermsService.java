@@ -10,6 +10,7 @@ import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.scoreboard.Team;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.api.LuckPermsService;
+import net.onelitefeather.butterfly.minestom.feature.ButterflyFeatures;
 
 public class MinestomLuckPermsService implements LuckPermsService {
     @Override
@@ -35,9 +36,13 @@ public class MinestomLuckPermsService implements LuckPermsService {
                         .prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)))
                         .teamDisplayName(MiniMessage.miniMessage().deserialize(displayName))
                         .nameTagVisibility(TeamsPacket.NameTagVisibility.ALWAYS)
-                        .collisionRule(TeamsPacket.CollisionRule.NEVER)
                         .updateTeamPacket()
                         .build();
+            }
+            if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
+                team.setCollisionRule(TeamsPacket.CollisionRule.ALWAYS);
+            } else {
+                team.setCollisionRule(TeamsPacket.CollisionRule.NEVER);
             }
             player.setTeam(team);
         }

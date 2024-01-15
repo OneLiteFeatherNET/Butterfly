@@ -18,6 +18,8 @@ version = "1.1.0-SNAPSHOT"
 dependencies {
     // Minimessage
     implementation(libs.adventure.minimessage)
+    // Togglz
+    implementation(libs.togglz)
     // LuckPerms API
     compileOnly(libs.luckperms.api)
     // API
