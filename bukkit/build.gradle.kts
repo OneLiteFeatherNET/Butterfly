@@ -29,6 +29,7 @@ dependencies {
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
 
@@ -51,16 +52,11 @@ tasks {
     runServer {
         minecraftVersion("1.20.4")
     }
-
-    compileJava {
-        options.release.set(17)
-        options.encoding = "UTF-8"
-    }
 }
 
 publishData {
     addBuildData()
-    addRepo(Repo(Regex(".*"), " SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.SNAPSHOT))
+    addRepo(Repo(Regex(".*"), "SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.SNAPSHOT))
     addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
     publishTask("shadowJar")
 }
