@@ -1,6 +1,10 @@
+import de.chojo.Repo
+
 plugins {
-    id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    java
+    `maven-publish`
+    alias(libs.plugins.publishdata)
+    alias(libs.plugins.shadow)
 }
 
 repositories {
@@ -8,17 +12,18 @@ repositories {
     maven("https://jitpack.io")
 }
 
+group = "net.onelitefeather"
+version = "1.1.0-SNAPSHOT"
+
 dependencies {
     // Minimessage
-    implementation("net.kyori:adventure-text-minimessage:4.14.0")
+    implementation(libs.adventure.minimessage)
     // LuckPerms API
-    compileOnly("net.luckperms:api:5.4")
+    compileOnly(libs.luckperms.api)
     // API
     implementation(project(":api"))
     // Minestom
-    compileOnly("net.onelitefeather.microtus:Minestom:1.1.1")
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    compileOnly(libs.minestom)
 }
 
 tasks {
@@ -27,14 +32,36 @@ tasks {
         options.release.set(17)
         options.encoding = "UTF-8"
     }
+}
 
-    test {
-        useJUnitPlatform()
-        testLogging {
-            events("passed", "skipped", "failed")
-        }
+publishData {
+    addBuildData()
+    addRepo(Repo(Regex(".*"), " SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/butterfly/packages/maven", false, Repo.Type.SNAPSHOT))
+    addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/butterfly/packages/maven", false, Repo.Type.STABLE))
+    publishTask("shadowJar")
+}
+
+publishing {
+    publications.create<MavenPublication>("maven") {
+        // configure the publication as defined previously.
+        publishData.configurePublication(this)
+        version = publishData.getVersion(false)
     }
-    shadowJar {
-        archiveFileName.set("${rootProject.name}.${archiveExtension.getOrElse("jar")}")
+
+    repositories {
+        maven {
+            credentials(HttpHeaderCredentials::class) {
+                name = "Job-Token"
+                value = System.getenv("CI_JOB_TOKEN")
+            }
+            authentication {
+                create("header", HttpHeaderAuthentication::class)
+            }
+
+
+            name = "Gitlab"
+            // Get the detected repository from the publish data
+            url = uri(publishData.getRepository())
+        }
     }
 }

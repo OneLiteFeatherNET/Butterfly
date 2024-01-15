@@ -1,12 +1,13 @@
+import de.chojo.Repo
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 
 plugins {
-    id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("xyz.jpenilla.run-paper") version "2.2.0"
-    id("net.minecrell.plugin-yml.paper") version "0.6.0"
-    id("org.sonarqube") version "4.4.1.3373"
-    jacoco
+    java
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.run.paper)
+    alias(libs.plugins.plugin.yml)
+    alias(libs.plugins.publishdata)
+    `maven-publish`
 }
 
 repositories {
@@ -16,14 +17,11 @@ repositories {
 
 dependencies {
     // LuckPerms API
-    compileOnly("net.luckperms:api:5.4")
+    compileOnly(libs.luckperms.api)
     // API
     implementation(project(":api"))
     // Paper API
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
-    // Testing
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    compileOnly(libs.paper)
 }
 
 java {
@@ -48,31 +46,43 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.20.1")
+        minecraftVersion("1.20.4")
     }
 
     compileJava {
         options.release.set(17)
         options.encoding = "UTF-8"
     }
-    jacocoTestReport {
-        dependsOn(project.tasks.test)
-        reports {
-            xml.required.set(true)
-        }
+}
+
+publishData {
+    addBuildData()
+    addRepo(Repo(Regex(".*"), " SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/butterfly/packages/maven", false, Repo.Type.SNAPSHOT))
+    addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/butterfly/packages/maven", false, Repo.Type.STABLE))
+    publishTask("shadowJar")
+}
+
+publishing {
+    publications.create<MavenPublication>("maven") {
+        // configure the publication as defined previously.
+        publishData.configurePublication(this)
+        version = publishData.getVersion(false)
     }
 
-    test {
-        finalizedBy(project.tasks.jacocoTestReport)
-        useJUnitPlatform()
-        testLogging {
-            events("passed", "skipped", "failed")
+    repositories {
+        maven {
+            credentials(HttpHeaderCredentials::class) {
+                name = "Job-Token"
+                value = System.getenv("CI_JOB_TOKEN")
+            }
+            authentication {
+                create("header", HttpHeaderAuthentication::class)
+            }
+
+
+            name = "Gitlab"
+            // Get the detected repository from the publish data
+            url = uri(publishData.getRepository())
         }
-    }
-    getByName<org.sonarqube.gradle.SonarTask>("sonar") {
-        dependsOn(project.tasks.test)
-    }
-    shadowJar {
-        archiveFileName.set("${rootProject.name}.${archiveExtension.getOrElse("jar")}")
     }
 }
