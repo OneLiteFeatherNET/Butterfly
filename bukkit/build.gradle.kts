@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.publishdata)
     `maven-publish`
 }
+group = "net.onelitefeather"
+version = "1.1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -34,6 +36,7 @@ paper {
     name = "Butterfly"
     main = "net.onelitefeather.butterfly.bukkit.Butterfly"
     apiVersion = "1.19"
+    version = publishData.getVersion(true)
     author = "TheMeinerLP"
     authors = listOf("theShadowsDust")
     serverDependencies {
