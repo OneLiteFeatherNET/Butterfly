@@ -34,11 +34,11 @@ public class MinestomLuckPermsService implements LuckPermsService {
                 team = MinecraftServer.getTeamManager()
                         .createBuilder(teamName)
                         .prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)))
-                        .teamDisplayName(MiniMessage.miniMessage().deserialize(displayName))
                         .nameTagVisibility(TeamsPacket.NameTagVisibility.ALWAYS)
                         .updateTeamPacket()
                         .build();
             }
+            player.setDisplayName(MiniMessage.miniMessage().deserialize(displayName));
             if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
                 team.setCollisionRule(TeamsPacket.CollisionRule.ALWAYS);
             } else {

@@ -33,6 +33,9 @@ public final class BukkitLuckPermsService implements LuckPermsService {
             if (team != null && team.hasPlayer(player)) {
                 team.removePlayer(player);
             }
+            mainScoreboard.getTeams().forEach(allTeams -> {
+                allTeams.removePlayer(player);
+            });
             if (team == null) {
                 team = mainScoreboard.registerNewTeam(teamName);
                 team.prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
