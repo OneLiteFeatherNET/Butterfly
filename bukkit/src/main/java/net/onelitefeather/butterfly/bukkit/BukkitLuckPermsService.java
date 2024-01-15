@@ -6,6 +6,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.api.LuckPermsService;
+import net.onelitefeather.butterfly.bukkit.feature.ButterflyFeatures;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
@@ -29,17 +30,21 @@ public final class BukkitLuckPermsService implements LuckPermsService {
             var weight = group.getWeight().orElse(9999);
             var teamName = String.format("%04d", weight) + group.getName();
             var team = mainScoreboard.getTeam(teamName);
+            if (team != null && team.hasPlayer(player)) {
+                team.removePlayer(player);
+            }
             if (team == null) {
                 team = mainScoreboard.registerNewTeam(teamName);
                 team.prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
                 team.displayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
                 team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
-                team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.ALWAYS);
-            }
-            if (team.hasPlayer(player)) {
-                team.removePlayer(player);
-            }
 
+            }
+            if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
+                team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.ALWAYS);
+            } else {
+                team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+            }
             team.addPlayer(player);
         }
     }
