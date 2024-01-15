@@ -9,10 +9,4 @@ include:
 
 deploy:
   script:
-    - gradle shadowJar --no-daemon
-  artifacts:
-    expire_in: 1 week
-    name: "$CI_COMMIT_REF_SLUG-jar-files"
-    paths:
-      - "bukkit/build/libs/Butterfly.jar"
-      - "minestom/build/libs/Butterfly.jar"
+    - gradle publish --no-daemon
