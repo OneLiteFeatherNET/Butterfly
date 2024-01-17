@@ -15,10 +15,10 @@ import org.togglz.core.spi.FeatureManagerProvider;
 import org.togglz.core.util.ConcurrentReferenceHashMap;
 import org.togglz.core.util.Weighted;
 
-public class BukkitFeatureContext extends FeatureContext {
+public final class BukkitFeatureContext extends FeatureContext {
 
 
-    private static final Logger log = LoggerFactory.getLogger(FeatureContext.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FeatureContext.class);
 
     /**
      * Cache for the {@link FeatureManager} instances looked up using the SPI
@@ -75,8 +75,8 @@ public class BukkitFeatureContext extends FeatureContext {
     }
 
     private static FeatureManager findFeatureManagerInClassLoader(ClassLoader classLoader) {
-        if (log.isDebugEnabled()) {
-            log.debug("No cached FeatureManager for class loader: " + classLoader);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("No cached FeatureManager for class loader: " + classLoader);
         }
 
         // build a sorted list of all SPI implementations
@@ -87,8 +87,8 @@ public class BukkitFeatureContext extends FeatureContext {
         }
         providerList.sort(new Weighted.WeightedComparator());
 
-        if (log.isDebugEnabled()) {
-            log.debug("Found " + providerList.size() + " FeatureManagerProvider implementations...");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Found " + providerList.size() + " FeatureManagerProvider implementations...");
         }
 
         FeatureManager featureManager = null;
@@ -99,12 +99,12 @@ public class BukkitFeatureContext extends FeatureContext {
             // call the SPI
             featureManager = provider.getFeatureManager();
 
-            if (log.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 if (featureManager != null) {
-                    log.debug("Provider " + provider.getClass().getName() + " returned FeatureManager: "
+                    LOG.debug("Provider " + provider.getClass().getName() + " returned FeatureManager: "
                             + featureManager.getName());
                 } else {
-                    log.debug("No FeatureManager provided by " + provider.getClass().getName());
+                    LOG.debug("No FeatureManager provided by " + provider.getClass().getName());
                 }
             }
 
