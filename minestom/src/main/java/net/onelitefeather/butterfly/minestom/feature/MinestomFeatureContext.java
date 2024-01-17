@@ -121,7 +121,7 @@ public class MinestomFeatureContext extends FeatureContext {
     /**
      * Returns the context classloader of the current thread. Throws a runtime exception if no context classloader is available.
      */
-    private static ClassLoader getContextClassLoader() {
+    static ClassLoader getContextClassLoader() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader == null) {
             throw new IllegalStateException("Unable to get the context class loader for the current thread!");
