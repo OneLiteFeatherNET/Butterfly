@@ -1,5 +1,6 @@
 package net.onelitefeather.butterfly.bukkit;
 
+import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.bukkit.feature.BukkitDefaultActivationStrategyProvider;
 import net.onelitefeather.butterfly.bukkit.feature.ButterflyFeatures;
 import net.onelitefeather.butterfly.bukkit.listener.PlayerListener;
@@ -17,13 +18,13 @@ public class Butterfly extends JavaPlugin {
                 .activationStrategyProvider(new BukkitDefaultActivationStrategyProvider(this.getClassLoader()))
                 .activationStrategy(new SystemPropertyActivationStrategy())
                 .featureEnum(ButterflyFeatures.class).build());
-        /*LuckPermsAPI.setLuckPermsService(new BukkitLuckPermsService());
-        LuckPermsAPI.luckPermsAPI().subscribeEvents();*/
+        LuckPermsAPI.setLuckPermsService(new BukkitLuckPermsService());
+        LuckPermsAPI.luckPermsAPI().subscribeEvents();
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
     }
 
     @Override
     public void onDisable() {
-        // LuckPermsAPI.luckPermsAPI().unsubscribeEvents();
+        LuckPermsAPI.luckPermsAPI().unsubscribeEvents();
     }
 }
