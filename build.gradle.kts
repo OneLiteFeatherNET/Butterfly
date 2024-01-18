@@ -11,7 +11,7 @@ var publishModules = setOf("bukkit", "minestom")
 
 
 group = "net.onelitefeather"
-version = "1.1.1"
+version = "1.1.2"
 allprojects {
     apply {
         plugin<JavaPlugin>()
