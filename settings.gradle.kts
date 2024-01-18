@@ -21,12 +21,14 @@ dependencyResolutionManagement {
             version("luckperms", "5.4")
             version("adventure", "4.14.0")
             version("minestom", "1.1.1")
+            version("togglz", "4.4.0")
 
             // Paper
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
             library("luckperms.api", "net.luckperms", "api").versionRef("luckperms")
             library("adventure.minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
             library("minestom", "net.onelitefeather.microtus", "Minestom").versionRef("minestom")
+            library("togglz", "org.togglz", "togglz-core").versionRef("togglz")
 
             plugin("plugin.yml", "net.minecrell.plugin-yml.paper").versionRef("plugin.yml")
             plugin("run.paper", "xyz.jpenilla.run-paper").versionRef("run-paper")

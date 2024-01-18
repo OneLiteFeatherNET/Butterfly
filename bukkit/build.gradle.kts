@@ -20,6 +20,8 @@ repositories {
 dependencies {
     // LuckPerms API
     compileOnly(libs.luckperms.api)
+    // Togglz
+    implementation(libs.togglz)
     // API
     implementation(project(":api"))
     // Paper API
@@ -41,16 +43,16 @@ paper {
     author = "TheMeinerLP"
     authors = listOf("theShadowsDust")
     serverDependencies {
-        register("LuckPerms") {
+        /*register("LuckPerms") {
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
-        }
+        }*/
     }
 }
 
 
 tasks {
     runServer {
-        minecraftVersion("1.20.4")
+        minecraftVersion("1.20.1")
     }
 }
 
