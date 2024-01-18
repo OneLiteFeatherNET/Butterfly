@@ -43,9 +43,9 @@ paper {
     author = "TheMeinerLP"
     authors = listOf("theShadowsDust")
     serverDependencies {
-        /*register("LuckPerms") {
+        register("LuckPerms") {
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
-        }*/
+        }
     }
 }
 

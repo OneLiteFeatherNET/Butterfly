@@ -9,4 +9,4 @@ include:
 
 deploy:
   script:
-    - gradle publish --no-daemon
+    - gradle publish
