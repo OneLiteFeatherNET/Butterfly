@@ -1,9 +1,5 @@
-import de.chojo.Repo
-
 plugins {
     java
-    `maven-publish`
-    alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
 }
 
@@ -11,9 +7,6 @@ repositories {
     mavenCentral()
     maven("https://jitpack.io")
 }
-
-group = "net.onelitefeather"
-version = "1.1.1-SNAPSHOT"
 
 dependencies {
     // Minimessage
@@ -34,11 +27,17 @@ tasks {
         options.release.set(17)
         options.encoding = "UTF-8"
     }
+    shadowJar {
+        archiveVersion.set(rootProject.version as String)
+    }
+    build {
+        dependsOn(shadowJar)
+    }
 }
 
 publishData {
     addBuildData()
-    useGitlabReposForProject("177", "https://gitlab.themeinerlp.dev/")
+    useGitlabReposForProject("117", "https://gitlab.themeinerlp.dev/")
     publishTask("shadowJar")
 }
 
@@ -46,7 +45,6 @@ publishing {
     publications.create<MavenPublication>("maven") {
         // configure the publication as defined previously.
         publishData.configurePublication(this)
-        version = publishData.getVersion(false)
     }
 
     repositories {

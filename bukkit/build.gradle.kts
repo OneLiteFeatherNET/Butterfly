@@ -1,4 +1,3 @@
-import de.chojo.Repo
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 
 plugins {
@@ -6,12 +5,7 @@ plugins {
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
     alias(libs.plugins.plugin.yml)
-    alias(libs.plugins.publishdata)
-    `maven-publish`
 }
-group = "net.onelitefeather"
-version = "1.1.1-SNAPSHOT"
-
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
@@ -35,30 +29,23 @@ java {
 }
 
 
-paper {
-    name = "Butterfly"
-    main = "net.onelitefeather.butterfly.bukkit.Butterfly"
-    apiVersion = "1.19"
-    version = publishData.getVersion(false)
-    author = "TheMeinerLP"
-    authors = listOf("theShadowsDust")
-    serverDependencies {
-        register("LuckPerms") {
-            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
-        }
-    }
-}
-
 
 tasks {
     runServer {
         minecraftVersion("1.20.1")
     }
+    shadowJar {
+        mergeServiceFiles()
+        archiveVersion.set(rootProject.version as String)
+    }
+    build {
+        dependsOn(shadowJar)
+    }
 }
 
 publishData {
     addBuildData()
-    useGitlabReposForProject("177", "https://gitlab.themeinerlp.dev/")
+    useGitlabReposForProject("117", "https://gitlab.themeinerlp.dev/")
     publishTask("shadowJar")
 }
 
@@ -66,7 +53,6 @@ publishing {
     publications.create<MavenPublication>("maven") {
         // configure the publication as defined previously.
         publishData.configurePublication(this)
-        version = publishData.getVersion(false)
     }
 
     repositories {
@@ -86,3 +72,18 @@ publishing {
         }
     }
 }
+
+paper {
+    name = "Butterfly"
+    main = "net.onelitefeather.butterfly.bukkit.Butterfly"
+    apiVersion = "1.19"
+    version = publishData.getVersion(true)
+    author = "TheMeinerLP"
+    authors = listOf("theShadowsDust")
+    serverDependencies {
+        register("LuckPerms") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+    }
+}
+
