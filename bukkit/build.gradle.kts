@@ -7,8 +7,6 @@ plugins {
     alias(libs.plugins.run.paper)
     alias(libs.plugins.plugin.yml)
 }
-group = "net.onelitefeather"
-
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
@@ -50,6 +48,12 @@ paper {
 tasks {
     runServer {
         minecraftVersion("1.20.1")
+    }
+    shadowJar {
+        archiveVersion.set(rootProject.version as String)
+    }
+    build {
+        dependsOn(shadowJar)
     }
 }
 

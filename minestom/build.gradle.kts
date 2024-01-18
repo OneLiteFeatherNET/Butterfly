@@ -10,9 +10,6 @@ repositories {
     maven("https://jitpack.io")
 }
 
-group = "net.onelitefeather"
-version = "1.1.1-SNAPSHOT"
-
 dependencies {
     // Minimessage
     implementation(libs.adventure.minimessage)
@@ -31,6 +28,12 @@ tasks {
     compileJava {
         options.release.set(17)
         options.encoding = "UTF-8"
+    }
+    shadowJar {
+        archiveVersion.set(rootProject.version as String)
+    }
+    build {
+        dependsOn(shadowJar)
     }
 }
 
