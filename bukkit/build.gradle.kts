@@ -10,7 +10,7 @@ plugins {
     `maven-publish`
 }
 group = "net.onelitefeather"
-version = "1.1.1-SNAPSHOT"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
@@ -58,8 +58,9 @@ tasks {
 
 publishData {
     addBuildData()
-    addRepo(Repo(Regex(".*"), "SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.SNAPSHOT))
-    addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
+    addRepo(Repo.snapshot("", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false))
+    addRepo(Repo.main("", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false))
+    addRepo(Repo.master("", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false))
     publishTask("shadowJar")
 }
 
