@@ -38,9 +38,7 @@ tasks {
 
 publishData {
     addBuildData()
-    addRepo(Repo.snapshot("", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false))
-    addRepo(Repo.main("", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false))
-    addRepo(Repo.master("", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false))
+    useGitlabReposForProject("177", "https://gitlab.themeinerlp.dev/")
     publishTask("shadowJar")
 }
 
