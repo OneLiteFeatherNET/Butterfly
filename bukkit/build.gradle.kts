@@ -1,4 +1,3 @@
-import de.chojo.Repo
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 
 plugins {
@@ -30,20 +29,6 @@ java {
 }
 
 
-paper {
-    name = "Butterfly"
-    main = "net.onelitefeather.butterfly.bukkit.Butterfly"
-    apiVersion = "1.19"
-    version = publishData.getVersion()
-    author = "TheMeinerLP"
-    authors = listOf("theShadowsDust")
-    serverDependencies {
-        register("LuckPerms") {
-            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
-        }
-    }
-}
-
 
 tasks {
     runServer {
@@ -60,9 +45,7 @@ tasks {
 
 publishData {
     addBuildData()
-    addRepo(Repo(Regex("main"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
-    addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
-    addRepo(Repo(Regex(".*"), "SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", true, Repo.Type.SNAPSHOT))
+    useGitlabReposForProject("117", "https://gitlab.themeinerlp.dev/")
     publishTask("shadowJar")
 }
 
@@ -89,3 +72,18 @@ publishing {
         }
     }
 }
+
+paper {
+    name = "Butterfly"
+    main = "net.onelitefeather.butterfly.bukkit.Butterfly"
+    apiVersion = "1.19"
+    version = publishData.getVersion(true)
+    author = "TheMeinerLP"
+    authors = listOf("theShadowsDust")
+    serverDependencies {
+        register("LuckPerms") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+    }
+}
+

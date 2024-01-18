@@ -1,5 +1,3 @@
-import de.chojo.Repo
-
 plugins {
     java
     alias(libs.plugins.shadow)
@@ -39,9 +37,7 @@ tasks {
 
 publishData {
     addBuildData()
-    addRepo(Repo(Regex("main"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
-    addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
-    addRepo(Repo(Regex(".*"), "SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", true, Repo.Type.SNAPSHOT))
+    useGitlabReposForProject("117", "https://gitlab.themeinerlp.dev/")
     publishTask("shadowJar")
 }
 
