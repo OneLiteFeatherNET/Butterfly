@@ -2,8 +2,6 @@ import de.chojo.Repo
 
 plugins {
     java
-    `maven-publish`
-    alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
 }
 
