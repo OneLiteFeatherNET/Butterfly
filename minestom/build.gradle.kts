@@ -39,8 +39,9 @@ tasks {
 
 publishData {
     addBuildData()
-    addRepo(Repo(Regex(".*"), "SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", true, Repo.Type.SNAPSHOT))
     addRepo(Repo(Regex("main"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
+    addRepo(Repo(Regex("master"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
+    addRepo(Repo(Regex(".*"), "SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", true, Repo.Type.SNAPSHOT))
     publishTask("shadowJar")
 }
 
@@ -48,7 +49,6 @@ publishing {
     publications.create<MavenPublication>("maven") {
         // configure the publication as defined previously.
         publishData.configurePublication(this)
-        version = publishData.getVersion(false)
     }
 
     repositories {
