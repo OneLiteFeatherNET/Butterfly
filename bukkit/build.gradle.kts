@@ -6,11 +6,8 @@ plugins {
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
     alias(libs.plugins.plugin.yml)
-    alias(libs.plugins.publishdata)
-    `maven-publish`
 }
 group = "net.onelitefeather"
-version = "1.1.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -39,7 +36,7 @@ paper {
     name = "Butterfly"
     main = "net.onelitefeather.butterfly.bukkit.Butterfly"
     apiVersion = "1.19"
-    version = publishData.getVersion(false)
+    version = publishData.getVersion(true)
     author = "TheMeinerLP"
     authors = listOf("theShadowsDust")
     serverDependencies {
@@ -58,7 +55,8 @@ tasks {
 
 publishData {
     addBuildData()
-    useGitlabReposForProject("177", "https://gitlab.themeinerlp.dev/")
+    addRepo(Repo(Regex(".*"), "SNAPSHOT", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", true, Repo.Type.SNAPSHOT))
+    addRepo(Repo(Regex("main"), "", "https://gitlab.themeinerlp.dev/api/v4/projects/177/packages/maven", false, Repo.Type.STABLE))
     publishTask("shadowJar")
 }
 
