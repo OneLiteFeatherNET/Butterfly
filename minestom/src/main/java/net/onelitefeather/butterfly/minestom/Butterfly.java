@@ -2,6 +2,7 @@ package net.onelitefeather.butterfly.minestom;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.luckperms.api.LuckPerms;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;
@@ -18,9 +19,11 @@ import org.togglz.core.manager.FeatureManagerBuilder;
 
 public class Butterfly extends Extension {
 
+    private static Extension INSTANCE;
 
     @Override
     public void initialize() {
+        INSTANCE = this;
         Thread.currentThread().setContextClassLoader(getOrigin().getClassLoader());
         StaticFeatureManagerProvider.setFeatureManager(FeatureManagerBuilder.begin()
                 .activationStrategyProvider(new MinestomDefaultActivationStrategyProvider(getOrigin().getClassLoader()))
@@ -52,5 +55,15 @@ public class Butterfly extends Extension {
     @Override
     public void terminate() {
         LuckPermsAPI.luckPermsAPI().unsubscribeEvents();
+    }
+
+    public static synchronized Extension getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = MinecraftServer.getExtensionManager().getExtension("Butterfly");
+        }
+        if (!(INSTANCE instanceof Butterfly)) {
+            INSTANCE = MinecraftServer.getExtensionManager().getExtension("Butterfly");
+        }
+        return INSTANCE;
     }
 }
