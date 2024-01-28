@@ -13,7 +13,7 @@ import org.togglz.core.manager.FeatureManagerBuilder;
 
 public class Butterfly extends JavaPlugin {
 
-    private static Plugin INSTANCE;
+    private static Butterfly INSTANCE;
 
     @Override
     public void onEnable() {
@@ -33,13 +33,14 @@ public class Butterfly extends JavaPlugin {
         LuckPermsAPI.luckPermsAPI().unsubscribeEvents();
     }
 
-    public static synchronized Plugin getInstance() {
+    public static synchronized Butterfly getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = Bukkit.getPluginManager().getPlugin("Butterfly");
-        }
-        if (!(INSTANCE instanceof Butterfly)) {
-            INSTANCE = Bukkit.getPluginManager().getPlugin("Butterfly");
+            INSTANCE = (Butterfly) Bukkit.getPluginManager().getPlugin("Butterfly");
         }
         return INSTANCE;
+    }
+
+    public ClassLoader getPluginClassLoader() {
+        return getClassLoader();
     }
 }

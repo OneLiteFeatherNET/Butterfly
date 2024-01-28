@@ -60,7 +60,7 @@ public final class BukkitFeatureContext extends FeatureContext {
      * @return The {@link FeatureManager} for the application or <code>null</code>
      */
     public static FeatureManager getFeatureManagerOrNull() {
-        ClassLoader classLoader = Butterfly.getInstance().getClass().getClassLoader();
+        ClassLoader classLoader = Butterfly.getInstance().getPluginClassLoader();
         FeatureManager featureManager = cache.get(classLoader);
         if (featureManager != null) {
             return featureManager;
