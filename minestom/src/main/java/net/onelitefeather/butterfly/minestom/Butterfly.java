@@ -19,7 +19,7 @@ import org.togglz.core.manager.FeatureManagerBuilder;
 
 public class Butterfly extends Extension {
 
-    private static Extension INSTANCE;
+    private static Butterfly INSTANCE;
 
     @Override
     public void initialize() {
@@ -57,13 +57,14 @@ public class Butterfly extends Extension {
         LuckPermsAPI.luckPermsAPI().unsubscribeEvents();
     }
 
-    public static synchronized Extension getInstance() {
+    public static synchronized Butterfly getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = MinecraftServer.getExtensionManager().getExtension("Butterfly");
-        }
-        if (!(INSTANCE instanceof Butterfly)) {
-            INSTANCE = MinecraftServer.getExtensionManager().getExtension("Butterfly");
+            INSTANCE = (Butterfly) MinecraftServer.getExtensionManager().getExtension("Butterfly");
         }
         return INSTANCE;
+    }
+
+    public ClassLoader getExtensionClassLoader() {
+        return this.getOrigin().getClassLoader();
     }
 }

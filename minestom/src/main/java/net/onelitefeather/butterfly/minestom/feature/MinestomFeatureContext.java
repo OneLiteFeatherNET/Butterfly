@@ -60,7 +60,7 @@ public final class MinestomFeatureContext extends FeatureContext {
      * @return The {@link FeatureManager} for the application or <code>null</code>
      */
     public static FeatureManager getFeatureManagerOrNull() {
-        ClassLoader classLoader = Butterfly.getInstance().getClass().getClassLoader();
+        ClassLoader classLoader = Butterfly.getInstance().getExtensionClassLoader();
         FeatureManager featureManager = cache.get(classLoader);
         if (featureManager != null) {
             return featureManager;
