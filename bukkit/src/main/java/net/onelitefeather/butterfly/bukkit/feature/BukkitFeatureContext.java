@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
+
+import net.onelitefeather.butterfly.bukkit.Butterfly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.togglz.core.context.FeatureContext;
@@ -58,7 +60,7 @@ public final class BukkitFeatureContext extends FeatureContext {
      * @return The {@link FeatureManager} for the application or <code>null</code>
      */
     public static FeatureManager getFeatureManagerOrNull() {
-        ClassLoader classLoader = getContextClassLoader();
+        ClassLoader classLoader = Butterfly.getInstance().getClass().getClassLoader();
         FeatureManager featureManager = cache.get(classLoader);
         if (featureManager != null) {
             return featureManager;
@@ -118,16 +120,6 @@ public final class BukkitFeatureContext extends FeatureContext {
         return featureManager;
     }
 
-    /**
-     * Returns the context classloader of the current thread. Throws a runtime exception if no context classloader is available.
-     */
-    private static ClassLoader getContextClassLoader() {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if (classLoader == null) {
-            throw new IllegalStateException("Unable to get the context class loader for the current thread!");
-        }
-        return classLoader;
-    }
 
     public static void clearCache() {
         cache.clear();
