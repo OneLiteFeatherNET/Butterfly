@@ -8,6 +8,7 @@ import net.luckperms.api.model.user.User;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.api.LuckPermsService;
 import net.onelitefeather.butterfly.bukkit.feature.ButterflyFeatures;
+import net.onelitefeather.butterfly.util.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
@@ -65,7 +66,7 @@ public final class BukkitLuckPermsService implements LuckPermsService {
         NamedTextColor namedTextColor = null;
         for (int i = 0; i < COLOR_NAMES.size() && namedTextColor == null; i++) {
             String colorName = COLOR_NAMES.get(i);
-            var perm = "color.%s.%s".formatted(group.getWeight().orElse(-1), colorName);
+            var perm = Constants.TEAM_COLOR_PERMISSION.formatted(group.getWeight().orElse(-1), colorName);
             if (group.getCachedData().getPermissionData().queryPermission(perm).result().asBoolean()) {
                 namedTextColor = NamedTextColor.NAMES.value(colorName);
             }
