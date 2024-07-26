@@ -1,24 +1,27 @@
 package net.onelitefeather.butterfly.minestom;
 
-import java.util.EnumSet;
-import java.util.List;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
-import net.minestom.server.entity.PlayerSkin;
-import net.minestom.server.network.packet.server.play.PlayerInfoUpdatePacket;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.scoreboard.Team;
-import net.minestom.server.utils.PacketUtils;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.api.LuckPermsService;
 import net.onelitefeather.butterfly.minestom.feature.ButterflyFeatures;
+import net.onelitefeather.butterfly.util.Constants;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MinestomLuckPermsService implements LuckPermsService {
+
+    private static final List<String> COLOR_NAMES = new ArrayList<>(NamedTextColor.NAMES.keys());
+
     @Override
     public Group getDefaultGroup() {
         return LuckPermsProvider.get().getGroupManager().getGroup("default");
@@ -40,6 +43,7 @@ public class MinestomLuckPermsService implements LuckPermsService {
                         .prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)))
                         .nameTagVisibility(TeamsPacket.NameTagVisibility.ALWAYS)
                         .updateTeamPacket()
+                        .teamColor(getTeamColor(group))
                         .build();
             }
             if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
@@ -55,5 +59,20 @@ public class MinestomLuckPermsService implements LuckPermsService {
             player.refreshCommands();
             player.triggerStatus((byte)(24 + player.getPermissionLevel()));
         }
+    }
+
+    @NotNull
+    private NamedTextColor getTeamColor(@NotNull Group group) {
+
+        NamedTextColor namedTextColor = null;
+        for (int i = 0; i < COLOR_NAMES.size() && namedTextColor == null; i++) {
+            String colorName = COLOR_NAMES.get(i);
+            var perm = Constants.TEAM_COLOR_PERMISSION.formatted(group.getWeight().orElse(-1), colorName);
+            if (group.getCachedData().getPermissionData().queryPermission(perm).result().asBoolean()) {
+                namedTextColor = NamedTextColor.NAMES.value(colorName);
+            }
+        }
+
+        return namedTextColor != null ? namedTextColor : NamedTextColor.WHITE;
     }
 }
