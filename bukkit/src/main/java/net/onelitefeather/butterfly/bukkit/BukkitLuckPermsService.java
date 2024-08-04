@@ -33,8 +33,8 @@ public final class BukkitLuckPermsService implements LuckPermsService {
             player.displayName(MiniMessage.miniMessage().deserialize(displayName));
             player.playerListName(MiniMessage.miniMessage().deserialize(displayName));
             var manager = player.getServer().getScoreboardManager();
-            if (player.getScoreboard().equals(manager.getMainScoreboard())) {
-                player.setScoreboard(manager.getNewScoreboard());
+            if (!player.getScoreboard().equals(manager.getMainScoreboard())) {
+                player.setScoreboard(manager.getMainScoreboard());
             }
             var playerScoreboard = player.getScoreboard();
             var weight = group.getWeight().orElse(9999);
