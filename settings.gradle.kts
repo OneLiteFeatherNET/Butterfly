@@ -19,7 +19,7 @@ dependencyResolutionManagement {
             version("publishdata", "1.3.0")
             version("shadow", "8.1.1")
             version("luckperms", "5.4")
-            version("adventure", "4.14.0")
+            version("adventure", "4.17.0")
             version("minestom", "1.1.1")
             version("togglz", "4.4.0")
 
