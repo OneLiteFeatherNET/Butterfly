@@ -6,25 +6,25 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
-    // Minimessage
-    implementation(libs.adventure.minimessage)
     // Togglz
     implementation(libs.togglz)
     // LuckPerms API
     compileOnly(libs.luckperms.api)
     // API
     implementation(project(":api"))
-    // Minestom
-    compileOnly(libs.minestom)
+    // Microtus
+    implementation(platform(libs.microtus.bom))
+    compileOnly(libs.microtus)
 }
 
 tasks {
 
     compileJava {
-        options.release.set(17)
+        options.release.set(21)
         options.encoding = "UTF-8"
     }
     shadowJar {
