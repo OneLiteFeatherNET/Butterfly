@@ -29,7 +29,7 @@ public class MinestomLuckPermsService implements LuckPermsService {
 
     @Override
     public void setDisplayName(User user) {
-        Player player = MinecraftServer.getConnectionManager().getPlayer(user.getUniqueId());
+        Player player = MinecraftServer.getConnectionManager().getOnlinePlayerByUuid(user.getUniqueId());
         if (player != null) {
             var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
             var weight = group.getWeight().orElse(9999);
