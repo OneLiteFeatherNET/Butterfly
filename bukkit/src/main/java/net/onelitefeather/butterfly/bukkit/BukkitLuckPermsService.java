@@ -7,11 +7,9 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.api.LuckPermsService;
-import net.onelitefeather.butterfly.bukkit.feature.ButterflyFeatures;
 import net.onelitefeather.butterfly.util.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -34,27 +32,19 @@ public final class BukkitLuckPermsService implements LuckPermsService {
             String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group) + player.getName();
             player.displayName(MiniMessage.miniMessage().deserialize(displayName));
             player.playerListName(MiniMessage.miniMessage().deserialize(displayName));
-            var mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+            var manager = player.getServer().getScoreboardManager();
+            if (!player.getScoreboard().equals(manager.getMainScoreboard())) {
+                player.setScoreboard(manager.getMainScoreboard());
+            }
+            var playerScoreboard = player.getScoreboard();
             var weight = group.getWeight().orElse(9999);
             var teamName = String.format("%04d", weight) + group.getName();
-            var team = mainScoreboard.getTeam(teamName);
-            if (team != null && team.hasPlayer(player)) {
-                team.removePlayer(player);
-            }
-            mainScoreboard.getTeams().forEach(allTeams -> {
-                allTeams.removePlayer(player);
-            });
+            var team = playerScoreboard.getTeam(teamName);
             if (team == null) {
-                team = mainScoreboard.registerNewTeam(teamName);
+                team = playerScoreboard.registerNewTeam(teamName);
                 team.prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
                 team.displayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
-                team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
                 team.color(getTeamColor(group));
-            }
-            if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
-                team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.ALWAYS);
-            } else {
-                team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
             }
             team.addPlayer(player);
         }

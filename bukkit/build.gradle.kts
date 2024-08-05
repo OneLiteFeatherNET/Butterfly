@@ -34,12 +34,15 @@ tasks {
     runServer {
         minecraftVersion("1.20.1")
     }
-    shadowJar {
-        mergeServiceFiles()
-        archiveVersion.set(rootProject.version as String)
+    jar {
+        archiveClassifier.set("unshaded")
     }
     build {
         dependsOn(shadowJar)
+    }
+    shadowJar {
+        archiveClassifier.set("")
+        mergeServiceFiles()
     }
 }
 

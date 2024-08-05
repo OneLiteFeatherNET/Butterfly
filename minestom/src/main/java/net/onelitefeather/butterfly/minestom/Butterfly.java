@@ -2,33 +2,16 @@ package net.onelitefeather.butterfly.minestom;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.luckperms.api.LuckPerms;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;
-import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.extensions.Extension;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
-import net.onelitefeather.butterfly.minestom.feature.ButterflyFeatures;
-import net.onelitefeather.butterfly.minestom.feature.MinestomDefaultActivationStrategyProvider;
-import org.togglz.core.activation.DefaultActivationStrategyProvider;
-import org.togglz.core.activation.SystemPropertyActivationStrategy;
-import org.togglz.core.context.StaticFeatureManagerProvider;
-import org.togglz.core.manager.FeatureManagerBuilder;
 
 public class Butterfly extends Extension {
-
-    private static Butterfly INSTANCE;
-
     @Override
     public void initialize() {
-        INSTANCE = this;
-        Thread.currentThread().setContextClassLoader(getOrigin().getClassLoader());
-        StaticFeatureManagerProvider.setFeatureManager(FeatureManagerBuilder.begin()
-                .activationStrategyProvider(new MinestomDefaultActivationStrategyProvider(getOrigin().getClassLoader()))
-                .activationStrategy(new SystemPropertyActivationStrategy())
-                .featureEnum(ButterflyFeatures.class).build());
         LuckPermsAPI.setLuckPermsService(new MinestomLuckPermsService());
         LuckPermsAPI.luckPermsAPI().subscribeEvents();
 
@@ -55,16 +38,5 @@ public class Butterfly extends Extension {
     @Override
     public void terminate() {
         LuckPermsAPI.luckPermsAPI().unsubscribeEvents();
-    }
-
-    public static synchronized Butterfly getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = (Butterfly) MinecraftServer.getExtensionManager().getExtension("Butterfly");
-        }
-        return INSTANCE;
-    }
-
-    public ClassLoader getExtensionClassLoader() {
-        return this.getOrigin().getClassLoader();
     }
 }
