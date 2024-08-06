@@ -10,8 +10,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 public final class PlayerListener implements Listener {
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void handlePlayerLogin(PlayerLoginEvent event) {
+        LuckPermsAPI.luckPermsAPI().setDisplayName(LuckPermsAPI.luckPermsAPI().getUser(event.getPlayer().getUniqueId()));
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void handlePlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
