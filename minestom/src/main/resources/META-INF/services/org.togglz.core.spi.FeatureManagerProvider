@@ -1,1 +1,1 @@
-org.togglz.core.context.StaticFeatureManagerProvider
+net.onelitefeather.butterfly.minestom.feature.SingletonFeatureManagerProvider
