@@ -42,10 +42,10 @@ public final class BukkitLuckPermsService implements LuckPermsService {
             var team = playerScoreboard.getTeam(teamName);
             if (team == null) {
                 team = playerScoreboard.registerNewTeam(teamName);
-                team.prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
-                team.displayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
-                team.color(getTeamColor(group));
             }
+            team.prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
+            team.displayName(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
+            team.color(getTeamColor(group));
             team.addPlayer(player);
         }
     }
