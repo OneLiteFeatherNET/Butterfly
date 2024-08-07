@@ -40,10 +40,8 @@ public class MinestomLuckPermsService implements LuckPermsService {
             } else {
                 team = MinecraftServer.getTeamManager()
                         .createBuilder(teamName)
-                        .prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)))
                         .nameTagVisibility(TeamsPacket.NameTagVisibility.ALWAYS)
                         .updateTeamPacket()
-                        .teamColor(getTeamColor(group))
                         .build();
             }
             if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
@@ -51,6 +49,9 @@ public class MinestomLuckPermsService implements LuckPermsService {
             } else {
                 team.setCollisionRule(TeamsPacket.CollisionRule.NEVER);
             }
+
+            team.setPrefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
+            team.setTeamColor(getTeamColor(group));
             team.addMember(player.getUsername());
             player.setTeam(team);
 
