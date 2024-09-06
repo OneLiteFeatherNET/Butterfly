@@ -32,8 +32,8 @@ public class MinestomLuckPermsService implements LuckPermsService {
         Player player = MinecraftServer.getConnectionManager().getOnlinePlayerByUuid(user.getUniqueId());
         if (player != null) {
             var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
-            var weight = group.getWeight().orElse(9999);
-            var teamName = String.format("%04d", weight) + group.getName();
+            var sortId = LuckPermsAPI.luckPermsAPI().getGroupSortId(group);
+            var teamName = String.format("%04d", sortId) + group.getName();
             Team team;
             if (MinecraftServer.getTeamManager().exists(teamName)) {
                 team = MinecraftServer.getTeamManager().getTeam(teamName);
