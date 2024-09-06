@@ -37,8 +37,8 @@ public final class BukkitLuckPermsService implements LuckPermsService {
                 player.setScoreboard(manager.getMainScoreboard());
             }
             var playerScoreboard = player.getScoreboard();
-            var weight = group.getWeight().orElse(9999);
-            var teamName = String.format("%04d", weight) + group.getName();
+            var sortId = LuckPermsAPI.luckPermsAPI().getGroupSortId(group);
+            var teamName = String.format("%04d", sortId) + group.getName();
             var team = playerScoreboard.getTeam(teamName);
             if (team == null) {
                 team = playerScoreboard.registerNewTeam(teamName);
