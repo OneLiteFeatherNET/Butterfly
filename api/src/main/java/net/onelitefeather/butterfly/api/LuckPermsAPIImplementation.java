@@ -11,6 +11,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ final class LuckPermsAPIImplementation implements LuckPermsAPI {
 
     static LuckPermsAPI INSTANCE = new LuckPermsAPIImplementation();
 
+    static final Comparator<Group> GROUP_COMPARATOR = Comparator.comparing(group -> group.getWeight().orElse(-1), Comparator.reverseOrder());
     private final List<EventSubscription<?>> luckPermsEvents = new ArrayList<>();
 
     private LuckPermsAPIImplementation() {
