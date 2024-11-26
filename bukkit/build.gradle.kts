@@ -41,7 +41,6 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
-        archiveFileName.set("${rootProject.name}-${project.name}.${archiveExtension.getOrElse("jar")}")
         archiveClassifier.set("")
         mergeServiceFiles()
     }
