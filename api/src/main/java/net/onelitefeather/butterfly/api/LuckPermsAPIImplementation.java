@@ -4,8 +4,6 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.EventSubscription;
-import net.luckperms.api.event.user.UserDataRecalculateEvent;
-import net.luckperms.api.event.user.UserLoadEvent;
 import net.luckperms.api.event.user.track.UserTrackEvent;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -41,8 +39,6 @@ final class LuckPermsAPIImplementation implements LuckPermsAPI {
     public void subscribeEvents() {
         EventBus eventBus = LUCK_PERMS.getEventBus();
         this.luckPermsEvents.add(eventBus.subscribe(UserTrackEvent.class, event -> LUCK_PERMS_SERVICE.setDisplayName(event.getUser())));
-        this.luckPermsEvents.add(eventBus.subscribe(UserLoadEvent.class, event -> LUCK_PERMS_SERVICE.setDisplayName(event.getUser())));
-        this.luckPermsEvents.add(eventBus.subscribe(UserDataRecalculateEvent.class, event -> LUCK_PERMS_SERVICE.setDisplayName(event.getUser())));
     }
 
     @Override
