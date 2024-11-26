@@ -21,6 +21,7 @@ import java.util.List;
 public class MinestomLuckPermsService implements LuckPermsService {
 
     private static final List<String> COLOR_NAMES = new ArrayList<>(NamedTextColor.NAMES.keys());
+    private static final String FORMAT = System.getProperty("butterfly.format", "%04d");
 
     @Override
     public Group getDefaultGroup() {
@@ -33,7 +34,12 @@ public class MinestomLuckPermsService implements LuckPermsService {
         if (player != null) {
             var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
             var sortId = LuckPermsAPI.luckPermsAPI().getGroupSortId(group);
-            var teamName = String.format("%04d", sortId) + group.getName();
+            var teamName = String.format(FORMAT, sortId) + group.getName();
+
+            var prefixOptional = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group);
+            if(prefixOptional.isEmpty()) return;
+            var prefix = prefixOptional.get();
+
             Team team;
             if (MinecraftServer.getTeamManager().exists(teamName)) {
                 team = MinecraftServer.getTeamManager().getTeam(teamName);
@@ -50,12 +56,12 @@ public class MinestomLuckPermsService implements LuckPermsService {
                 team.setCollisionRule(TeamsPacket.CollisionRule.NEVER);
             }
 
-            team.setPrefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)));
+            team.setPrefix(MiniMessage.miniMessage().deserialize(prefix));
             team.setTeamColor(getTeamColor(group));
             team.addMember(player.getUsername());
             player.setTeam(team);
 
-            final String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group) + player.getUsername();
+            final String displayName = prefix + player.getUsername();
             player.setDisplayName(MiniMessage.miniMessage().deserialize(displayName));
             player.refreshCommands();
             player.triggerStatus((byte)(24 + player.getPermissionLevel()));
