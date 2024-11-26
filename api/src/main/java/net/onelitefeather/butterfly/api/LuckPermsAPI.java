@@ -6,7 +6,6 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.query.QueryOptions;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -34,12 +33,12 @@ public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation {
      * @param group be receiving the prefix
      * @return the prefix of the group
      */
-    default Optional<String> getGroupPrefix(Group group) {
+    default String getGroupPrefix(Group group) {
         String prefix = group.getCachedData().getMetaData(QueryOptions.defaultContextualOptions()).getPrefix();
         if (prefix != null) {
-            return Optional.of(prefix);
+            return prefix;
         }
-        return Optional.empty();
+        throw new NullPointerException("Group prefix is null");
     }
 
     default User getUser(UUID uuid) {
