@@ -27,7 +27,12 @@ public class Butterfly extends Extension {
     private void playerChat(PlayerChatEvent playerChatEvent) {
         Player player = playerChatEvent.getPlayer();
         var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
-        String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group) + player.getUsername();
+
+        var prefixOptional = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group);
+        if(prefixOptional.isEmpty()) return;
+        var prefix = prefixOptional.get();
+
+        String displayName = prefix + player.getUsername();
         playerChatEvent.setChatFormat(playerChatEvent1 -> Component.text()
                 .append(MiniMessage.miniMessage().deserialize(displayName))
                 .append(Component.text(": "))
