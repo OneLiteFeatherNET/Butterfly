@@ -23,9 +23,9 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 
@@ -41,6 +41,7 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
+        archiveFileName.set("${rootProject.name}-${project.name}.${archiveExtension.getOrElse("jar")}")
         archiveClassifier.set("")
         mergeServiceFiles()
     }
@@ -48,7 +49,7 @@ tasks {
 
 publishData {
     addBuildData()
-    useGitlabReposForProject("177", "https://gitlab.themeinerlp.dev/")
+    useGitlabReposForProject("177", "https://gitlab.onelitefeather.dev/")
     publishTask("shadowJar")
 }
 

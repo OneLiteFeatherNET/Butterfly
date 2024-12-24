@@ -21,6 +21,7 @@ import java.util.List;
 public class MinestomLuckPermsService implements LuckPermsService {
 
     private static final List<String> COLOR_NAMES = new ArrayList<>(NamedTextColor.NAMES.keys());
+    private static final String FORMAT = System.getProperty("butterfly.format", "%04d");
 
     @Override
     public Group getDefaultGroup() {
@@ -29,21 +30,24 @@ public class MinestomLuckPermsService implements LuckPermsService {
 
     @Override
     public void setDisplayName(User user) {
-        Player player = MinecraftServer.getConnectionManager().getPlayer(user.getUniqueId());
+        Player player = MinecraftServer.getConnectionManager().getOnlinePlayerByUuid(user.getUniqueId());
         if (player != null) {
             var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
-            var weight = group.getWeight().orElse(9999);
-            var teamName = String.format("%04d", weight) + group.getName();
+            var sortId = LuckPermsAPI.luckPermsAPI().getGroupSortId(group);
+            var teamName = String.format(FORMAT, sortId) + group.getName();
+
+            var prefixOptional = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group);
+            if(prefixOptional.isEmpty()) return;
+            var prefix = prefixOptional.get();
+
             Team team;
             if (MinecraftServer.getTeamManager().exists(teamName)) {
                 team = MinecraftServer.getTeamManager().getTeam(teamName);
             } else {
                 team = MinecraftServer.getTeamManager()
                         .createBuilder(teamName)
-                        .prefix(MiniMessage.miniMessage().deserialize(LuckPermsAPI.luckPermsAPI().getGroupPrefix(group)))
                         .nameTagVisibility(TeamsPacket.NameTagVisibility.ALWAYS)
                         .updateTeamPacket()
-                        .teamColor(getTeamColor(group))
                         .build();
             }
             if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
@@ -51,10 +55,13 @@ public class MinestomLuckPermsService implements LuckPermsService {
             } else {
                 team.setCollisionRule(TeamsPacket.CollisionRule.NEVER);
             }
+
+            team.setPrefix(MiniMessage.miniMessage().deserialize(prefix));
+            team.setTeamColor(getTeamColor(group));
             team.addMember(player.getUsername());
             player.setTeam(team);
 
-            final String displayName = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group) + player.getUsername();
+            final String displayName = prefix + player.getUsername();
             player.setDisplayName(MiniMessage.miniMessage().deserialize(displayName));
             player.refreshCommands();
             player.triggerStatus((byte)(24 + player.getPermissionLevel()));
