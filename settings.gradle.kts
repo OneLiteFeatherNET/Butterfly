@@ -39,7 +39,7 @@ dependencyResolutionManagement {
             version("publishdata", "1.3.0")
             version("shadow", "8.1.1")
             version("luckperms", "5.4")
-            version("microtus-bom", "1.4.3-SNAPSHOT")
+            version("microtus-bom", "1.5.1")
             version("togglz", "4.4.0")
 
             // Paper
