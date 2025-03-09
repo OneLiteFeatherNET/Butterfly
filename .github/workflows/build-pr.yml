@@ -1,16 +1,10 @@
-name: Main Branch Build
-
-on:
-  push:
-    branches:
-      - main
-      - 'releases/*'
-
+name: Build PR
+on: [pull_request]
 jobs:
-  build and test:
+  build_pr:
     if: github.repository_owner == 'OneLiteFeatherNET'
-    name: Build and Test
-    description: This job builds and tests the project on different operating systems.
+    name: Build Pull Request Branch
+    description: This job builds the pull request branch on different operating systems.
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -26,4 +20,4 @@ jobs:
           distribution: temurin
           java-version: 21
       - name: Build on ${{ matrix.os }}
-        run: ./gradlew test
+        run: ./gradlew clean build
