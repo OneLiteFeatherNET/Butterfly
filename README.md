@@ -1,16 +1,11 @@
-# Template Projekt
+# Butterfly
+Butterfly is a simple minecraft paper plugin and minestom extension/api that allows you to set scoreboard teams and chat formats from luckperms.
 
-## Wie bereite ich meine Projekt vor ?
+> [!CAUTION]
+> This plugin/api is only for internal use and is not intended to be used by the public as a finished product.
 
-Bearbeite folgende Dateien:
-- [settings.gradle.kts](settings.gradle.kts)
-- [build.gradle.kts](build.gradle.kts)
-
-Optional für AutoDeployment(Bukkit/Velocity/Paper/Minestom)
-- [.gitlab-ci.yml](.gitlab-ci.yml)
-
-## Zusätzliche Hilfestellungen
-- [Lokale Entwicklungsumgebung mit Docker](onelitefeather/templateproject$1)
-- [Hilfreiche Abhängikeiten oder Plugins](onelitefeather/templateproject$2)
-
+## Features
+- Set scoreboard teams
+- Set chat formats
+- Chat color support
 
