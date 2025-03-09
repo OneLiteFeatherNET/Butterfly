@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image:  gradle:8.10.2-jdk21
+      image:  gradle:8.12.1-jdk21
     env:
       GRADLE_OPTS: "-Dorg.gradle.internal.launcher.welcomeMessageEnabled=false"
     steps:
@@ -28,7 +28,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: gradle:8.10.2-jdk21
+      image: gradle:8.12.1-jdk21
     env:
       GRADLE_OPTS: "-Dorg.gradle.internal.launcher.welcomeMessageEnabled=false"
     steps:
@@ -47,7 +47,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     container:
-      image: gradle:8.10.2-jdk21
+      image: gradle:8.12.1-jdk21
     env:
       GRADLE_OPTS: "-Dorg.gradle.internal.launcher.welcomeMessageEnabled=false"
     steps:
