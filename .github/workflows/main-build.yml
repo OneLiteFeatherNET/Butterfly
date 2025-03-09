@@ -1,0 +1,65 @@
+name: Main Branch Build
+
+on:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: gradle:8.10.2-jdk21
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.internal.launcher.welcomeMessageEnabled=false"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Build
+        run: gradle build -x test
+
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: gradle:8.10.2-jdk21
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.internal.launcher.welcomeMessageEnabled=false"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Test
+        run: gradle test
+
+  publish:
+    runs-on: ubuntu-latest
+    container:
+      image: gradle:8.10.2-jdk21
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.internal.launcher.welcomeMessageEnabled=false"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Publish
+        run: gradle publish
