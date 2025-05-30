@@ -18,7 +18,7 @@ dependencyResolutionManagement {
             version("run-paper", "2.3.1")
             version("publishdata", "1.4.0")
             version("shadow", "8.1.1")
-            version("luckperms", "5.4")
+            version("luckperms", "5.5")
             version("microtus-bom", "1.5.1")
             version("togglz", "4.4.0")
 
