@@ -32,7 +32,7 @@ java {
 
 tasks {
     runServer {
-        minecraftVersion("1.20.1")
+        minecraftVersion("1.21.4")
     }
     jar {
         archiveClassifier.set("unshaded")
