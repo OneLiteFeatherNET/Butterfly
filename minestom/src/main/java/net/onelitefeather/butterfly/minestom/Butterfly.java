@@ -6,12 +6,15 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
-import net.minestom.server.extensions.Extension;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 
-public class Butterfly extends Extension {
-    @Override
-    public void initialize() {
+public final class Butterfly {
+
+    public static Butterfly create() {
+        return new Butterfly();
+    }
+
+    public void load() {
         LuckPermsAPI.setLuckPermsService(new MinestomLuckPermsService());
         LuckPermsAPI.luckPermsAPI().subscribeEvents();
 
@@ -33,14 +36,13 @@ public class Butterfly extends Extension {
         var prefix = prefixOptional.get();
 
         String displayName = prefix + player.getUsername();
-        playerChatEvent.setChatFormat(playerChatEvent1 -> Component.text()
+        playerChatEvent.setFormattedMessage(Component.text()
                 .append(MiniMessage.miniMessage().deserialize(displayName))
                 .append(Component.text(": "))
-                .append(MiniMessage.miniMessage().deserialize(playerChatEvent1.getMessage()))
+                .append(MiniMessage.miniMessage().deserialize(playerChatEvent.getRawMessage()))
                 .build());
     }
 
-    @Override
     public void terminate() {
         LuckPermsAPI.luckPermsAPI().unsubscribeEvents();
     }

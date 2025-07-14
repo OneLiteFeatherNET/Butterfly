@@ -1,10 +1,16 @@
 plugins {
     id("java")
 }
-repositories {
-    mavenCentral()
+dependencies {
+    implementation(libs.luckperms.api)
 }
 
-dependencies {
-    compileOnly("net.luckperms:api:5.5")
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+tasks {
+    jar {
+        archiveClassifier.set("unshaded")
+    }
 }

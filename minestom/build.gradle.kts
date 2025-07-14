@@ -1,12 +1,7 @@
 plugins {
-    java
+    id("java")
     alias(libs.plugins.shadow)
-}
-
-repositories {
-    mavenCentral()
-    maven("https://jitpack.io")
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    id("maven-publish")
 }
 
 dependencies {
@@ -16,51 +11,78 @@ dependencies {
     compileOnly(libs.luckperms.api)
     // API
     implementation(project(":api"))
-    // Microtus
-    implementation(platform(libs.microtus.bom))
-    compileOnly(libs.microtus)
+    // Minestom
+    implementation(platform(libs.mycelium.bom))
+    compileOnly(libs.minestom)
+    compileOnly(libs.adventure.minimessage)
+    compileOnly(libs.luckperms.api)
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 tasks {
-
-    compileJava {
-        options.release.set(21)
-        options.encoding = "UTF-8"
-    }
-    shadowJar {
-        archiveVersion.set(rootProject.version as String)
+    jar {
+        archiveClassifier.set("unshaded")
     }
     build {
         dependsOn(shadowJar)
     }
+    shadowJar {
+        archiveClassifier.set("")
+        archiveFileName.set("butterfly-minestom.jar")
+        mergeServiceFiles()
+    }
+    test {
+        useJUnitPlatform()
+    }
 }
-
-publishData {
-    addBuildData()
-    useGitlabReposForProject("177", "https://gitlab.onelitefeather.dev/")
-    publishTask("shadowJar")
-}
-
 publishing {
     publications.create<MavenPublication>("maven") {
-        // configure the publication as defined previously.
-        publishData.configurePublication(this)
+        artifact(project.tasks.getByName("shadowJar"))
+        version = rootProject.version as String
+        artifactId = "butterfly-minestom"
+        groupId = rootProject.group as String
+        pom {
+            name = "Butterfly Minestom Library"
+            description = "A simple library to support luckperms prefix, suffix and more in Minestom."
+            url = "https://github.com/OneLiteFeatherNET/Butterfly"
+            licenses {
+                license {
+                    name = "The Apache License, Version 2.0"
+                    url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                }
+            }
+            developers {
+                developer {
+                    id = "themeinerlp"
+                    name = "Phillipp Glanz"
+                    email = "p.glanz@madfix.me"
+                }
+            }
+            scm {
+                connection = "scm:git:git://github.com:OneLiteFeatherNET/Butterfly.git"
+                developerConnection = "scm:git:ssh://git@github.com:OneLiteFeatherNET/Butterfly.git"
+                url = "https://github.com/OneLiteFeatherNET/Butterfly"
+            }
+        }
     }
 
     repositories {
         maven {
-            credentials(HttpHeaderCredentials::class) {
-                name = "Job-Token"
-                value = System.getenv("CI_JOB_TOKEN")
-            }
             authentication {
-                create("header", HttpHeaderAuthentication::class)
+                credentials(PasswordCredentials::class) {
+                    // Those credentials need to be set under "Settings -> Secrets -> Actions" in your repository
+                    username = System.getenv("ONELITEFEATHER_MAVEN_USERNAME")
+                    password = System.getenv("ONELITEFEATHER_MAVEN_PASSWORD")
+                }
             }
 
-
-            name = "Gitlab"
-            // Get the detected repository from the publish data
-            url = uri(publishData.getRepository())
+            name = "OneLiteFeatherRepository"
+            val releasesRepoUrl = uri("https://repo.onelitefeather.dev/onelitefeather-releases")
+            val snapshotsRepoUrl = uri("https://repo.onelitefeather.dev/onelitefeather-snapshots")
+            url = if (version.toString().contains("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
         }
     }
 }
