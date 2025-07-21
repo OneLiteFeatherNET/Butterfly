@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.run.paper)
     alias(libs.plugins.plugin.yml)
     id("maven-publish")
+    jacoco
 }
 
 dependencies {
@@ -42,7 +43,17 @@ tasks {
         mergeServiceFiles()
     }
     test {
-        useJUnitPlatform()
+        finalizedBy(project.tasks.jacocoTestReport)
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+    jacocoTestReport {
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            csv.required.set(false)
+        }
     }
 }
 
