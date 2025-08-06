@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             version("paper", "1.21.8-R0.1-SNAPSHOT")
             version("plugin.yml", "0.6.0")
             version("run-paper", "2.3.1")
-            version("shadow", "8.1.1")
+            version("shadow", "9.0.0-rc3")
             version("togglz", "4.4.0")
             version("aonyx-bom", "0.5.1")
             version("mycelium-bom", "1.4.2")
@@ -43,7 +43,7 @@ dependencyResolutionManagement {
 
             plugin("plugin.yml", "net.minecrell.plugin-yml.paper").versionRef("plugin.yml")
             plugin("run.paper", "xyz.jpenilla.run-paper").versionRef("run-paper")
-            plugin("shadow", "com.github.johnrengelman.shadow").versionRef("shadow")
+            plugin("shadow", "com.gradleup.shadow").versionRef("shadow")
         }
     }
 }
