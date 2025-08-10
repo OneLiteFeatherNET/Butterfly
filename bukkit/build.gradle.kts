@@ -115,7 +115,7 @@ paper {
     authors = listOf("theShadowsDust")
     serverDependencies {
         register("LuckPerms") {
-            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            load = PaperPluginDescription.RelativeLoadOrder.AFTER
         }
     }
 }
