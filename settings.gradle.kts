@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             version("paper", "1.21.8-R0.1-SNAPSHOT")
             version("plugin.yml", "0.6.0")
             version("run-paper", "2.3.1")
-            version("shadow", "9.0.0")
+            version("shadow", "9.0.2")
             version("togglz", "4.4.0")
             version("aonyx-bom", "0.5.2")
             version("mycelium-bom", "1.4.3")
