@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 dependencies {
-    implementation(libs.luckperms.api)
+    compileOnly(libs.luckperms.api)
 }
 
 java {
