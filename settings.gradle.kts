@@ -23,7 +23,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            version("paper", "1.21.8-R0.1-SNAPSHOT")
+            version("paper", "1.21.9-pre2-R0.1-SNAPSHOT")
             version("plugin.yml", "0.6.0")
             version("run-paper", "3.0.0")
             version("shadow", "9.1.0")
