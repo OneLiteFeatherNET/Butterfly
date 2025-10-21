@@ -25,7 +25,7 @@ dependencyResolutionManagement {
         create("libs") {
             version("paper", "1.21.9-pre2-R0.1-SNAPSHOT")
             version("plugin.yml", "0.6.0")
-            version("run-paper", "3.0.1")
+            version("run-paper", "3.0.2")
             version("shadow", "9.2.2")
             version("togglz", "4.4.0")
             version("aonyx-bom", "0.5.3")
