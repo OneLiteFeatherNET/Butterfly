@@ -29,7 +29,7 @@ dependencyResolutionManagement {
             version("shadow", "9.3.1")
             version("togglz", "4.6.1")
             version("aonyx-bom", "0.7.0")
-            version("mycelium-bom", "1.6.2")
+            version("mycelium-bom", "1.6.3")
             version("luckperms.api", "5.5")
 
             // Paper
