@@ -28,7 +28,7 @@ dependencyResolutionManagement {
             version("run-paper", "3.0.2")
             version("shadow", "9.4.1")
             version("togglz", "4.6.1")
-            version("aonyx-bom", "0.7.0")
+            version("aonyx-bom", "0.7.1")
             version("mycelium-bom", "1.6.4")
             version("luckperms.api", "5.5")
 
