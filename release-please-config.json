@@ -7,7 +7,10 @@
   "packages": {
     ".": {
       "package-name": "butterfly",
-      "changelog-path": "CHANGELOG.md"
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        "gradle.properties"
+      ]
     }
   }
 }
