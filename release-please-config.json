@@ -4,6 +4,7 @@
   "include-component-in-tag": false,
   "include-v-in-tag": true,
   "bootstrap-sha": "HEAD",
+  "pull-request-header": "",
   "packages": {
     ".": {
       "package-name": "butterfly",
