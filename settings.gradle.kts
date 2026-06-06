@@ -36,7 +36,7 @@ dependencyResolutionManagement {
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
             library("aonyx-bom", "net.onelitefeather", "aonyx-bom").versionRef("aonyx-bom")
             library("mycelium-bom", "net.onelitefeather", "mycelium-bom").versionRef("mycelium-bom")
-            library("minestom","net.minestom", "minestom").version("2026.05.17-1.21.11")
+            library("minestom","net.minestom", "minestom").version("2026.06.05-26.1.2")
             library("adventure.minimessage", "net.kyori", "adventure-text-minimessage").withoutVersion()
             library("togglz", "org.togglz", "togglz-core").versionRef("togglz")
             library("luckperms.api", "net.luckperms", "api").versionRef("luckperms.api")
