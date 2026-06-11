@@ -3,5 +3,5 @@ on: [pull_request]
 
 jobs:
   build:
-    uses: OneLiteFeatherNET/workflows/.github/workflows/gradle-build-pr.yml@v2.0.1
+    uses: OneLiteFeatherNET/workflows/.github/workflows/gradle-build-pr.yml@v2.1.0
     secrets: inherit
