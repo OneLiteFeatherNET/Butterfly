@@ -6,17 +6,16 @@ plugins {
 }
 
 dependencies {
-    // Togglz
-    implementation(libs.togglz)
-    // LuckPerms API
-    compileOnly(libs.luckperms.api)
     // API
     implementation(project(":api"))
     // Minestom
     implementation(platform(libs.mycelium.bom))
+    // Togglz
+    implementation(libs.togglz)
+    // LuckPerms API
+    compileOnly(libs.luckperms.api)
     compileOnly(libs.minestom)
     compileOnly(libs.adventure.minimessage)
-    compileOnly(libs.luckperms.api)
 }
 
 java {
