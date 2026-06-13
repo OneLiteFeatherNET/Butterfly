@@ -9,6 +9,7 @@ public enum ButterflyFeatures implements Feature, ThreadHelper {
     TEAM_COLLISION
     ;
 
+    @Override
     public boolean isActive() {
         return syncThreadForServiceLoader(() -> FeatureContext.getFeatureManager().isActive(this));
     }
