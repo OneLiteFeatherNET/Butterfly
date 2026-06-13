@@ -1,11 +1,11 @@
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 
 plugins {
-    id("java")
+    java
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
     alias(libs.plugins.plugin.yml)
-    id("maven-publish")
+    `maven-publish`
     jacoco
 }
 
@@ -18,14 +18,11 @@ dependencies {
     implementation(project(":api"))
     // Paper API
     compileOnly(libs.paper)
-    compileOnly(libs.luckperms.api)
 }
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
-
-
 
 tasks {
     runServer {

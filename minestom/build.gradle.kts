@@ -1,7 +1,7 @@
 plugins {
-    id("java")
+    java
     alias(libs.plugins.shadow)
-    id("maven-publish")
+    `maven-publish`
     jacoco
 }
 
