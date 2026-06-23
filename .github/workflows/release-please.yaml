@@ -9,4 +9,4 @@ permissions:
 
 jobs:
   release:
-    uses: OneLiteFeatherNET/workflows/.github/workflows/release-please.yml@v2.1.0
+    uses: OneLiteFeatherNET/workflows/.github/workflows/release-please.yml@v2.3.0
