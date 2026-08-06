@@ -6,6 +6,7 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.color.TeamColor;
 import net.minestom.server.entity.Player;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.scoreboard.Team;
@@ -69,17 +70,17 @@ public class MinestomLuckPermsService implements LuckPermsService {
     }
 
     @NotNull
-    private NamedTextColor getTeamColor(@NotNull Group group) {
+    private TeamColor getTeamColor(@NotNull Group group) {
 
-        NamedTextColor namedTextColor = null;
-        for (int i = 0; i < COLOR_NAMES.size() && namedTextColor == null; i++) {
+        TeamColor teamColor = null;
+        for (int i = 0; i < COLOR_NAMES.size() && teamColor == null; i++) {
             String colorName = COLOR_NAMES.get(i);
             var perm = Constants.TEAM_COLOR_PERMISSION.formatted(group.getWeight().orElse(-1), colorName);
             if (group.getCachedData().getPermissionData().queryPermission(perm).result().asBoolean()) {
-                namedTextColor = NamedTextColor.NAMES.value(colorName);
+                teamColor = TeamColor.fromName(colorName);
             }
         }
 
-        return namedTextColor != null ? namedTextColor : NamedTextColor.WHITE;
+        return teamColor != null ? teamColor : TeamColor.WHITE;
     }
 }

@@ -16,6 +16,13 @@ dependencies {
     compileOnly(libs.luckperms.api)
     compileOnly(libs.minestom)
     compileOnly(libs.adventure.minimessage)
+
+    testImplementation(libs.minestom)
+    testImplementation(libs.adventure.minimessage)
+    testImplementation(libs.junit.api)
+    testImplementation(libs.junit.platform.launcher)
+    testImplementation(libs.junit.params)
+    testRuntimeOnly(libs.junit.engine)
 }
 
 java {
@@ -35,7 +42,9 @@ tasks {
         mergeServiceFiles()
     }
     test {
+        useJUnitPlatform()
         finalizedBy(project.tasks.jacocoTestReport)
+        jvmArgs("-Dminestom.inside-test=true")
         testLogging {
             events("passed", "skipped", "failed")
         }
