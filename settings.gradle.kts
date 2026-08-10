@@ -28,7 +28,7 @@ dependencyResolutionManagement {
             version("run-paper", "3.0.2")
             version("shadow", "9.6.1")
             version("togglz", "4.6.2")
-            version("mycelium-bom", "1.8.1")
+            version("mycelium-bom", "1.8.2")
             version("luckperms.api", "5.6-SNAPSHOT")
 
             // Paper
