@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.25](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.24...v1.0.25) (2026-08-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency net.onelitefeather:mycelium-bom to v1.8.1 ([#102](https://github.com/OneLiteFeatherNET/Butterfly/issues/102)) ([a6e2c70](https://github.com/OneLiteFeatherNET/Butterfly/commit/a6e2c707ac4ff8de83434528f603b1e35d8d0679))
+* **deps:** update dependency net.onelitefeather:mycelium-bom to v1.8.2 ([#104](https://github.com/OneLiteFeatherNET/Butterfly/issues/104)) ([ac8a208](https://github.com/OneLiteFeatherNET/Butterfly/commit/ac8a2088c6c9bf9197ba14d66ca4cdcbe5eb1694))
+* **deps:** update dependency net.onelitefeather:mycelium-bom to v1.8.3 ([#111](https://github.com/OneLiteFeatherNET/Butterfly/issues/111)) ([da0c3bf](https://github.com/OneLiteFeatherNET/Butterfly/commit/da0c3bf1aef69d48d225247f671e541d63280d27))
+* **deps:** update dependency org.togglz:togglz-core to v4.6.3 ([#108](https://github.com/OneLiteFeatherNET/Butterfly/issues/108)) ([6d66d77](https://github.com/OneLiteFeatherNET/Butterfly/commit/6d66d773a7cfca12593f659834a972b031d50544))
+* **deps:** update dependency org.togglz:togglz-core to v4.6.4 ([#110](https://github.com/OneLiteFeatherNET/Butterfly/issues/110)) ([36b5e53](https://github.com/OneLiteFeatherNET/Butterfly/commit/36b5e53ca8e6cb4b6113d4842f5f5367fa9e1fcb))
+
 ## [1.0.24](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.23...v1.0.24) (2026-06-29)
 
 
