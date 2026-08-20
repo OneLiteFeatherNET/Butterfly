@@ -25,7 +25,7 @@ dependencyResolutionManagement {
         create("libs") {
             version("paper", "26.1.2.build.+")
             version("plugin.yml", "0.6.0")
-            version("run-paper", "3.0.2")
+            version("run-paper", "3.1.0")
             version("shadow", "9.6.1")
             version("togglz", "4.6.4")
             version("mycelium-bom", "1.8.3")
