@@ -1,8 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>OneLiteFeatherNET/renovate:default(OneLiteFeatherNET/butterfly-maintainers)",
-    "github>OneLiteFeatherNET/renovate:paper",
-    "github>OneLiteFeatherNET/renovate:minestom"
+    "github>OneLiteFeatherNET/renovate:default(OneLiteFeatherNET/butterfly-maintainers)"
   ]
 }
