@@ -1,9 +1,0 @@
-name: Publish JAR
-on:
-  push:
-    tags: ["v*"]
-
-jobs:
-  publish:
-    uses: OneLiteFeatherNET/workflows/.github/workflows/gradle-publish.yml@v2.8.1
-    secrets: inherit
