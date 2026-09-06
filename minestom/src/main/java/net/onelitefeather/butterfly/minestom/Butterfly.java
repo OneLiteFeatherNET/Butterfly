@@ -1,12 +1,15 @@
 package net.onelitefeather.butterfly.minestom;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.luckperms.api.model.user.User;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
+import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.player.PlayerChatEvent;
+import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
+
+import java.util.UUID;
 
 public final class Butterfly {
 
@@ -18,29 +21,43 @@ public final class Butterfly {
         LuckPermsAPI.setLuckPermsService(new MinestomLuckPermsService());
         LuckPermsAPI.luckPermsAPI().subscribeEvents();
 
-        MinecraftServer.getGlobalEventHandler().addListener(PlayerChatEvent.class, this::playerChat);
-        MinecraftServer.getGlobalEventHandler().addListener(PlayerSpawnEvent.class, this::playerSpawn);
+        GlobalEventHandler eventHandler = MinecraftServer.getGlobalEventHandler();
+        eventHandler.addListener(PlayerChatEvent.class, this::playerChat);
+        eventHandler.addListener(PlayerSpawnEvent.class, this::playerSpawn);
+        eventHandler.addListener(PlayerDisconnectEvent.class, this::playerDisconnect);
     }
 
     private void playerSpawn(PlayerSpawnEvent playerSpawnEvent) {
-        Player player = playerSpawnEvent.getPlayer();
-        LuckPermsAPI.luckPermsAPI().setDisplayName(LuckPermsAPI.luckPermsAPI().getUser(player.getUuid()));
+        // Fires again on every instance change, where the team is already applied.
+        if (!playerSpawnEvent.isFirstSpawn()) return;
+
+        LuckPermsAPI luckPermsAPI = LuckPermsAPI.luckPermsAPI();
+        UUID playerUUID = playerSpawnEvent.getPlayer().getUuid();
+
+        User user = luckPermsAPI.getUser(playerUUID);
+        if (user != null) {
+            luckPermsAPI.setDisplayName(user);
+            return;
+        }
+        // The player reached the instance before LuckPerms finished loading them.
+        luckPermsAPI.loadUser(playerUUID).thenAccept(luckPermsAPI::setDisplayName);
+    }
+
+    private void playerDisconnect(PlayerDisconnectEvent playerDisconnectEvent) {
+        // Teams outlive the players in them, so a leaving player has to be taken out of
+        // theirs or the name stays in the team for the rest of the server's lifetime.
+        playerDisconnectEvent.getPlayer().setTeam(null);
     }
 
     private void playerChat(PlayerChatEvent playerChatEvent) {
         Player player = playerChatEvent.getPlayer();
-        var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
+        LuckPermsAPI luckPermsAPI = LuckPermsAPI.luckPermsAPI();
 
-        var prefixOptional = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group);
-        if(prefixOptional.isEmpty()) return;
-        var prefix = prefixOptional.get();
+        var format = ButterflyFormat.of(luckPermsAPI.getPrimaryGroup(player.getUuid()), player.getUsername());
+        var message = ButterflyFormat.chatMessage(
+                playerChatEvent.getRawMessage(), luckPermsAPI.canFormatChat(player.getUuid()));
 
-        String displayName = prefix + player.getUsername();
-        playerChatEvent.setFormattedMessage(Component.text()
-                .append(MiniMessage.miniMessage().deserialize(displayName))
-                .append(Component.text(": "))
-                .append(MiniMessage.miniMessage().deserialize(playerChatEvent.getRawMessage()))
-                .build());
+        playerChatEvent.setFormattedMessage(ButterflyFormat.chatLine(format.displayName(), message));
     }
 
     public void terminate() {

@@ -10,6 +10,7 @@ import net.onelitefeather.butterfly.api.LuckPermsService;
 import net.onelitefeather.butterfly.util.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -20,6 +21,12 @@ public final class BukkitLuckPermsService implements LuckPermsService {
     private static final List<String> COLOR_NAMES = new ArrayList<>(NamedTextColor.NAMES.keys());
     private static final String FORMAT = System.getProperty("butterfly.format", "%04d");
 
+    private final Plugin plugin;
+
+    public BukkitLuckPermsService(@NotNull Plugin plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public Group getDefaultGroup() {
         return LuckPermsProvider.get().getGroupManager().getGroup("default");
@@ -27,6 +34,15 @@ public final class BukkitLuckPermsService implements LuckPermsService {
 
     @Override
     public void setDisplayName(User user) {
+        if (!Bukkit.isPrimaryThread()) {
+            // LuckPerms dispatches its events off the main thread, and the scoreboard API
+            // may only be touched on it.
+            if (this.plugin.isEnabled()) {
+                Bukkit.getScheduler().runTask(this.plugin, () -> setDisplayName(user));
+            }
+            return;
+        }
+
         Player player = Bukkit.getPlayer(user.getUniqueId());
         if (player != null) {
             var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUniqueId());

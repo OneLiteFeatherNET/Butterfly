@@ -17,7 +17,9 @@ dependencies {
     compileOnly(libs.minestom)
     compileOnly(libs.adventure.minimessage)
 
+    testImplementation(platform(libs.mycelium.bom))
     testImplementation(libs.minestom)
+    testImplementation(libs.minestom.testing)
     testImplementation(libs.adventure.minimessage)
     testImplementation(libs.junit.api)
     testImplementation(libs.junit.platform.launcher)
@@ -27,6 +29,26 @@ dependencies {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+}
+
+// net.minestom:testing is not managed by mycelium-bom, so its version is pinned in the
+// version catalog. It has to stay on the same build as the Minestom the BOM resolves, or
+// the test harness runs against a different server core than the code under test.
+val checkMinestomTestingVersion = tasks.register("checkMinestomTestingVersion") {
+    val testingVersion = libs.versions.minestom.testing.get()
+    val resolvedMinestom = configurations.testCompileClasspath.map { classpath ->
+        classpath.resolvedConfiguration.resolvedArtifacts
+            .map { it.moduleVersion.id }
+            .first { it.group == "net.minestom" && it.name == "minestom" }
+            .version
+    }
+    doLast {
+        val minestomVersion = resolvedMinestom.get()
+        require(minestomVersion == testingVersion) {
+            "net.minestom:testing is pinned to $testingVersion but net.minestom:minestom resolves " +
+                    "to $minestomVersion. Update the minestom.testing version in settings.gradle.kts."
+        }
+    }
 }
 
 tasks {
@@ -42,6 +64,7 @@ tasks {
         mergeServiceFiles()
     }
     test {
+        dependsOn(checkMinestomTestingVersion)
         useJUnitPlatform()
         finalizedBy(project.tasks.jacocoTestReport)
         jvmArgs("-Dminestom.inside-test=true")

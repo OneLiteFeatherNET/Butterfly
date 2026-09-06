@@ -4,6 +4,7 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.EventSubscription;
+import net.luckperms.api.event.user.UserDataRecalculateEvent;
 import net.luckperms.api.event.user.track.UserTrackEvent;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -38,7 +39,11 @@ final class LuckPermsAPIImplementation implements LuckPermsAPI {
     @Override
     public void subscribeEvents() {
         EventBus eventBus = LUCK_PERMS.getEventBus();
-        this.luckPermsEvents.add(eventBus.subscribe(UserTrackEvent.class, event -> LUCK_PERMS_SERVICE.setDisplayName(event.getUser())));
+        this.luckPermsEvents.add(eventBus.subscribe(UserTrackEvent.class, event -> setDisplayName(event.getUser())));
+        // UserTrackEvent only covers promotions along a track. Plain group changes and
+        // permission edits surface as a data recalculation, so the team has to follow
+        // that too or the color stays on whatever the player joined with.
+        this.luckPermsEvents.add(eventBus.subscribe(UserDataRecalculateEvent.class, event -> setDisplayName(event.getUser())));
     }
 
     @Override
@@ -47,4 +52,3 @@ final class LuckPermsAPIImplementation implements LuckPermsAPI {
         this.luckPermsEvents.clear();
     }
 }
-

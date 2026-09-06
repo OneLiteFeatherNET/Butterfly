@@ -10,7 +10,7 @@ public class Butterfly extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        LuckPermsAPI.setLuckPermsService(new BukkitLuckPermsService());
+        LuckPermsAPI.setLuckPermsService(new BukkitLuckPermsService(this));
         LuckPermsAPI.luckPermsAPI().subscribeEvents();
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getCommandMap().register("clearteams", new ClearTeamsCommand());
