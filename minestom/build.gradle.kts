@@ -20,6 +20,8 @@ dependencies {
     testImplementation(platform(libs.mycelium.bom))
     testImplementation(libs.minestom)
     testImplementation(libs.minestom.testing)
+    testImplementation(libs.luckperms.minestom.loader)
+    testImplementation(libs.guava)
     testImplementation(libs.adventure.minimessage)
     testImplementation(libs.junit.api)
     testImplementation(libs.junit.platform.launcher)
@@ -65,13 +67,37 @@ tasks {
     }
     test {
         dependsOn(checkMinestomTestingVersion)
-        useJUnitPlatform()
+        useJUnitPlatform {
+            // Booting a real LuckPerms downloads dependencies and keeps a database, so it is
+            // kept out of the build and run on demand with :minestom:luckPermsTest.
+            excludeTags("luckperms")
+        }
         finalizedBy(project.tasks.jacocoTestReport)
         jvmArgs("-Dminestom.inside-test=true")
         testLogging {
             events("passed", "skipped", "failed")
         }
     }
+    register<Test>("luckPermsTest") {
+        description = "Runs Butterfly against a real LuckPerms on a real Minestom server."
+        group = "verification"
+        testClassesDirs = sourceSets.test.get().output.classesDirs
+        classpath = sourceSets.test.get().runtimeClasspath
+        dependsOn(checkMinestomTestingVersion, testClasses)
+        useJUnitPlatform {
+            includeTags("luckperms")
+        }
+        jvmArgs("-Dminestom.inside-test=true")
+        // LuckPerms writes a database and its downloaded libraries next to the working
+        // directory, which must not be the project itself.
+        val dataDir = layout.buildDirectory.dir("luckperms-test")
+        doFirst { dataDir.get().asFile.mkdirs() }
+        workingDir = dataDir.get().asFile
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
     jacocoTestReport {
         reports {
             xml.required.set(true)

@@ -30,6 +30,7 @@ dependencyResolutionManagement {
             version("togglz", "4.6.4")
             version("mycelium-bom", "1.8.5")
             version("luckperms.api", "5.6-SNAPSHOT")
+            version("guava", "33.4.8-jre")
             // Only used for the Minestom test harness. mycelium-bom pins net.minestom:minestom
             // but not net.minestom:testing, and the two have to be the same build; the
             // :minestom:checkMinestomTestingVersion task fails the build if they drift.
@@ -44,6 +45,10 @@ dependencyResolutionManagement {
             library("adventure.minimessage", "net.kyori", "adventure-text-minimessage").withoutVersion()
             library("togglz", "org.togglz", "togglz-core").versionRef("togglz")
             library("luckperms.api", "net.luckperms", "api").versionRef("luckperms.api")
+            // Boots a real LuckPerms in :minestom:luckPermsTest. Guava comes with the host
+            // platform normally, so LuckPerms does not ship it and the test has to provide it.
+            library("luckperms.minestom.loader", "net.luckperms", "minestom-loader").versionRef("luckperms.api")
+            library("guava", "com.google.guava", "guava").versionRef("guava")
 
             library("mockito.core", "org.mockito", "mockito-core").withoutVersion()
             library("mockito.junit", "org.mockito", "mockito-junit-jupiter").withoutVersion()
