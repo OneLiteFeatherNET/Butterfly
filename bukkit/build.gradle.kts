@@ -36,7 +36,7 @@ tasks {
     }
     shadowJar {
         archiveClassifier.set("")
-        archiveFileName.set("butterfly-paper.jar")
+        archiveFileName.set("butterfly-paper-${rootProject.version}.jar")
         mergeServiceFiles()
     }
     test {
