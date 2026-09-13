@@ -1,0 +1,4 @@
+allprojects {
+    version = "1.0.25" // x-release-please-version
+    group = "net.onelitefeather"
+}
