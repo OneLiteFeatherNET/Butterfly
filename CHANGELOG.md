@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.26](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.25...v1.0.26) (2026-09-13)
+
+
+### Bug Fixes
+
+* **build:** include project version in shadowJar filename ([81067b0](https://github.com/OneLiteFeatherNET/Butterfly/commit/81067b046918884fff9c47bfc8b41dff89524cd4))
+* **release-please:** Set project version to 1.0.25 and define group in build.gradle.kts ([8bfe7a4](https://github.com/OneLiteFeatherNET/Butterfly/commit/8bfe7a4a177a1b10ea9056ebbb5d11ad87256657))
+* **release-please:** update extra-files to include build.gradle.kts ([bfe42d5](https://github.com/OneLiteFeatherNET/Butterfly/commit/bfe42d5e1f31df36b41fa5ead00387dd2715eeb3))
+
 ## [1.0.25](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.24...v1.0.25) (2026-09-06)
 
 
