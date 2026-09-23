@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.27](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.26...v1.0.27) (2026-09-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency net.onelitefeather:mycelium-bom to v1.8.6 ([#120](https://github.com/OneLiteFeatherNET/Butterfly/issues/120)) ([42c02ae](https://github.com/OneLiteFeatherNET/Butterfly/commit/42c02ae533e527d999b20f9a30b589e91c60c338))
+
 ## [1.0.26](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.25...v1.0.26) (2026-09-13)
 
 
