@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.1.1...v1.1.2) (2026-09-30)
+
+
+### Bug Fixes
+
+* **ci:** publish to maven when release-please creates a release ([#129](https://github.com/OneLiteFeatherNET/Butterfly/issues/129)) ([81ea743](https://github.com/OneLiteFeatherNET/Butterfly/commit/81ea743e086b8b3c8b56a4ab61cd6771a1202cd3))
+
 ## [1.1.1](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.1.0...v1.1.1) (2026-09-30)
 
 
