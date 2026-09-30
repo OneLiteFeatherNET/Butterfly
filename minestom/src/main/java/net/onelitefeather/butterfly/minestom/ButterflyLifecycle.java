@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -37,7 +39,13 @@ final class ButterflyLifecycle {
             logger.error("LuckPerms is not available, Butterfly stays inactive: {}", e.getMessage(), e);
             return;
         }
-        ButterflyFeatures.configure(dataDirectory.resolve("flags.properties"));
+        try {
+            Files.createDirectories(dataDirectory);
+            ButterflyFeatures.configure(dataDirectory.resolve("flags.properties"));
+        } catch (IOException e) {
+            logger.warn("Cannot create data directory {}, feature flags stay at their defaults: {}", dataDirectory, e.getMessage());
+            ButterflyFeatures.configureDefaults();
+        }
         butterfly = Butterfly.create(parent);
         butterfly.load();
     }

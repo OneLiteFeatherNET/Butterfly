@@ -24,6 +24,13 @@ public enum ButterflyFeatures implements Feature, ThreadHelper {
     }
 
     /**
+     * Sets a feature manager that only knows the default values, for when no flags file can be used.
+     */
+    public static void configureDefaults() {
+        configured = SingletonFeatureManagerProvider.createManager(null);
+    }
+
+    /**
      * Drops the explicitly configured feature manager.
      */
     public static void reset() {

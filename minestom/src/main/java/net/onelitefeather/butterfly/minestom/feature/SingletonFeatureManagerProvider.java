@@ -25,6 +25,7 @@ public final class SingletonFeatureManagerProvider implements FeatureManagerProv
         return featureManager;
     }
 
+    /** A {@code null} file means defaults only, backed by the in-memory repository. */
     static FeatureManager createManager(File flagsFile) {
         Thread thread = Thread.currentThread();
         ClassLoader original = thread.getContextClassLoader();
@@ -33,10 +34,12 @@ public final class SingletonFeatureManagerProvider implements FeatureManagerProv
         try {
             return new FeatureManagerBuilder()
                     .featureEnum(ButterflyFeatures.class)
-                    .stateRepository(new CompositeStateRepository(
-                            new FileBasedStateRepository(flagsFile),
-                            new InMemoryStateRepository()
-                    ))
+                    .stateRepository(flagsFile == null
+                            ? new InMemoryStateRepository()
+                            : new CompositeStateRepository(
+                                    new FileBasedStateRepository(flagsFile),
+                                    new InMemoryStateRepository()
+                            ))
                     .userProvider(new ThreadLocalUserProvider())
                     .activationStrategyProvider(new DefaultActivationStrategyProvider())
                     .build();

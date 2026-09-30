@@ -14,11 +14,12 @@ import java.util.List;
 final class RecordingLogger {
 
     private final List<String> errors = Collections.synchronizedList(new ArrayList<>());
+    private final List<String> warnings = Collections.synchronizedList(new ArrayList<>());
     private final Logger logger = (Logger) Proxy.newProxyInstance(Logger.class.getClassLoader(), new Class<?>[]{Logger.class},
             (proxy, method, args) -> {
                 String name = method.getName();
-                if (name.equals("error")) {
-                    errors.add(Arrays.stream(args == null ? new Object[0] : args)
+                if (name.equals("error") || name.equals("warn")) {
+                    (name.equals("error") ? errors : warnings).add(Arrays.stream(args == null ? new Object[0] : args)
                             .map(arg -> arg instanceof Throwable t ? t.toString() : String.valueOf(arg))
                             .reduce("", (a, b) -> a.isEmpty() ? b : a + " " + b));
                 }
@@ -30,6 +31,10 @@ final class RecordingLogger {
 
     Logger logger() {
         return logger;
+    }
+
+    List<String> warnings() {
+        return List.copyOf(warnings);
     }
 
     List<String> errors() {
