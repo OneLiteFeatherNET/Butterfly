@@ -48,7 +48,7 @@ public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation {
 
     default int getGroupSortId(Group group) {
 
-        List<Group> sortedGroups = LuckPermsAPIImplementation.LUCK_PERMS.getGroupManager()
+        List<Group> sortedGroups = LuckPermsAPIImplementation.luckPerms().getGroupManager()
                 .getLoadedGroups().stream().sorted(LuckPermsAPIImplementation.GROUP_COMPARATOR).toList();
 
         return sortedGroups.indexOf(group) + 1;

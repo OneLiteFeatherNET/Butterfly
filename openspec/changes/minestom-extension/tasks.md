@@ -14,11 +14,11 @@
 
 ## 3. Lifecycle safety (test first)
 
-- [ ] 3.1 Tests with a fresh Minestom in-process `Env` per test, explicit `env.tick()`, no sleeps, no system time: inactive plus error log (asserted via captured appender) when LuckPerms is missing; listeners registered when available; `preInitialize()` touches no LuckPerms class
-- [ ] 3.2 Register listeners on a child `EventNode` of the global handler; defer `LuckPermsProvider` access to `initialize()`; handle absence with an error log
-- [ ] 3.3 Test: after `terminate()` spawn/chat events are unhandled and created teams are removed; implement removal of node and teams
-- [ ] 3.4 Test: spawn applies team, colour and prefix; chat is formatted (behaviour identical to library)
-- [ ] 3.5 Commit as `feat(minestom): make extension lifecycle safe`
+- [x] 3.1 Tests with a fresh Minestom in-process `Env` per test, explicit `env.tick()`, no sleeps, no system time: inactive plus error log (asserted via captured appender) when LuckPerms is missing; listeners registered when available; `preInitialize()` touches no LuckPerms class
+- [x] 3.2 Register listeners on a child `EventNode` of the global handler; defer `LuckPermsProvider` access to `initialize()`; handle absence with an error log
+- [x] 3.3 Test: after `terminate()` spawn/chat events are unhandled and created teams are removed; implement removal of node and teams
+- [x] 3.4 Test: spawn applies team, colour and prefix; chat is formatted (behaviour identical to library)
+- [x] 3.5 Commit as `feat(minestom): make extension lifecycle safe`
 
 ## 4. Togglz under the extension classloader
 

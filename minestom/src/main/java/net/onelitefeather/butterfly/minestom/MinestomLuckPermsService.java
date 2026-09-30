@@ -18,10 +18,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MinestomLuckPermsService implements LuckPermsService {
 
     private static final List<String> COLOR_NAMES = new ArrayList<>(NamedTextColor.NAMES.keys());
+    private final Set<Team> createdTeams = ConcurrentHashMap.newKeySet();
+
     private static final String FORMAT = System.getProperty("butterfly.format", "%04d");
 
     @Override
@@ -50,6 +54,7 @@ public class MinestomLuckPermsService implements LuckPermsService {
                         .nameTagVisibility(TeamsPacket.NameTagVisibility.ALWAYS)
                         .updateTeamPacket()
                         .build();
+                createdTeams.add(team);
             }
             if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
                 team.setCollisionRule(TeamsPacket.CollisionRule.ALWAYS);
@@ -67,6 +72,19 @@ public class MinestomLuckPermsService implements LuckPermsService {
             player.refreshCommands();
             player.triggerStatus((byte)(24 + player.getPermissionLevel()));
         }
+    }
+
+    /**
+     * Deletes the teams this service created and detaches their members.
+     */
+    void removeCreatedTeams() {
+        for (Team team : createdTeams) {
+            MinecraftServer.getConnectionManager().getOnlinePlayers().stream()
+                    .filter(player -> team.equals(player.getTeam()))
+                    .forEach(player -> player.setTeam(null));
+            MinecraftServer.getTeamManager().deleteTeam(team);
+        }
+        createdTeams.clear();
     }
 
     @NotNull
