@@ -10,3 +10,15 @@ permissions:
 jobs:
   release:
     uses: OneLiteFeatherNET/workflows/.github/workflows/release-please.yml@v2.9.0
+
+  # Tags created by release-please with the default GITHUB_TOKEN do not trigger other workflows,
+  # so publish.yaml never fires for them. Publish from here instead, gated on the release output.
+  # The reusable workflow checks out github.ref (main); the release tag points at the commit
+  # this run was triggered by, so the published artifacts match the tag.
+  publish:
+    needs: release
+    if: needs.release.outputs.release_created == 'true'
+    permissions:
+      contents: read
+    uses: OneLiteFeatherNET/workflows/.github/workflows/gradle-publish.yml@v2.9.0
+    secrets: inherit

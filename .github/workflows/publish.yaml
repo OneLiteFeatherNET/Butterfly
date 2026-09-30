@@ -2,6 +2,9 @@ name: Publish JAR
 on:
   push:
     tags: ["v*"]
+  # Manual publish / backfill. Runs the workflow definition and the code of the selected ref
+  # (gh workflow run publish.yaml --ref <branch-or-tag>); that ref must contain this trigger.
+  workflow_dispatch:
 
 jobs:
   publish:
