@@ -8,9 +8,9 @@
 
 ## 2. Extension entry point (test first)
 
-- [ ] 2.1 Test: generated `extension.json` has name `Butterfly`, the entrypoint, the project version and no `LuckPerms` dependency (plain file/JSON assertion, no server)
-- [ ] 2.2 Add `ButterflyExtension` with `@ExtensionInfo(name = "Butterfly")` and no dependencies
-- [ ] 2.3 Commit as `feat(minestom): add butterfly extension entry point`
+- [x] 2.1 Test: generated `extension.json` has name `Butterfly`, the entrypoint, the project version and no `LuckPerms` dependency (plain file/JSON assertion, no server)
+- [x] 2.2 Add `ButterflyExtension` with `@ExtensionInfo(name = "Butterfly")` and no dependencies
+- [x] 2.3 Commit as `feat(minestom): add butterfly extension entry point`
 
 ## 3. Lifecycle safety (test first)
 

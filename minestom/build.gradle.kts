@@ -24,6 +24,10 @@ dependencies {
     compileOnly(libs.adventure.minimessage)
 
     testImplementation(libs.minestom)
+    testImplementation(libs.minestom.testing)
+    testImplementation(libs.luckperms.api)
+    testImplementation(platform(libs.minestom.extensions.bom))
+    testImplementation(libs.minestom.extensions)
     testImplementation(libs.adventure.minimessage)
     testImplementation(libs.junit.api)
     testImplementation(libs.junit.platform.launcher)
@@ -56,6 +60,7 @@ tasks {
         useJUnitPlatform()
         finalizedBy(project.tasks.jacocoTestReport)
         jvmArgs("-Dminestom.inside-test=true")
+        systemProperty("butterfly.expected.version", rootProject.version.toString())
         testLogging {
             events("passed", "skipped", "failed")
         }

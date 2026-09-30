@@ -36,12 +36,15 @@ dependencyResolutionManagement {
             version("mycelium-bom", "1.8.6")
             version("luckperms.api", "5.6-SNAPSHOT")
             version("minestom-extensions", "2.2.0")
+            // must match the Minestom version resolved through the BOMs (Env lives in this artifact)
+            version("minestom-testing", "2026.09.12-26.2")
 
             // Paper
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
             library("mycelium-bom", "net.onelitefeather", "mycelium-bom").versionRef("mycelium-bom")
             library("cyano", "net.onelitefeather", "cyano").withoutVersion()
             library("minestom","net.minestom", "minestom").withoutVersion()
+            library("minestom.testing", "net.minestom", "testing").versionRef("minestom-testing")
             library("adventure.minimessage", "net.kyori", "adventure-text-minimessage").withoutVersion()
             library("togglz", "org.togglz", "togglz-core").versionRef("togglz")
             library("luckperms.api", "net.luckperms", "api").versionRef("luckperms.api")
