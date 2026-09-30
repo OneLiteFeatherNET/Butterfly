@@ -28,8 +28,8 @@
 
 ## 5. Docs
 
-- [ ] 5.1 README section "Minestom extension": put exactly one Butterfly jar (at least the release containing this change) into `extensions/`; do not also shade or depend on it in the host
-- [ ] 5.2 Commit as `docs(minestom): document running butterfly as an extension`
+- [x] 5.1 README section "Minestom extension": put exactly one Butterfly jar (at least the release containing this change) into `extensions/`; do not also shade or depend on it in the host
+- [x] 5.2 Commit as `docs(minestom): document running butterfly as an extension`
 
 ## 6. Verify and ship
 
