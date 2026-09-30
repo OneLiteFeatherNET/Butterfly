@@ -33,4 +33,4 @@
 - Togglz classloader lookup (decision 6) is the main unknown; mitigated by test and explicit setup.
 - The static `LUCK_PERMS = LuckPermsProvider.get()` in the `api` module initialises on first class use; the extension must not load that class before `initialize()`. Mitigated by decision 3 and a test.
 - Two copies of Butterfly (host-shaded plus extension jar) would conflict; documented in README, not enforced.
-- `minestom-extensions` may require a newer Java toolchain than the rest of the project; only the `minestom` module's toolchain changes if so.
+- Toolchain: the project already builds on Java 25, which minestom-extensions 2.2.0 requires; no toolchain change needed.
