@@ -4,6 +4,8 @@ import net.luckperms.api.LuckPermsRegistration;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Player;
+import net.minestom.server.extensions.Extension;
+import net.minestom.server.extensions.ExtensionClassLoader;
 import net.minestom.server.extensions.ExtensionManager;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.testing.Env;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +39,8 @@ class ExtensionLoadingTest {
     private ExtensionManager manager;
     private String previousFolder;
     private Env env;
+    private Path jarInFolder;
+    private List<ExtensionClassLoader> loaders;
 
     @BeforeEach
     void loadExtension(Env env, @TempDir Path extensionsFolder) throws Exception {
@@ -47,7 +52,8 @@ class ExtensionLoadingTest {
         String jar = System.getProperty("butterfly.extension.jar");
         assertNotNull(jar, "the build must pass butterfly.extension.jar");
         assertTrue(new File(jar).isFile(), "shadow jar must be built before the test: " + jar);
-        Files.copy(Path.of(jar), extensionsFolder.resolve("butterfly-minestom.jar"));
+        jarInFolder = extensionsFolder.resolve("butterfly-minestom.jar");
+        Files.copy(Path.of(jar), jarInFolder);
 
         previousFolder = System.getProperty(FOLDER_PROPERTY);
         System.setProperty(FOLDER_PROPERTY, extensionsFolder.toString());
@@ -56,14 +62,22 @@ class ExtensionLoadingTest {
         manager.gotoPreInit();
         manager.gotoInit();
         manager.gotoPostInit();
+        // shutdown() drops the extensions from the manager, so keep the loaders to close them afterwards
+        loaders = manager.getExtensions().stream().map(Extension::getOrigin).map(o -> o.getClassLoader()).toList();
     }
 
     @AfterEach
-    void cleanUp() {
+    void cleanUp() throws Exception {
         manager.shutdown();
+        closeLoaders();
         LuckPermsRegistration.unregister();
         if (previousFolder == null) System.clearProperty(FOLDER_PROPERTY);
         else System.setProperty(FOLDER_PROPERTY, previousFolder);
+    }
+
+    /** The loaders keep the jar open; Windows refuses to delete an open file, which would break @TempDir cleanup. */
+    private void closeLoaders() throws java.io.IOException {
+        for (ExtensionClassLoader loader : loaders) loader.close();
     }
 
     private Player spawnPlayer() {
@@ -104,5 +118,16 @@ class ExtensionLoadingTest {
         manager.shutdown();
 
         assertTrue(MinecraftServer.getTeamManager().getTeams().isEmpty());
+    }
+
+    @Test
+    @DisplayName("the extension jar is released after shutdown")
+    void jarIsReleasedAfterShutdown() throws Exception {
+        assertFalse(loaders.isEmpty(), "precondition: the manager created a class loader");
+
+        manager.shutdown();
+        closeLoaders();
+
+        assertTrue(Files.deleteIfExists(jarInFolder), "the jar must not stay locked by a class loader");
     }
 }
