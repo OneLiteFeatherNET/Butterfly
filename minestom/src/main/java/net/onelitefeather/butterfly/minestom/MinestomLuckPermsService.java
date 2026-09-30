@@ -41,7 +41,7 @@ public class MinestomLuckPermsService implements LuckPermsService {
             var sortId = LuckPermsAPI.luckPermsAPI().getGroupSortId(group);
             var teamName = String.format(FORMAT, sortId) + group.getName();
 
-            var prefixOptional = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group);
+            var prefixOptional = LuckPermsAPI.luckPermsAPI().getPlayerPrefix(player.getUuid());
             if(prefixOptional.isEmpty()) return;
             var prefix = prefixOptional.get();
 
