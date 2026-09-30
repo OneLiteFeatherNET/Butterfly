@@ -42,6 +42,33 @@ public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation {
         return Optional.empty();
     }
 
+    /**
+     * Resolves the prefix LuckPerms itself shows for a player: the highest-priority prefix across all of the
+     * user's groups (inherited) and the user's own nodes, in the user's current contexts. This is not necessarily
+     * the prefix of the primary group.
+     *
+     * @param user the player's LuckPerms user
+     * @return the effective prefix, empty if the user has none
+     */
+    default Optional<String> getPlayerPrefix(User user) {
+        return Optional.ofNullable(user.getCachedData().getMetaData().getPrefix());
+    }
+
+    /**
+     * Same as {@link #getPlayerPrefix(User)} for a player identified by UUID. If the user is not loaded, the prefix
+     * of the default group is used, matching the fallback of {@link #getPrimaryGroup(UUID)}.
+     *
+     * @param playerUUID the player's UUID
+     * @return the effective prefix, empty if there is none
+     */
+    default Optional<String> getPlayerPrefix(UUID playerUUID) {
+        User user = getUser(playerUUID);
+        if (user != null) {
+            return getPlayerPrefix(user);
+        }
+        return getGroupPrefix(getPrimaryGroup(playerUUID));
+    }
+
     default User getUser(UUID uuid) {
         return LuckPermsProvider.get().getUserManager().getUser(uuid);
     }

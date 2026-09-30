@@ -60,10 +60,30 @@ final class FakeLuckPerms {
         return group;
     }
 
+    /**
+     * A user whose effective prefix is the one of the primary group.
+     */
     void addUser(UUID uuid, String primaryGroup) {
-        users.put(uuid, Stubs.of(User.class, Map.of(
+        users.put(uuid, userStub(uuid, primaryGroup, () -> {
+            Group group = groups.get(primaryGroup);
+            return group == null ? null : group.getCachedData().getMetaData().getPrefix();
+        }));
+    }
+
+    /**
+     * @param effectivePrefix what LuckPerms resolves as the user's prefix across all groups and own nodes, may be null
+     */
+    void addUser(UUID uuid, String primaryGroup, String effectivePrefix) {
+        users.put(uuid, userStub(uuid, primaryGroup, () -> effectivePrefix));
+    }
+
+    private static User userStub(UUID uuid, String primaryGroup, java.util.function.Supplier<String> prefix) {
+        CachedMetaData meta = Stubs.of(CachedMetaData.class, Map.of("getPrefix", _ -> prefix.get()));
+        CachedDataManager data = Stubs.of(CachedDataManager.class, Map.of("getMetaData", _ -> meta));
+        return Stubs.of(User.class, Map.of(
                 "getUniqueId", _ -> uuid,
-                "getPrimaryGroup", _ -> primaryGroup)));
+                "getPrimaryGroup", _ -> primaryGroup,
+                "getCachedData", _ -> data));
     }
 
     private LuckPerms createApi() {

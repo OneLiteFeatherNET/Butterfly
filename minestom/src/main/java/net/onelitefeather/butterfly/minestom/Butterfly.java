@@ -51,9 +51,8 @@ public final class Butterfly {
 
     private void playerChat(PlayerChatEvent playerChatEvent) {
         Player player = playerChatEvent.getPlayer();
-        var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
 
-        var prefixOptional = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group);
+        var prefixOptional = LuckPermsAPI.luckPermsAPI().getPlayerPrefix(player.getUuid());
         if(prefixOptional.isEmpty()) return;
         var prefix = prefixOptional.get();
 

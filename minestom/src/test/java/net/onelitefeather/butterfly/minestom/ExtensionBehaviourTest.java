@@ -84,4 +84,51 @@ class ExtensionBehaviourTest {
 
         assertEquals(TeamsPacket.CollisionRule.NEVER, player.getTeam().getCollisionRule());
     }
+
+    @Test
+    @DisplayName("team prefix is the highest prefix of any parent group, not the primary group's")
+    void teamPrefixUsesEffectivePrefix() {
+        fixture.luckPerms.addGroup("content", 85, "[Content] ", null);
+        fixture.luckPerms.addUser(ExtensionFixture.PLAYER_ID, "admin", "[Content] ");
+
+        Player player = fixture.spawnPlayer();
+
+        assertEquals("[Content] ", PlainTextComponentSerializer.plainText().serialize(player.getTeam().getPrefix()));
+    }
+
+    @Test
+    @DisplayName("chat uses the highest prefix of any parent group, not the primary group's")
+    void chatUsesEffectivePrefix() {
+        fixture.luckPerms.addGroup("content", 85, "[Content] ", null);
+        fixture.luckPerms.addUser(ExtensionFixture.PLAYER_ID, "admin", "[Content] ");
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "hi");
+
+        assertEquals("[Content] Alice: hi", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()));
+    }
+
+    @Test
+    @DisplayName("a user-own prefix reported by luckperms is used for chat and display name")
+    void userOwnPrefixWins() {
+        fixture.luckPerms.addUser(ExtensionFixture.PLAYER_ID, "admin", "[VIP] ");
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "hi");
+
+        assertEquals("[VIP] Alice: hi", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()));
+        assertEquals("[VIP] Alice", PlainTextComponentSerializer.plainText().serialize(player.getDisplayName()));
+    }
+
+    @Test
+    @DisplayName("team colour and name still come from the primary group when the prefix comes from elsewhere")
+    void colourAndSortingStayOnPrimaryGroup() {
+        fixture.luckPerms.addGroup("content", 85, "[Content] ", "blue");
+        fixture.luckPerms.addUser(ExtensionFixture.PLAYER_ID, "admin", "[Content] ");
+
+        Player player = fixture.spawnPlayer();
+
+        assertEquals("0001admin", player.getTeam().getTeamName(), "team name must use the primary group");
+        assertEquals(TeamColor.RED, player.getTeam().getTeamColor(), "colour must use the primary group");
+    }
 }

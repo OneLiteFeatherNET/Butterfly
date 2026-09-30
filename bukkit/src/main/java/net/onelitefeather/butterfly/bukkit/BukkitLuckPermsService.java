@@ -34,7 +34,7 @@ public final class BukkitLuckPermsService implements LuckPermsService {
         if (player != null) {
             var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUniqueId());
 
-            var prefixOptional = LuckPermsAPI.luckPermsAPI().getGroupPrefix(group);
+            var prefixOptional = LuckPermsAPI.luckPermsAPI().getPlayerPrefix(player.getUniqueId());
             if (prefixOptional.isEmpty()) return;
 
             var prefix = prefixOptional.get();
