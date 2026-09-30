@@ -3,9 +3,12 @@ package net.onelitefeather.butterfly.minestom;
 import net.luckperms.api.LuckPermsProvider;
 import net.minestom.server.event.Event;
 import net.minestom.server.event.EventNode;
+import net.onelitefeather.butterfly.minestom.feature.ButterflyFeatures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import java.nio.file.Path;
 
 /**
  * Start/stop logic of the extension, kept apart from {@link ButterflyExtension} so it can run without
@@ -18,11 +21,13 @@ final class ButterflyLifecycle {
 
     private final Logger logger;
     private final EventNode<Event> parent;
+    private final Path dataDirectory;
     private @Nullable Butterfly butterfly;
 
-    ButterflyLifecycle(@NotNull Logger logger, @NotNull EventNode<Event> parent) {
+    ButterflyLifecycle(@NotNull Logger logger, @NotNull EventNode<Event> parent, @NotNull Path dataDirectory) {
         this.logger = logger;
         this.parent = parent;
+        this.dataDirectory = dataDirectory;
     }
 
     void start() {
@@ -32,6 +37,7 @@ final class ButterflyLifecycle {
             logger.error("LuckPerms is not available, Butterfly stays inactive: {}", e.getMessage(), e);
             return;
         }
+        ButterflyFeatures.configure(dataDirectory.resolve("flags.properties"));
         butterfly = Butterfly.create(parent);
         butterfly.load();
     }
@@ -40,6 +46,7 @@ final class ButterflyLifecycle {
         if (butterfly != null) {
             butterfly.terminate();
             butterfly = null;
+            ButterflyFeatures.reset();
         }
     }
 

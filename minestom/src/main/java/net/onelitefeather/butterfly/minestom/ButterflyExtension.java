@@ -19,7 +19,7 @@ public final class ButterflyExtension extends Extension {
 
     @Override
     public void initialize() {
-        lifecycle = new ButterflyLifecycle(getLogger(), MinecraftServer.getGlobalEventHandler());
+        lifecycle = new ButterflyLifecycle(getLogger(), MinecraftServer.getGlobalEventHandler(), getDataDirectory());
         lifecycle.start();
     }
 

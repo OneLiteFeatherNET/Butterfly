@@ -7,6 +7,9 @@ import net.minestom.testing.EnvTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,8 +27,8 @@ class ExtensionActivationTest {
 
     @Test
     @DisplayName("without LuckPerms initialize logs an error naming LuckPerms")
-    void missingLuckPermsLogsError(Env env) {
-        fixture = new ExtensionFixture(env);
+    void missingLuckPermsLogsError(Env env, @TempDir Path dataDirectory) {
+        fixture = new ExtensionFixture(env, dataDirectory);
         lifecycle = fixture.newLifecycle();
 
         assertDoesNotThrow(lifecycle::start, "a missing LuckPerms must not escape the lifecycle method");
@@ -36,8 +39,8 @@ class ExtensionActivationTest {
 
     @Test
     @DisplayName("without LuckPerms the extension stays inactive")
-    void missingLuckPermsStaysInactive(Env env) {
-        fixture = new ExtensionFixture(env);
+    void missingLuckPermsStaysInactive(Env env, @TempDir Path dataDirectory) {
+        fixture = new ExtensionFixture(env, dataDirectory);
         lifecycle = fixture.newLifecycle();
 
         lifecycle.start();
@@ -47,8 +50,8 @@ class ExtensionActivationTest {
 
     @Test
     @DisplayName("without LuckPerms no listener handles a spawning player")
-    void missingLuckPermsRegistersNoListeners(Env env) {
-        fixture = new ExtensionFixture(env);
+    void missingLuckPermsRegistersNoListeners(Env env, @TempDir Path dataDirectory) {
+        fixture = new ExtensionFixture(env, dataDirectory);
         lifecycle = fixture.newLifecycle();
         lifecycle.start();
 
@@ -60,8 +63,8 @@ class ExtensionActivationTest {
 
     @Test
     @DisplayName("with LuckPerms initialize activates the extension without an error")
-    void availableLuckPermsActivates(Env env) {
-        fixture = new ExtensionFixture(env);
+    void availableLuckPermsActivates(Env env, @TempDir Path dataDirectory) {
+        fixture = new ExtensionFixture(env, dataDirectory);
         fixture.registerLuckPerms();
         lifecycle = fixture.newLifecycle();
 
@@ -73,8 +76,8 @@ class ExtensionActivationTest {
 
     @Test
     @DisplayName("with LuckPerms initialize registers the listeners")
-    void availableLuckPermsRegistersListeners(Env env) {
-        fixture = new ExtensionFixture(env);
+    void availableLuckPermsRegistersListeners(Env env, @TempDir Path dataDirectory) {
+        fixture = new ExtensionFixture(env, dataDirectory);
         fixture.registerLuckPerms();
         lifecycle = fixture.newLifecycle();
         lifecycle.start();

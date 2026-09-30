@@ -8,6 +8,7 @@ import net.minestom.server.instance.Instance;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.testing.Env;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +25,11 @@ final class ExtensionFixture {
     final FakeLuckPerms luckPerms = new FakeLuckPerms();
     final RecordingLogger log = new RecordingLogger();
 
-    ExtensionFixture(Env env) {
+    final Path dataDirectory;
+
+    ExtensionFixture(Env env, Path dataDirectory) {
         this.env = env;
+        this.dataDirectory = dataDirectory;
         luckPerms.addGroup("admin", 100, "<red>[Admin] ", "red");
         luckPerms.addUser(PLAYER_ID, "admin");
     }
@@ -39,7 +43,7 @@ final class ExtensionFixture {
     }
 
     ButterflyLifecycle newLifecycle() {
-        return new ButterflyLifecycle(log.logger(), env.process().eventHandler());
+        return new ButterflyLifecycle(log.logger(), env.process().eventHandler(), dataDirectory);
     }
 
     Player spawnPlayer() {

@@ -22,9 +22,9 @@
 
 ## 4. Togglz under the extension classloader
 
-- [ ] 4.1 Test: load the extension through an isolated `URLClassLoader` with a different thread context classloader and check the feature manager is found
-- [ ] 4.2 Fix: set the feature manager explicitly (or bind the context classloader) and read `flags.properties` from `extensions/Butterfly/`, defaulting when absent
-- [ ] 4.3 Commit as `feat(minestom): resolve togglz inside the extension classloader`
+- [x] 4.1 Test: load the extension through an isolated `URLClassLoader` with a different thread context classloader and check the feature manager is found
+- [x] 4.2 Fix: set the feature manager explicitly (or bind the context classloader) and read `flags.properties` from `extensions/Butterfly/`, defaulting when absent
+- [x] 4.3 Commit as `feat(minestom): resolve togglz inside the extension classloader`
 
 ## 5. Docs
 

@@ -10,6 +10,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,8 +23,8 @@ class ExtensionTerminationTest {
     private ButterflyLifecycle lifecycle;
 
     @BeforeEach
-    void startExtension(Env env) {
-        fixture = new ExtensionFixture(env);
+    void startExtension(Env env, @TempDir Path dataDirectory) {
+        fixture = new ExtensionFixture(env, dataDirectory);
         fixture.registerLuckPerms();
         lifecycle = fixture.newLifecycle();
         lifecycle.start();

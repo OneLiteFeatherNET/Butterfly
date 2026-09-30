@@ -4,6 +4,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minestom.server.color.TeamColor;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;
+import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.scoreboard.Team;
 import net.minestom.testing.Env;
 import net.minestom.testing.EnvTest;
@@ -11,6 +12,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,8 +28,8 @@ class ExtensionBehaviourTest {
     private ButterflyLifecycle lifecycle;
 
     @BeforeEach
-    void startExtension(Env env) {
-        fixture = new ExtensionFixture(env);
+    void startExtension(Env env, @TempDir Path dataDirectory) {
+        fixture = new ExtensionFixture(env, dataDirectory);
         fixture.registerLuckPerms();
         lifecycle = fixture.newLifecycle();
         lifecycle.start();
@@ -71,5 +75,13 @@ class ExtensionBehaviourTest {
         PlayerChatEvent event = fixture.chat(player, "hello");
 
         assertEquals("[Admin] Alice: hello", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()));
+    }
+
+    @Test
+    @DisplayName("team collision is off when no flags file exists")
+    void collisionIsOffByDefault() {
+        Player player = fixture.spawnPlayer();
+
+        assertEquals(TeamsPacket.CollisionRule.NEVER, player.getTeam().getCollisionRule());
     }
 }
