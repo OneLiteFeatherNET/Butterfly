@@ -33,5 +33,5 @@
 
 ## 6. Verify and ship
 
-- [ ] 6.1 Run `./gradlew build`; check the shadow jar contains `extension.json`; smoke test on a Titan-like host
+- [x] 6.1 Run `./gradlew build`; check the shadow jar contains `extension.json`; smoke test on a Titan-like host
 - [ ] 6.2 Open the pull request titled `feat(minestom): ship butterfly-minestom as a minestom extension`
