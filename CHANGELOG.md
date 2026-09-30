@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.26...v1.1.0) (2026-09-30)
+
+
+### Features
+
+* **minestom:** ship butterfly-minestom as a minestom extension ([#123](https://github.com/OneLiteFeatherNET/Butterfly/issues/123)) ([0521b0d](https://github.com/OneLiteFeatherNET/Butterfly/commit/0521b0df99623e390bb8cbe5146b704282599dde))
+
+
+### Bug Fixes
+
+* **deps:** update dependency net.onelitefeather:mycelium-bom to v1.8.6 ([#120](https://github.com/OneLiteFeatherNET/Butterfly/issues/120)) ([42c02ae](https://github.com/OneLiteFeatherNET/Butterfly/commit/42c02ae533e527d999b20f9a30b589e91c60c338))
+
 ## [1.0.26](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.25...v1.0.26) (2026-09-13)
 
 
