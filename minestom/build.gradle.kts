@@ -10,6 +10,12 @@ dependencies {
     implementation(project(":api"))
     // Minestom
     implementation(platform(libs.mycelium.bom))
+    // Extension system: provided by the host at runtime, the processor generates extension.json
+    annotationProcessor(platform(libs.minestom.extensions.bom))
+    annotationProcessor(libs.minestom.extensions.processor)
+    compileOnly(platform(libs.minestom.extensions.bom))
+    compileOnly(libs.minestom.extensions)
+    compileOnly(libs.minestom.extensions.processor)
     // Togglz
     implementation(libs.togglz)
     // LuckPerms API
@@ -18,6 +24,10 @@ dependencies {
     compileOnly(libs.adventure.minimessage)
 
     testImplementation(libs.minestom)
+    testImplementation(libs.minestom.testing)
+    testImplementation(libs.luckperms.api)
+    testImplementation(platform(libs.minestom.extensions.bom))
+    testImplementation(libs.minestom.extensions)
     testImplementation(libs.adventure.minimessage)
     testImplementation(libs.junit.api)
     testImplementation(libs.junit.platform.launcher)
@@ -25,8 +35,38 @@ dependencies {
     testRuntimeOnly(libs.junit.engine)
 }
 
+// Smoke test: loads the built shadow jar through Minestom's extension manager. It needs its own source set
+// because Minestom's ExtensionClassLoader is parent-first, so Butterfly's own classes must not be on the
+// test classpath (a real host does not have them either).
+val smokeTest: SourceSet by sourceSets.creating {
+    java.srcDir("src/test/java")
+    java.include(
+        "**/ExtensionLoadingTest.java",
+        "**/Stubs.java",
+        "**/FakeLuckPerms.java",
+        "**/LuckPermsRegistration.java"
+    )
+}
+dependencies {
+    "smokeTestImplementation"(platform(libs.mycelium.bom))
+    "smokeTestImplementation"(platform(libs.minestom.extensions.bom))
+    "smokeTestImplementation"(libs.minestom)
+    "smokeTestImplementation"(libs.minestom.testing)
+    "smokeTestImplementation"(libs.minestom.extensions)
+    "smokeTestImplementation"(libs.luckperms.api)
+    "smokeTestImplementation"(libs.adventure.minimessage)
+    "smokeTestImplementation"(libs.junit.api)
+    "smokeTestImplementation"(libs.junit.platform.launcher)
+    "smokeTestRuntimeOnly"(libs.junit.engine)
+}
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+}
+
+// The processor generates extension.json but cannot know the project version.
+tasks.compileJava {
+    options.compilerArgs.add("-Aminestom.extension.version=${rootProject.version}")
 }
 
 tasks {
@@ -45,9 +85,26 @@ tasks {
         useJUnitPlatform()
         finalizedBy(project.tasks.jacocoTestReport)
         jvmArgs("-Dminestom.inside-test=true")
+        systemProperty("butterfly.expected.version", rootProject.version.toString())
         testLogging {
             events("passed", "skipped", "failed")
         }
+    }
+    val smokeTestTask = register<Test>("smokeTest") {
+        description = "Loads the shadow jar through Minestom's extension manager"
+        group = "verification"
+        testClassesDirs = smokeTest.output.classesDirs
+        classpath = smokeTest.runtimeClasspath
+        useJUnitPlatform()
+        dependsOn(shadowJar)
+        jvmArgs("-Dminestom.inside-test=true")
+        systemProperty("butterfly.extension.jar", layout.buildDirectory.file("libs/butterfly-minestom.jar").get().asFile.absolutePath)
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+    check {
+        dependsOn(smokeTestTask)
     }
     jacocoTestReport {
         reports {

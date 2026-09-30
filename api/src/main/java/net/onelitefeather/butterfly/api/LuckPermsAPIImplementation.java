@@ -14,7 +14,13 @@ import java.util.List;
 import java.util.UUID;
 
 final class LuckPermsAPIImplementation implements LuckPermsAPI {
-    static final LuckPerms LUCK_PERMS = LuckPermsProvider.get();
+    /**
+     * Resolved on every use instead of in a static initialiser: loading this class must not require LuckPerms
+     * to be up yet, and it must follow LuckPerms being registered or unregistered.
+     */
+    static LuckPerms luckPerms() {
+        return LuckPermsProvider.get();
+    }
 
     static LuckPermsService LUCK_PERMS_SERVICE = new DummyLuckPermsService();
 
@@ -28,16 +34,16 @@ final class LuckPermsAPIImplementation implements LuckPermsAPI {
 
     @Override
     public Group getPrimaryGroup(UUID playerUUID) {
-        User user = LUCK_PERMS.getUserManager().getUser(playerUUID);
+        User user = luckPerms().getUserManager().getUser(playerUUID);
         if (user == null) return LUCK_PERMS_SERVICE.getDefaultGroup();
 
-        Group group = LUCK_PERMS.getGroupManager().getGroup(user.getPrimaryGroup());
+        Group group = luckPerms().getGroupManager().getGroup(user.getPrimaryGroup());
         return (group != null) ? group : LUCK_PERMS_SERVICE.getDefaultGroup();
     }
 
     @Override
     public void subscribeEvents() {
-        EventBus eventBus = LUCK_PERMS.getEventBus();
+        EventBus eventBus = luckPerms().getEventBus();
         this.luckPermsEvents.add(eventBus.subscribe(UserTrackEvent.class, event -> LUCK_PERMS_SERVICE.setDisplayName(event.getUser())));
     }
 

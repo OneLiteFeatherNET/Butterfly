@@ -19,18 +19,30 @@ public final class SingletonFeatureManagerProvider implements FeatureManagerProv
     @Override
     public FeatureManager getFeatureManager() {
         if (featureManager == null) {
-            featureManager = new FeatureManagerBuilder()
+            featureManager = createManager(FLAGS);
+        }
+
+        return featureManager;
+    }
+
+    static FeatureManager createManager(File flagsFile) {
+        Thread thread = Thread.currentThread();
+        ClassLoader original = thread.getContextClassLoader();
+        // the builder discovers activation strategies through ServiceLoader and the context class loader
+        thread.setContextClassLoader(SingletonFeatureManagerProvider.class.getClassLoader());
+        try {
+            return new FeatureManagerBuilder()
                     .featureEnum(ButterflyFeatures.class)
                     .stateRepository(new CompositeStateRepository(
-                            new FileBasedStateRepository(FLAGS),
+                            new FileBasedStateRepository(flagsFile),
                             new InMemoryStateRepository()
                     ))
                     .userProvider(new ThreadLocalUserProvider())
                     .activationStrategyProvider(new DefaultActivationStrategyProvider())
                     .build();
+        } finally {
+            thread.setContextClassLoader(original);
         }
-
-        return featureManager;
     }
 
     @Override
