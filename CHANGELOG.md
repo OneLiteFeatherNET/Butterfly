@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.1.0...v1.1.1) (2026-09-30)
+
+
+### Bug Fixes
+
+* **api:** use the player's effective luckperms prefix ([#128](https://github.com/OneLiteFeatherNET/Butterfly/issues/128)) ([31f3b91](https://github.com/OneLiteFeatherNET/Butterfly/commit/31f3b91aea03c15edfba8d7cfb271c88ddc49983))
+* **minestom:** create the extension data directory before reading flags ([#125](https://github.com/OneLiteFeatherNET/Butterfly/issues/125)) ([1a02b58](https://github.com/OneLiteFeatherNET/Butterfly/commit/1a02b58369ec56594bf2a80be41fcc1048c49538))
+* **minestom:** send team prefix and colour updates to online players ([#127](https://github.com/OneLiteFeatherNET/Butterfly/issues/127)) ([fc3dbe1](https://github.com/OneLiteFeatherNET/Butterfly/commit/fc3dbe12ac2eba15d80f310c3cbe1581984191ec))
+
 ## [1.1.0](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.0.26...v1.1.0) (2026-09-30)
 
 
