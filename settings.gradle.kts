@@ -20,6 +20,11 @@ dependencyResolutionManagement {
             }
         }
         maven("https://repo.papermc.io/repository/maven-public/")
+        // minestom-extensions lives here and needs no credentials.
+        maven {
+            name = "OneLiteFeatherReleases"
+            url = uri("https://repo.onelitefeather.dev/releases")
+        }
     }
     versionCatalogs {
         create("libs") {
@@ -30,6 +35,7 @@ dependencyResolutionManagement {
             version("togglz", "4.6.4")
             version("mycelium-bom", "1.8.6")
             version("luckperms.api", "5.6-SNAPSHOT")
+            version("minestom-extensions", "2.2.0")
 
             // Paper
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
@@ -39,6 +45,9 @@ dependencyResolutionManagement {
             library("adventure.minimessage", "net.kyori", "adventure-text-minimessage").withoutVersion()
             library("togglz", "org.togglz", "togglz-core").versionRef("togglz")
             library("luckperms.api", "net.luckperms", "api").versionRef("luckperms.api")
+            library("minestom-extensions-bom", "net.onelitefeather", "minestom-extensions-bom").versionRef("minestom-extensions")
+            library("minestom-extensions", "net.onelitefeather", "minestom-extensions").withoutVersion()
+            library("minestom-extensions-processor", "net.onelitefeather", "minestom-extensions-processor").withoutVersion()
 
             library("junit.api", "org.junit.jupiter", "junit-jupiter-api").withoutVersion()
             library("junit.engine", "org.junit.jupiter", "junit-jupiter-engine").withoutVersion()

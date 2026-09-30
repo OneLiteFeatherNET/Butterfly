@@ -10,6 +10,12 @@ dependencies {
     implementation(project(":api"))
     // Minestom
     implementation(platform(libs.mycelium.bom))
+    // Extension system: provided by the host at runtime, the processor generates extension.json
+    annotationProcessor(platform(libs.minestom.extensions.bom))
+    annotationProcessor(libs.minestom.extensions.processor)
+    compileOnly(platform(libs.minestom.extensions.bom))
+    compileOnly(libs.minestom.extensions)
+    compileOnly(libs.minestom.extensions.processor)
     // Togglz
     implementation(libs.togglz)
     // LuckPerms API
@@ -27,6 +33,11 @@ dependencies {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+}
+
+// The processor generates extension.json but cannot know the project version.
+tasks.compileJava {
+    options.compilerArgs.add("-Aminestom.extension.version=${rootProject.version}")
 }
 
 tasks {

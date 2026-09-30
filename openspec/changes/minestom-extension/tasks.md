@@ -2,9 +2,9 @@
 
 ## 1. Build
 
-- [ ] 1.1 Add `minestom-extensions` (BOM, library, processor) to the version catalog and the OneLiteFeather repository to `settings.gradle.kts` (see `feat/minestom-extension` for coordinates)
-- [ ] 1.2 In `minestom/build.gradle.kts` add `compileOnly` minestom-extensions and `annotationProcessor` processor; pass `-Aminestom.extension.version=${rootProject.version}` to `compileJava`
-- [ ] 1.3 Commit as `build(minestom): add minestom-extensions and extension.json generation`
+- [x] 1.1 Add `minestom-extensions` (BOM, library, processor) to the version catalog and the OneLiteFeather repository to `settings.gradle.kts` (see `feat/minestom-extension` for coordinates)
+- [x] 1.2 In `minestom/build.gradle.kts` add `compileOnly` minestom-extensions and `annotationProcessor` processor; pass `-Aminestom.extension.version=${rootProject.version}` to `compileJava`
+- [x] 1.3 Commit as `build(minestom): add minestom-extensions and extension.json generation`
 
 ## 2. Extension entry point (test first)
 
