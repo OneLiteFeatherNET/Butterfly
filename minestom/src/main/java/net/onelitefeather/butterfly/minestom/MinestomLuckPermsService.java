@@ -64,6 +64,8 @@ public class MinestomLuckPermsService implements LuckPermsService {
 
             team.setPrefix(MiniMessage.miniMessage().deserialize(prefix));
             team.setTeamColor(getTeamColor(group));
+            // set* only changes server state; one update packet delivers all of it to online players
+            team.sendUpdatePacket();
             team.addMember(player.getUsername());
             player.setTeam(team);
 

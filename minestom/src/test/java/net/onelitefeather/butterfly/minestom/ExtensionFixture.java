@@ -7,6 +7,7 @@ import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.testing.Env;
+import net.minestom.testing.TestConnection;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -47,10 +48,21 @@ final class ExtensionFixture {
     }
 
     Player spawnPlayer() {
+        return spawnConnection(PLAYER_ID, PLAYER_NAME).player();
+    }
+
+    /**
+     * Connects and spawns a player, keeping the connection so the test can track its incoming packets.
+     */
+    SpawnedPlayer spawnConnection(UUID uuid, String name) {
         Instance instance = env.createFlatInstance();
-        Player player = env.createConnection(new GameProfile(PLAYER_ID, PLAYER_NAME)).connect(instance, Pos.ZERO);
+        TestConnection connection = env.createConnection(new GameProfile(uuid, name));
+        Player player = connection.connect(instance, Pos.ZERO);
         env.tick();
-        return player;
+        return new SpawnedPlayer(player, connection);
+    }
+
+    record SpawnedPlayer(Player player, TestConnection connection) {
     }
 
     PlayerChatEvent chat(Player player, String message) {
