@@ -56,7 +56,7 @@ keeps one code path and lets the Minestom `FakeLuckPerms` drive tests. LuckPerms
 cached data is safe to read from Paper's async chat thread.
 
 ### 3. Node shape `butterfly.chat.tag.<type>`
-Lower-case snake_case type names (`shadow_color`). A later per-value extension
+Lower-case snake_case type names (`translatable`, `shadow`). A later per-value extension
 checks `has(type) || has(type + "." + value)`, so nodes granted now keep working.
 
 ### 4. Parse once per message

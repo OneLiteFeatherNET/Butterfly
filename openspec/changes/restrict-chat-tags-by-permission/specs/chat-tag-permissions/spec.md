@@ -22,7 +22,7 @@ Paper and on Minestom.
 | `rainbow` | `<rainbow>` |
 | `transition` | `<transition>` |
 | `pride` | `<pride>` |
-| `shadow_color` | `<shadow>` / `<shadow_color>` |
+| `shadow` | `<shadow>` |
 | `font` | `<font>` |
 | `reset` | `<reset>` |
 | `newline` | `<newline>` / `<br>` |
