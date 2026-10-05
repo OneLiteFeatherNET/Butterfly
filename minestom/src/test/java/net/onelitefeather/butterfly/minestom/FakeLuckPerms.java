@@ -15,10 +15,12 @@ import net.luckperms.api.query.QueryOptions;
 import net.luckperms.api.query.QueryOptionsRegistry;
 import net.luckperms.api.util.Tristate;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalInt;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,6 +31,7 @@ final class FakeLuckPerms {
 
     private final Map<String, Group> groups = new LinkedHashMap<>();
     private final Map<UUID, User> users = new LinkedHashMap<>();
+    private final Map<UUID, Set<String>> userPermissions = new HashMap<>();
     private final AtomicInteger openSubscriptions = new AtomicInteger();
     private final LuckPerms api = createApi();
 
@@ -77,12 +80,27 @@ final class FakeLuckPerms {
         users.put(uuid, userStub(uuid, primaryGroup, () -> effectivePrefix));
     }
 
-    private static User userStub(UUID uuid, String primaryGroup, java.util.function.Supplier<String> prefix) {
+    /**
+     * Grants permission nodes to a user, as if its groups or own nodes carried them. Nodes are matched exactly.
+     */
+    void grantPermissions(UUID uuid, String... nodes) {
+        userPermissions.computeIfAbsent(uuid, _ -> new java.util.HashSet<>()).addAll(Set.of(nodes));
+    }
+
+    private User userStub(UUID uuid, String primaryGroup, java.util.function.Supplier<String> prefix) {
         CachedMetaData meta = Stubs.of(CachedMetaData.class, Map.of("getPrefix", _ -> prefix.get()));
-        CachedDataManager data = Stubs.of(CachedDataManager.class, Map.of("getMetaData", _ -> meta));
+        CachedPermissionData permissions = Stubs.of(CachedPermissionData.class, Map.of("queryPermission", args -> {
+            boolean granted = userPermissions.getOrDefault(uuid, Set.of()).contains((String) args[0]);
+            return Stubs.of(Result.class, Map.of("result", _ -> Tristate.of(granted)));
+        }));
+        QueryOptions userOptions = Stubs.of(QueryOptions.class, Map.of());
+        CachedDataManager data = Stubs.of(CachedDataManager.class, Map.of(
+                "getMetaData", _ -> meta,
+                "getPermissionData", _ -> permissions));
         return Stubs.of(User.class, Map.of(
                 "getUniqueId", _ -> uuid,
                 "getPrimaryGroup", _ -> primaryGroup,
+                "getQueryOptions", _ -> userOptions,
                 "getCachedData", _ -> data));
     }
 

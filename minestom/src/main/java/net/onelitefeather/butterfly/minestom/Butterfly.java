@@ -9,6 +9,7 @@ import net.minestom.server.event.EventNode;
 import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
+import net.onelitefeather.butterfly.api.chat.ChatMessageParser;
 import net.onelitefeather.butterfly.api.config.ButterflySettings;
 import net.onelitefeather.butterfly.api.config.SettingsFile;
 import org.jetbrains.annotations.NotNull;
@@ -79,7 +80,7 @@ public final class Butterfly {
         playerChatEvent.setFormattedMessage(Component.text()
                 .append(MiniMessage.miniMessage().deserialize(displayName))
                 .append(Component.text(": "))
-                .append(MiniMessage.miniMessage().deserialize(playerChatEvent.getRawMessage()))
+                .append(ChatMessageParser.parse(playerChatEvent.getRawMessage(), node -> LuckPermsAPI.luckPermsAPI().hasPermission(player.getUuid(), node)))
                 .build());
     }
 

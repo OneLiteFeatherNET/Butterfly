@@ -46,6 +46,8 @@ dependencyResolutionManagement {
             library("cyano", "net.onelitefeather", "cyano").withoutVersion()
             library("minestom","net.minestom", "minestom").withoutVersion()
             library("minestom.testing", "net.minestom", "testing").versionRef("minestom-testing")
+            library("adventure.api", "net.kyori", "adventure-api").withoutVersion()
+            library("adventure.plain", "net.kyori", "adventure-text-serializer-plain").withoutVersion()
             library("adventure.minimessage", "net.kyori", "adventure-text-minimessage").withoutVersion()
             library("avaje.config", "io.avaje", "avaje-config").versionRef("avaje-config")
             library("slf4j.api", "org.slf4j", "slf4j-api").versionRef("slf4j")
