@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0.0](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.1.1...v2.0.0) (2026-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* **config:** flags.properties is no longer read. Settings live in the data-folder config.yaml (plugins/Butterfly/config.yaml on Paper, extensions/Butterfly/config.yaml on Minestom) and are written with defaults on first start. Minestom team collision is set with butterfly.teams.collision.
+
+### Bug Fixes
+
+* **ci:** publish to maven when release-please creates a release ([#129](https://github.com/OneLiteFeatherNET/Butterfly/issues/129)) ([81ea743](https://github.com/OneLiteFeatherNET/Butterfly/commit/81ea743e086b8b3c8b56a4ab61cd6771a1202cd3))
+* **deps:** update dependency net.onelitefeather:mycelium-bom to v1.8.7 ([#132](https://github.com/OneLiteFeatherNET/Butterfly/issues/132)) ([2737f56](https://github.com/OneLiteFeatherNET/Butterfly/commit/2737f5678344345772c3ef071267dc3e7d41231b))
+* **deps:** update dependency net.onelitefeather:mycelium-bom to v1.8.8 ([#134](https://github.com/OneLiteFeatherNET/Butterfly/issues/134)) ([3401405](https://github.com/OneLiteFeatherNET/Butterfly/commit/34014053ae918322206835892801e1e33a7c62af))
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.18 ([#135](https://github.com/OneLiteFeatherNET/Butterfly/issues/135)) ([7c67066](https://github.com/OneLiteFeatherNET/Butterfly/commit/7c67066e489771d51bd66396dc1b72ea808a0221))
+
+
+### Code Refactoring
+
+* **config:** replace togglz with avaje-config ([#133](https://github.com/OneLiteFeatherNET/Butterfly/issues/133)) ([50fdfd4](https://github.com/OneLiteFeatherNET/Butterfly/commit/50fdfd4e65e796ce5429c24627d6f354c17a1571))
+
 ## [1.1.1](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.1.0...v1.1.1) (2026-09-30)
 
 
