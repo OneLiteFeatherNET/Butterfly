@@ -51,6 +51,23 @@ builder discovers parsers via ServiceLoader (classloader issue, see Risks). If t
 builder cannot exclude default sources, read the YAML with avaje's parser and feed
 the entries in with `put(...)`.
 
+*Spike result (task 1.2, avaje-config 5.2):* `Configuration.builder()` alone loads
+nothing from the classpath or the working directory; standard resource loading
+(`application.yaml` etc.) only happens after `includeResourceLoading()`, which we
+never call. `Configuration.builder().load(File)` reads exactly that file (parser
+chosen by extension; the built-in simple YAML parser is used because SnakeYAML is
+not on the classpath; nested keys are flattened with dots, quoted values such as
+`"%04d"` work). The builder needs no `put(...)` fallback.
+`put(...)`/`load(...)` entries and keys that are absent entirely are overridden by
+a same-named JVM system property (then by an environment variable, avaje's own
+rule), so the legacy `butterfly.format` property is visible through the same
+`Configuration`. The only ServiceLoader use is `ServiceLoader.load(ConfigExtension.class)`
+for optional extensions (custom parsers, log, sources) which Butterfly does not
+use; with a foreign thread context classloader it finds none and avaje falls back
+to its built-in defaults, so no context-classloader switch is needed (confirmed by
+the shaded-jar `smokeTest`, task 5.1). Proven by `AvajeConfigurationSpikeTest`
+(a decoy `application.yaml` on the classpath and next to the file is not read).
+
 ### 2. `ButterflySettings` record and loader in `api`
 - `ButterflySettings` record (`sortFormat`, `teamCollision`) with `defaults()`.
 - `ButterflySettings.from(Configuration, Logger)`: defaults, legacy
