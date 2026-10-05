@@ -25,7 +25,7 @@ that switches both platforms to the restricted parser is `feat(chat)!` with a
 ## 4. Docs and manual check
 
 - [x] 4.1 README: section listing every `butterfly.chat.tag.<type>` node (generated from or checked against `ChatTagType`), the wildcard, the literal-text behaviour and the migration line; verify every type in the spec table appears
-- [ ] 4.2 Manual Paper test via `./gradlew :bukkit:runServer` with LuckPerms: player without nodes sees `<red>x` literally; after `lp group default permission set butterfly.chat.tag.color true` the same message is red; `<click:run_command:/help>x</click>` has no click event without `butterfly.chat.tag.click` (report in the PR description)
+- [x] 4.2 Manual Paper test via `./gradlew :bukkit:runServer` with LuckPerms: player without nodes sees `<red>x` literally; after `lp group default permission set butterfly.chat.tag.color true` the same message is red; `<click:run_command:/help>x</click>` has no click event without `butterfly.chat.tag.click` (report in the PR description)
 
 ## 5. Pull request
 
