@@ -115,7 +115,9 @@ entries follow the relocation. The existing Minestom `smokeTest` loads the shade
 jar through the extension manager and therefore covers relocation + classloading.
 
 ### 5. Default files as bundled resources
-Each platform ships its own commented `config.yaml` resource with only the keys it
+Each platform ships its own commented default file, bundled as the namespaced resource
+`net/onelitefeather/butterfly/<platform>/default-config.yaml` (a root-level `config.yaml` could be
+shadowed by the host's own file under a parent-first classloader) and written to disk as `config.yaml`, with only the keys it
 supports. Keys are namespaced under `butterfly:` so system-property overrides
 cannot collide with other software in the same JVM.
 

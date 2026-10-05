@@ -118,6 +118,17 @@ class ExtensionLoadingTest {
     }
 
     @Test
+    @DisplayName("a config.yaml on the host classpath is not mistaken for Butterfly's bundled defaults")
+    void hostConfigIsNotCopiedAsDefaults() throws Exception {
+        Path dataDirectory = manager.getExtension("Butterfly").getDataDirectory();
+
+        String written = Files.readString(dataDirectory.resolve("config.yaml"));
+
+        assertTrue(written.contains("sort-format"), "the bundled defaults must be written");
+        assertFalse(written.contains("decoy"), "the host's config.yaml must not be copied");
+    }
+
+    @Test
     @DisplayName("unloading the extension removes its teams")
     void unloadingRemovesTeams() {
         spawnPlayer();

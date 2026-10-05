@@ -38,7 +38,7 @@ final class ButterflyLifecycle {
             logger.error("LuckPerms is not available, Butterfly stays inactive: {}", e.getMessage(), e);
             return;
         }
-        ButterflySettings settings = SettingsFile.load(dataDirectory, "config.yaml", dataDirectory.resolve("flags.properties"), logger);
+        ButterflySettings settings = SettingsFile.load(dataDirectory, "net/onelitefeather/butterfly/minestom/default-config.yaml", dataDirectory.resolve("flags.properties"), logger);
         butterfly = Butterfly.create(parent, settings);
         butterfly.load();
     }
