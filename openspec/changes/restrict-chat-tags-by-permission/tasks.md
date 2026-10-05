@@ -20,11 +20,11 @@ that switches both platforms to the restricted parser is `feat(chat)!` with a
 
 - [x] 3.1 Minestom: write failing `ExtensionBehaviourTest` cases (fresh `Env`, `FakeLuckPerms` with/without `butterfly.chat.tag.color`): coloured message with permission, literal `<red>` without, prefix keeps its colour without tag permissions; then use `ChatMessageParser` in `Butterfly#playerChat`; verify `./gradlew :minestom:test` passes
 - [x] 3.2 Paper: parse once in `PlayerListener#handleChat` with `ChatMessageParser` and a LuckPerms-backed predicate for the source player, renderer only composes; verify `./gradlew :bukkit:build` succeeds and `grep -n "MiniMessage.miniMessage()" bukkit/src/main/java/net/onelitefeather/butterfly/bukkit/listener/PlayerListener.java` returns nothing
-- [ ] 3.3 Run `./gradlew build :minestom:smokeTest`; verify both succeed
+- [x] 3.3 Run `./gradlew build :minestom:smokeTest`; verify both succeed
 
 ## 4. Docs and manual check
 
-- [ ] 4.1 README: section listing every `butterfly.chat.tag.<type>` node (generated from or checked against `ChatTagType`), the wildcard, the literal-text behaviour and the migration line; verify every type in the spec table appears
+- [x] 4.1 README: section listing every `butterfly.chat.tag.<type>` node (generated from or checked against `ChatTagType`), the wildcard, the literal-text behaviour and the migration line; verify every type in the spec table appears
 - [ ] 4.2 Manual Paper test via `./gradlew :bukkit:runServer` with LuckPerms: player without nodes sees `<red>x` literally; after `lp group default permission set butterfly.chat.tag.color true` the same message is red; `<click:run_command:/help>x</click>` has no click event without `butterfly.chat.tag.click` (report in the PR description)
 
 ## 5. Pull request
