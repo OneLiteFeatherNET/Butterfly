@@ -31,8 +31,7 @@ class StandardTagsCoverageTest {
                 row("rainbow", StandardTags.rainbow(), "<rainbow>x"),
                 row("transition", StandardTags.transition(), "<transition:red:blue:0.5>x"),
                 row("pride", StandardTags.pride(), "<pride:gay>x"),
-                // Adventure 5.2.0 only knows <shadow> (and <!shadow>); the spec table also lists <shadow_color>, which is not a tag
-                row("shadow_color", StandardTags.shadowColor(), "<shadow:red>x"),
+                row("shadow", StandardTags.shadowColor(), "<shadow:red>x"),
                 row("font", StandardTags.font(), "<font:uniform>x"),
                 row("reset", StandardTags.reset(), "<reset>x"),
                 row("newline", StandardTags.newline(), "x<newline>x", "x<br>x"),
