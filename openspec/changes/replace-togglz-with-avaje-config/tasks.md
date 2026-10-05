@@ -19,7 +19,7 @@ commits: `refactor(config)`; the breaking commit carries `!` and a
 
 - [x] 3.1 Add `bukkit/src/main/resources/config.yaml` with the Paper defaults from design.md decision 5; verify `unzip -l bukkit/build/libs/butterfly-paper-*.jar | grep config.yaml`
 - [x] 3.2 In `Butterfly#onEnable` load settings via `SettingsFile.load(getDataPath(), ...)` with legacy path `flags.properties` in the working directory, and pass them into `BukkitLuckPermsService` by constructor replacing the static `FORMAT`; verify `./gradlew :bukkit:build` succeeds and `grep -rn "butterfly.format" bukkit/src/main` returns nothing
-- [ ] 3.3 Delete `bukkit/.../feature/`, `bukkit/.../utils/ThreadHelper.java` and `bukkit/src/main/resources/META-INF/services/org.togglz.core.spi.FeatureManagerProvider`, drop `libs.togglz` from `bukkit/build.gradle.kts`; verify `grep -rni togglz bukkit/src bukkit/build.gradle.kts` returns nothing and `./gradlew :bukkit:build` succeeds
+- [x] 3.3 Delete `bukkit/.../feature/`, `bukkit/.../utils/ThreadHelper.java` and `bukkit/src/main/resources/META-INF/services/org.togglz.core.spi.FeatureManagerProvider`, drop `libs.togglz` from `bukkit/build.gradle.kts`; verify `grep -rni togglz bukkit/src bukkit/build.gradle.kts` returns nothing and `./gradlew :bukkit:build` succeeds
 
 ## 4. Minestom module
 

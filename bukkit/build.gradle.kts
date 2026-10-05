@@ -12,8 +12,6 @@ plugins {
 dependencies {
     // LuckPerms API
     compileOnly(libs.luckperms.api)
-    // Togglz
-    implementation(libs.togglz)
     // API
     implementation(project(":api"))
     // Paper API
