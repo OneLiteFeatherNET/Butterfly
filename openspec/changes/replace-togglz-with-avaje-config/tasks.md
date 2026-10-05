@@ -6,7 +6,7 @@ commits: `refactor(config)`; the breaking commit carries `!` and a
 
 ## 1. Dependencies and spike
 
-- [ ] 1.1 Add `avaje-config` (5.2) to the version catalog in `settings.gradle.kts` and as `implementation` in `api/build.gradle.kts`; verify `./gradlew :api:dependencies --configuration runtimeClasspath` lists `io.avaje:avaje-config:5.2`
+- [x] 1.1 Add `avaje-config` (5.2) to the version catalog in `settings.gradle.kts` and as `implementation` in `api/build.gradle.kts`; verify `./gradlew :api:dependencies --configuration runtimeClasspath` lists `io.avaje:avaje-config:5.2`
 - [ ] 1.2 Spike: find the `Configuration.builder()` calls that load exactly one explicit YAML file plus system properties without scanning classpath or working directory, and check whether building needs the context classloader switched; record the result under design.md decision 1 and prove it with a `@TempDir` test that places a decoy `application.yaml` and asserts it is not read
 
 ## 2. Settings in `api`

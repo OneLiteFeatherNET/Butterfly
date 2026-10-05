@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.luckperms.api)
+    implementation(libs.avaje.config)
 }
 
 java {
