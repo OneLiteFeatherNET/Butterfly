@@ -107,8 +107,10 @@ avaje is relocated inside the shaded jar, so a signature with
 `io.avaje.config.Configuration` would expose a type callers cannot construct.
 
 ### 4. Relocate avaje in both shadow jars
-`io.avaje.config` -> `net.onelitefeather.butterfly.libs.avaje.config` in `bukkit`
-and `minestom` `shadowJar`, keeping `mergeServiceFiles()` so avaje's ServiceLoader
+`io.avaje` -> `net.onelitefeather.butterfly.libs.avaje` (so `io.avaje.config` ends up in
+`net.onelitefeather.butterfly.libs.avaje.config`; avaje-config's dependency
+`io.avaje.applog` is relocated with it, otherwise `io/avaje/` entries would remain) in
+the `bukkit` and `minestom` `shadowJar`, keeping `mergeServiceFiles()` so avaje's ServiceLoader
 entries follow the relocation. The existing Minestom `smokeTest` loads the shaded
 jar through the extension manager and therefore covers relocation + classloading.
 

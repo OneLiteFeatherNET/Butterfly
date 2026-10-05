@@ -110,6 +110,14 @@ class ExtensionLoadingTest {
     }
 
     @Test
+    @DisplayName("the shaded jar writes its default config.yaml into the extension data directory")
+    void loadedExtensionWritesDefaultConfig() {
+        Path dataDirectory = manager.getExtension("Butterfly").getDataDirectory();
+
+        assertTrue(Files.isRegularFile(dataDirectory.resolve("config.yaml")), "relocated avaje-config and the bundled default must work under the extension class loader");
+    }
+
+    @Test
     @DisplayName("unloading the extension removes its teams")
     void unloadingRemovesTeams() {
         spawnPlayer();

@@ -81,6 +81,8 @@ tasks {
         archiveClassifier.set("")
         archiveFileName.set("butterfly-minestom.jar")
         mergeServiceFiles()
+        // avaje-config and avaje-applog are private to Butterfly; relocate so they cannot clash with the host or other plugins
+        relocate("io.avaje", "net.onelitefeather.butterfly.libs.avaje")
     }
     test {
         useJUnitPlatform()
