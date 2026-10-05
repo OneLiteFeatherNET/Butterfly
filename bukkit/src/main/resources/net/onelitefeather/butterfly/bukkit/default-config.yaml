@@ -1,0 +1,4 @@
+butterfly:
+  teams:
+    # String.format pattern for the numeric team-name prefix (tab sorting)
+    sort-format: "%04d"

@@ -7,6 +7,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.api.LuckPermsService;
+import net.onelitefeather.butterfly.api.config.ButterflySettings;
 import net.onelitefeather.butterfly.util.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,7 +22,12 @@ public final class BukkitLuckPermsService implements LuckPermsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BukkitLuckPermsService.class);
     private static final List<String> COLOR_NAMES = new ArrayList<>(NamedTextColor.NAMES.keys());
-    private static final String FORMAT = System.getProperty("butterfly.format", "%04d");
+
+    private final ButterflySettings settings;
+
+    public BukkitLuckPermsService(@NotNull ButterflySettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public Group getDefaultGroup() {
@@ -54,7 +60,7 @@ public final class BukkitLuckPermsService implements LuckPermsService {
             if (playerTeam != null) playerTeam.removePlayer(player);
 
             var sortId = LuckPermsAPI.luckPermsAPI().getGroupSortId(group);
-            var teamName = String.format(FORMAT, sortId) + group.getName();
+            var teamName = String.format(settings.sortFormat(), sortId) + group.getName();
             var team = playerScoreboard.getTeam(teamName);
 
             if (team == null) {

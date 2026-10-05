@@ -16,14 +16,15 @@ dependencies {
     compileOnly(platform(libs.minestom.extensions.bom))
     compileOnly(libs.minestom.extensions)
     compileOnly(libs.minestom.extensions.processor)
-    // Togglz
-    implementation(libs.togglz)
     // LuckPerms API
     compileOnly(libs.luckperms.api)
+    // provided by the host at runtime
+    compileOnly(libs.slf4j.api)
     compileOnly(libs.minestom)
     compileOnly(libs.adventure.minimessage)
 
     testImplementation(libs.minestom)
+    testImplementation(libs.slf4j.api)
     testImplementation(libs.minestom.testing)
     testImplementation(libs.luckperms.api)
     testImplementation(platform(libs.minestom.extensions.bom))
@@ -80,6 +81,8 @@ tasks {
         archiveClassifier.set("")
         archiveFileName.set("butterfly-minestom.jar")
         mergeServiceFiles()
+        // avaje-config and avaje-applog are private to Butterfly; relocate so they cannot clash with the host or other plugins
+        relocate("io.avaje", "net.onelitefeather.butterfly.libs.avaje")
     }
     test {
         useJUnitPlatform()

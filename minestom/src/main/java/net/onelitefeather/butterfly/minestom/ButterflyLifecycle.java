@@ -3,13 +3,12 @@ package net.onelitefeather.butterfly.minestom;
 import net.luckperms.api.LuckPermsProvider;
 import net.minestom.server.event.Event;
 import net.minestom.server.event.EventNode;
-import net.onelitefeather.butterfly.minestom.feature.ButterflyFeatures;
+import net.onelitefeather.butterfly.api.config.ButterflySettings;
+import net.onelitefeather.butterfly.api.config.SettingsFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -39,14 +38,8 @@ final class ButterflyLifecycle {
             logger.error("LuckPerms is not available, Butterfly stays inactive: {}", e.getMessage(), e);
             return;
         }
-        try {
-            Files.createDirectories(dataDirectory);
-            ButterflyFeatures.configure(dataDirectory.resolve("flags.properties"));
-        } catch (IOException e) {
-            logger.warn("Cannot create data directory {}, feature flags stay at their defaults: {}", dataDirectory, e.getMessage());
-            ButterflyFeatures.configureDefaults();
-        }
-        butterfly = Butterfly.create(parent);
+        ButterflySettings settings = SettingsFile.load(dataDirectory, "net/onelitefeather/butterfly/minestom/default-config.yaml", dataDirectory.resolve("flags.properties"), logger);
+        butterfly = Butterfly.create(parent, settings);
         butterfly.load();
     }
 
@@ -54,7 +47,6 @@ final class ButterflyLifecycle {
         if (butterfly != null) {
             butterfly.terminate();
             butterfly = null;
-            ButterflyFeatures.reset();
         }
     }
 

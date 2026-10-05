@@ -1,4 +1,4 @@
-package net.onelitefeather.butterfly.minestom;
+package net.onelitefeather.butterfly.api.config;
 
 import org.slf4j.Logger;
 
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Captures log calls in memory so tests can assert on them.
@@ -22,7 +21,7 @@ final class RecordingLogger {
                 if (name.equals("error") || name.equals("warn")) {
                     (name.equals("error") ? errors : warnings).add(Arrays.stream(args == null ? new Object[0] : args)
                             // varargs calls arrive as one Object[] argument
-                            .flatMap(arg -> arg instanceof Object[] array ? Arrays.stream(array) : Stream.of(arg))
+                            .flatMap(arg -> arg instanceof Object[] array ? Arrays.stream(array) : java.util.stream.Stream.of(arg))
                             .map(arg -> arg instanceof Throwable t ? t.toString() : String.valueOf(arg))
                             .reduce("", (a, b) -> a.isEmpty() ? b : a + " " + b));
                 }

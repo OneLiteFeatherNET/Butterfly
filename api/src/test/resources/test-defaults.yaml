@@ -1,0 +1,5 @@
+# Bundled default file used by SettingsFileTest
+butterfly:
+  teams:
+    sort-format: "%04d"
+    collision: false

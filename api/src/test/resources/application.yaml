@@ -1,0 +1,5 @@
+# Decoy: avaje-config loads this from the classpath when standard resource loading is on.
+# Butterfly must never read it.
+butterfly:
+  teams:
+    sort-format: "%decoy"
