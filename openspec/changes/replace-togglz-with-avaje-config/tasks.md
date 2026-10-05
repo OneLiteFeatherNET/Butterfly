@@ -31,7 +31,7 @@ commits: `refactor(config)`; the breaking commit carries `!` and a
 ## 5. Packaging and docs
 
 - [x] 5.1 Relocate `io.avaje.config` to `net.onelitefeather.butterfly.libs.avaje.config` in both `shadowJar` blocks (keep `mergeServiceFiles()`); verify with `unzip -l` that no `io/avaje/` entries remain in either shaded jar and that `./gradlew :minestom:smokeTest` (shaded jar via the extension manager) passes
-- [ ] 5.2 Remove the `togglz` entry from the version catalog; verify `grep -rni togglz settings.gradle.kts` returns nothing and `./gradlew build` succeeds
+- [x] 5.2 Remove the `togglz` entry from the version catalog; verify `grep -rni togglz settings.gradle.kts` returns nothing and `./gradlew build` succeeds
 - [ ] 5.3 Replace the feature-flag lines in `README.md` with a configuration section: both `config.yaml` locations, every key with its default from the spec table, `-Dbutterfly.format` legacy override, `Butterfly.create(ButterflySettings)` for library users, and the note to delete `flags.properties`; verify every key from the spec table appears in the README
 - [ ] 5.4 Manual Paper smoke test via `./gradlew :bukkit:runServer` with LuckPerms: `plugins/Butterfly/config.yaml` is created on first start and unchanged on the second; with `sort-format: "%02d"` and `/updateteams` team names have a two-digit prefix; with `-Dbutterfly.format=%03d` and no key in the file, a three-digit prefix (report results in the PR description)
 
