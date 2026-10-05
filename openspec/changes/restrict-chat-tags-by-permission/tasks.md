@@ -7,7 +7,7 @@ that switches both platforms to the restricted parser is `feat(chat)!` with a
 
 ## 1. Groundwork in `api`
 
-- [ ] 1.1 Add Adventure API and MiniMessage as `compileOnly` and `testImplementation` to `api/build.gradle.kts` (versions via the mycelium BOM); verify `./gradlew :api:compileJava` succeeds
+- [x] 1.1 Add Adventure API and MiniMessage as `compileOnly` and `testImplementation` to `api/build.gradle.kts` (versions via the mycelium BOM); verify `./gradlew :api:compileJava` succeeds
 - [ ] 1.2 Confirm which `StandardTags` factory provides the `<head>` tag (expected `sequentialHead()`) and the exact tag names of every row in the spec table with a parameterized unit test that parses one sample per type with only that resolver enabled; verify `./gradlew :api:test` passes
 - [ ] 1.3 Add `LuckPermsAPI.hasPermission(UUID, String)` (user cached permission data, user's contextual query options, `false` when the user is not loaded) with unit tests against a fake LuckPerms user; verify `./gradlew :api:test` passes
 
