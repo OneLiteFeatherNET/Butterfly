@@ -1,5 +1,8 @@
 package net.onelitefeather.butterfly.minestom;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minestom.server.color.TeamColor;
 import net.minestom.server.entity.Player;
@@ -130,5 +133,65 @@ class ExtensionBehaviourTest {
 
         assertEquals("0001admin", player.getTeam().getTeamName(), "team name must use the primary group");
         assertEquals(TeamColor.RED, player.getTeam().getTeamColor(), "colour must use the primary group");
+    }
+
+    @Test
+    @DisplayName("chat applies a tag the sender has the permission for")
+    void chatAppliesPermittedTag() {
+        fixture.luckPerms.grantPermissions(ExtensionFixture.PLAYER_ID, "butterfly.chat.tag.color");
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "<blue>hello");
+
+        Component message = event.getFormattedMessage();
+        assertEquals("[Admin] Alice: hello", PlainTextComponentSerializer.plainText().serialize(message), "the tag must be consumed");
+        assertEquals(NamedTextColor.BLUE, textColor(message, "hello"), "the message part must be blue");
+    }
+
+    @Test
+    @DisplayName("chat keeps a tag literal when the sender lacks the permission")
+    void chatKeepsDisallowedTagLiteral() {
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "<blue>hello");
+
+        assertEquals("[Admin] Alice: <blue>hello", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()),
+                "the tag must stay in the text");
+    }
+
+    @Test
+    @DisplayName("chat carries no click event without the click permission")
+    void chatDropsClickEventWithoutPermission() {
+        fixture.luckPerms.grantPermissions(ExtensionFixture.PLAYER_ID, "butterfly.chat.tag.color");
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "<click:run_command:/op me>x</click>");
+
+        assertFalse(carriesClickEvent(event.getFormattedMessage()), "no click event may be present");
+    }
+
+    @Test
+    @DisplayName("the prefix keeps its colour for a sender without tag permissions")
+    void prefixKeepsColourWithoutTagPermissions() {
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "hi");
+
+        assertEquals(NamedTextColor.RED, textColor(event.getFormattedMessage(), "[Admin] Alice"), "the prefix and name must stay red");
+    }
+
+    private static NamedTextColor textColor(Component component, String content) {
+        if (component instanceof TextComponent text && text.content().equals(content)) {
+            return (NamedTextColor) text.color();
+        }
+        for (Component child : component.children()) {
+            NamedTextColor found = textColor(child, content);
+            if (found != null) return found;
+        }
+        return null;
+    }
+
+    private static boolean carriesClickEvent(Component component) {
+        return component.clickEvent() != null || component.children().stream().anyMatch(ExtensionBehaviourTest::carriesClickEvent);
     }
 }
