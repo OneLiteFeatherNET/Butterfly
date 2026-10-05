@@ -13,8 +13,8 @@ that switches both platforms to the restricted parser is `feat(chat)!` with a
 
 ## 2. Parser
 
-- [ ] 2.1 Write failing unit tests for `ChatMessageParser.parse(raw, hasPermission)` covering every scenario of "Tags require a permission per tag type" and "Disallowed tags stay as literal text" (permissions as a plain `Predicate<String>`, results compared via the plain-text serializer and component style/click/hover assertions); verify they fail with `./gradlew :api:test`
-- [ ] 2.2 Implement `ChatTagType` (type name -> resolvers) and `ChatMessageParser`; verify `./gradlew :api:test` passes
+- [x] 2.1 Write failing unit tests for `ChatMessageParser.parse(raw, hasPermission)` covering every scenario of "Tags require a permission per tag type" and "Disallowed tags stay as literal text" (permissions as a plain `Predicate<String>`, results compared via the plain-text serializer and component style/click/hover assertions); verify they fail with `./gradlew :api:test`
+- [x] 2.2 Implement `ChatTagType` (type name -> resolvers) and `ChatMessageParser`; verify `./gradlew :api:test` passes
 
 ## 3. Platforms
 
