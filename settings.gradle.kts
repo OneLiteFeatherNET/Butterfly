@@ -33,7 +33,7 @@ dependencyResolutionManagement {
             version("run-paper", "3.1.0")
             version("shadow", "9.6.1")
             version("togglz", "4.6.4")
-            version("mycelium-bom", "1.8.6")
+            version("mycelium-bom", "1.8.7")
             version("luckperms.api", "5.6-SNAPSHOT")
             version("minestom-extensions", "2.2.0")
             // must match the Minestom version resolved through the BOMs (Env lives in this artifact)
