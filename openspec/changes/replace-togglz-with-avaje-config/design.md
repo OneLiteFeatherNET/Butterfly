@@ -77,6 +77,15 @@ the shaded-jar `smokeTest`, task 5.1). Proven by `AvajeConfigurationSpikeTest`
   `Configuration`, warns once about `flags.properties` at a given legacy path, and
   falls back to defaults + warning when the folder cannot be written.
 
+- `SettingsFile.fromSystemProperties(Logger)`: defaults + system properties, no file
+  I/O (Minestom library path).
+- Precedence: system property `butterfly.teams.sort-format` > system property
+  `butterfly.format` > `config.yaml` > default. `SettingsFile` takes the system
+  properties as an injectable map (tests never call `System.setProperty`); the legacy
+  property is translated onto the new key after the file is loaded, because the
+  generated default file always contains the new key and would otherwise shadow
+  `-Dbutterfly.format`.
+
 Both platforms share this code, so the Paper and Minestom paths differ only in the
 data folder, the legacy `flags.properties` location and the default resource.
 

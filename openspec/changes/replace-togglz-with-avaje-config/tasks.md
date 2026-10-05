@@ -13,7 +13,7 @@ commits: `refactor(config)`; the breaking commit carries `!` and a
 
 - [x] 2.1 Write failing unit tests for `ButterflySettings.from(Configuration, Logger)` covering the requirements "Missing keys fall back to defaults", "Invalid values fall back to defaults with a warning" and "System properties override file values" (configuration built with `Configuration.builder().put(...)`, warnings asserted through a captured logger, no `System.setProperty`); verify they fail with `./gradlew :api:test`
 - [x] 2.2 Implement the `ButterflySettings` record, `defaults()` and `from(...)`; verify `./gradlew :api:test` passes
-- [ ] 2.3 Write failing `@TempDir` tests for `SettingsFile.load(...)`: default file written when absent, existing file untouched, folder created, unwritable folder -> defaults + warning, one `flags.properties` warning naming `butterfly.teams.collision` with the legacy file left unchanged, decoy `config.yaml` in another directory ignored; then implement until `./gradlew :api:test` passes
+- [x] 2.3 Write failing `@TempDir` tests for `SettingsFile.load(...)`: default file written when absent, existing file untouched, folder created, unwritable folder -> defaults + warning, one `flags.properties` warning naming `butterfly.teams.collision` with the legacy file left unchanged, decoy `config.yaml` in another directory ignored; then implement until `./gradlew :api:test` passes
 
 ## 3. Paper module
 
