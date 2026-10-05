@@ -34,7 +34,7 @@ dependencyResolutionManagement {
             version("shadow", "9.6.1")
             version("avaje-config", "5.2")
             version("slf4j", "2.0.17")
-            version("mycelium-bom", "1.8.7")
+            version("mycelium-bom", "1.8.8")
             version("luckperms.api", "5.6-SNAPSHOT")
             version("minestom-extensions", "2.2.0")
             // must match the Minestom version resolved through the BOMs (Env lives in this artifact)
