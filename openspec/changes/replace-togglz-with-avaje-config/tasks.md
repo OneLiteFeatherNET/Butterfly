@@ -17,13 +17,13 @@ commits: `refactor(config)`; the breaking commit carries `!` and a
 
 ## 3. Paper module
 
-- [x] 3.1 Add `bukkit/src/main/resources/config.yaml` with the Paper defaults from design.md decision 5; verify `unzip -l bukkit/build/libs/butterfly-paper-*.jar | grep config.yaml`
+- [x] 3.1 Add `bukkit/src/main/resources/net/onelitefeather/butterfly/bukkit/default-config.yaml` with the Paper defaults from design.md decision 5; verify `unzip -l bukkit/build/libs/butterfly-paper-*.jar | grep default-config.yaml`
 - [x] 3.2 In `Butterfly#onEnable` load settings via `SettingsFile.load(getDataPath(), ...)` with legacy path `flags.properties` in the working directory, and pass them into `BukkitLuckPermsService` by constructor replacing the static `FORMAT`; verify `./gradlew :bukkit:build` succeeds and `grep -rn "butterfly.format" bukkit/src/main` returns nothing
 - [x] 3.3 Delete `bukkit/.../feature/`, `bukkit/.../utils/ThreadHelper.java` and `bukkit/src/main/resources/META-INF/services/org.togglz.core.spi.FeatureManagerProvider`, drop `libs.togglz` from `bukkit/build.gradle.kts`; verify `grep -rni togglz bukkit/src bukkit/build.gradle.kts` returns nothing and `./gradlew :bukkit:build` succeeds
 
 ## 4. Minestom module
 
-- [x] 4.1 Add `minestom/src/main/resources/config.yaml` with the Minestom defaults from design.md decision 5; verify it is in the shaded jar via `unzip -l`
+- [x] 4.1 Add `minestom/src/main/resources/net/onelitefeather/butterfly/minestom/default-config.yaml` with the Minestom defaults from design.md decision 5; verify it is in the shaded jar via `unzip -l`
 - [x] 4.2 Write failing tests: extension started with a `@TempDir` data directory whose `config.yaml` sets `butterfly.teams.collision: true` gives the spawned player's team collision `ALWAYS`; a data directory with only `flags.properties` (`TEAM_COLLISION=true`) gives `NEVER` and one warning; `Butterfly.create(settings)` with a custom sort format names teams accordingly; `Butterfly.create()` creates no file in the working directory. Fresh `Env` per test, ticks driven explicitly; verify they fail with `./gradlew :minestom:test`
 - [x] 4.3 Pass `ButterflySettings` into `MinestomLuckPermsService` by constructor (sort format, collision), add `Butterfly.create(ButterflySettings)` and an internal `create(parent, settings)`, make `Butterfly.create()` use defaults + system properties, and replace the `ButterflyFeatures.configure(...)` block in `ButterflyLifecycle.start()` with `SettingsFile.load(dataDirectory, ...)`; verify `./gradlew :minestom:test` passes including `ExtensionBehaviourTest.collisionIsOffByDefault`
 - [x] 4.4 Delete `minestom/.../feature/`, `FeatureFlagsTest`, `ExtensionFlagsFileTest` (their still-relevant cases, such as "missing data directory is created", are covered by 2.3/4.2) and the Togglz SPI file if present, drop `libs.togglz` from `minestom/build.gradle.kts`; verify `grep -rni togglz minestom/src minestom/build.gradle.kts` returns nothing and `./gradlew :minestom:test` passes
