@@ -37,4 +37,4 @@ commits: `refactor(config)`; the breaking commit carries `!` and a
 
 ## 6. Pull request
 
-- [ ] 6.1 Open the pull request titled `refactor(config)!: replace togglz with avaje-config` with a `BREAKING CHANGE:` section (`flags.properties` no longer read, new data-folder `config.yaml`, Minestom collision via `butterfly.teams.collision`); verify `gh pr view` shows the title and CI is green
+- [x] 6.1 Open the pull request titled `refactor(config)!: replace togglz with avaje-config` with a `BREAKING CHANGE:` section (`flags.properties` no longer read, new data-folder `config.yaml`, Minestom collision via `butterfly.teams.collision`); verify `gh pr view` shows the title and CI is green
