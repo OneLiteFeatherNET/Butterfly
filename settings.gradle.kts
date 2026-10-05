@@ -33,7 +33,7 @@ dependencyResolutionManagement {
             version("run-paper", "3.1.0")
             version("shadow", "9.6.1")
             version("avaje-config", "5.2")
-            version("slf4j", "2.0.17")
+            version("slf4j", "2.0.18")
             version("mycelium-bom", "1.8.8")
             version("luckperms.api", "5.6-SNAPSHOT")
             version("minestom-extensions", "2.2.0")
