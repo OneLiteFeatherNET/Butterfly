@@ -9,32 +9,51 @@ import net.minestom.server.event.EventNode;
 import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
+import net.onelitefeather.butterfly.api.config.ButterflySettings;
+import net.onelitefeather.butterfly.api.config.SettingsFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class Butterfly {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Butterfly.class);
+
     private final EventNode<Event> parent;
+    private final ButterflySettings settings;
     private @Nullable EventNode<Event> node;
     private @Nullable MinestomLuckPermsService service;
 
-    private Butterfly(@NotNull EventNode<Event> parent) {
+    private Butterfly(@NotNull EventNode<Event> parent, @NotNull ButterflySettings settings) {
         this.parent = parent;
+        this.settings = settings;
     }
 
+    /**
+     * Creates an instance with the default settings, overridden only by JVM system properties
+     * ({@code butterfly.teams.sort-format}, {@code butterfly.teams.collision}). No file is read or written.
+     */
     public static Butterfly create() {
-        return new Butterfly(MinecraftServer.getGlobalEventHandler());
+        return create(SettingsFile.fromSystemProperties(LOGGER));
+    }
+
+    /**
+     * Creates an instance with the settings supplied by the host. No file is read or written.
+     */
+    public static Butterfly create(@NotNull ButterflySettings settings) {
+        return create(MinecraftServer.getGlobalEventHandler(), settings);
     }
 
     /**
      * Creates an instance whose listeners live on a child node of the given parent.
      */
-    static Butterfly create(@NotNull EventNode<Event> parent) {
-        return new Butterfly(parent);
+    static Butterfly create(@NotNull EventNode<Event> parent, @NotNull ButterflySettings settings) {
+        return new Butterfly(parent, settings);
     }
 
     public void load() {
-        service = new MinestomLuckPermsService();
+        service = new MinestomLuckPermsService(settings);
         LuckPermsAPI.setLuckPermsService(service);
         LuckPermsAPI.luckPermsAPI().subscribeEvents();
 

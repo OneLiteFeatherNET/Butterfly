@@ -7,12 +7,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Child-first class loader that mimics an extension class loader: Butterfly and Togglz classes come from
+ * Child-first class loader that mimics an extension class loader: Butterfly and avaje-config classes come from
  * this loader, everything else from the parent. Requests for blocked prefixes fail.
  */
 final class IsolatedClassLoader extends URLClassLoader {
 
-    private static final List<String> OWN_PREFIXES = List.of("net.onelitefeather.butterfly.", "org.togglz.");
+    private static final List<String> OWN_PREFIXES = List.of("net.onelitefeather.butterfly.", "io.avaje.config.");
 
     private final List<String> blockedPrefixes;
     private final List<String> requested = Collections.synchronizedList(new ArrayList<>());

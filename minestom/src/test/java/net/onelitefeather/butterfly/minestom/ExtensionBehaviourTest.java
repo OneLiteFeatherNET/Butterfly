@@ -78,7 +78,7 @@ class ExtensionBehaviourTest {
     }
 
     @Test
-    @DisplayName("team collision is off when no flags file exists")
+    @DisplayName("team collision is off when no setting enables it")
     void collisionIsOffByDefault() {
         Player player = fixture.spawnPlayer();
 

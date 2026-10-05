@@ -12,7 +12,7 @@ import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.scoreboard.Team;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
 import net.onelitefeather.butterfly.api.LuckPermsService;
-import net.onelitefeather.butterfly.minestom.feature.ButterflyFeatures;
+import net.onelitefeather.butterfly.api.config.ButterflySettings;
 import net.onelitefeather.butterfly.util.Constants;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +26,11 @@ public class MinestomLuckPermsService implements LuckPermsService {
     private static final List<String> COLOR_NAMES = new ArrayList<>(NamedTextColor.NAMES.keys());
     private final Set<Team> createdTeams = ConcurrentHashMap.newKeySet();
 
-    private static final String FORMAT = System.getProperty("butterfly.format", "%04d");
+    private final ButterflySettings settings;
+
+    public MinestomLuckPermsService(@NotNull ButterflySettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public Group getDefaultGroup() {
@@ -39,7 +43,7 @@ public class MinestomLuckPermsService implements LuckPermsService {
         if (player != null) {
             var group = LuckPermsAPI.luckPermsAPI().getPrimaryGroup(player.getUuid());
             var sortId = LuckPermsAPI.luckPermsAPI().getGroupSortId(group);
-            var teamName = String.format(FORMAT, sortId) + group.getName();
+            var teamName = String.format(settings.sortFormat(), sortId) + group.getName();
 
             var prefixOptional = LuckPermsAPI.luckPermsAPI().getPlayerPrefix(player.getUuid());
             if(prefixOptional.isEmpty()) return;
@@ -56,7 +60,7 @@ public class MinestomLuckPermsService implements LuckPermsService {
                         .build();
                 createdTeams.add(team);
             }
-            if (ButterflyFeatures.TEAM_COLLISION.isActive()) {
+            if (settings.teamCollision()) {
                 team.setCollisionRule(TeamsPacket.CollisionRule.ALWAYS);
             } else {
                 team.setCollisionRule(TeamsPacket.CollisionRule.NEVER);
