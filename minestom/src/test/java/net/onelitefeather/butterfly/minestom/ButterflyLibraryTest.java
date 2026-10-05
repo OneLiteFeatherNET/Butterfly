@@ -1,6 +1,8 @@
 package net.onelitefeather.butterfly.minestom;
 
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minestom.server.entity.Player;
+import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.testing.Env;
 import net.minestom.testing.EnvTest;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Butterfly used as a library: the host passes the settings, nothing is read from disk.
@@ -44,7 +48,7 @@ class ButterflyLibraryTest {
     @Test
     @DisplayName("settings with collision on give the team collision rule ALWAYS")
     void hostEnablesCollision(Env env, @TempDir Path dir) {
-        Player player = spawnWith(env, dir, new ButterflySettings("%04d", true));
+        Player player = spawnWith(env, dir, new ButterflySettings("%04d", true, true));
 
         assertEquals(TeamsPacket.CollisionRule.ALWAYS, player.getTeam().getCollisionRule());
     }
@@ -60,9 +64,30 @@ class ButterflyLibraryTest {
     @Test
     @DisplayName("a custom sort format names the team")
     void customSortFormatNamesTeam(Env env, @TempDir Path dir) {
-        Player player = spawnWith(env, dir, new ButterflySettings("%02d", false));
+        Player player = spawnWith(env, dir, new ButterflySettings("%02d", false, true));
 
         assertEquals("01admin", player.getTeam().getTeamName());
+    }
+
+    @Test
+    @DisplayName("settings with the chat head off give a chat line without head and leading space")
+    void hostDisablesChatHead(Env env, @TempDir Path dir) {
+        Player player = spawnWith(env, dir, new ButterflySettings("%04d", false, false));
+
+        PlayerChatEvent event = fixture.chat(player, "hello");
+
+        assertEquals("[Admin] Alice: hello", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()));
+        assertFalse(ExtensionBehaviourTest.containsObject(event.getFormattedMessage()), "no player head in the line");
+    }
+
+    @Test
+    @DisplayName("default settings give a chat line that starts with the head")
+    void defaultsShowChatHead(Env env, @TempDir Path dir) {
+        Player player = spawnWith(env, dir, ButterflySettings.defaults());
+
+        PlayerChatEvent event = fixture.chat(player, "hello");
+
+        assertNotNull(ExtensionBehaviourTest.headOf(event.getFormattedMessage()), "the line starts with the head");
     }
 
     @Test

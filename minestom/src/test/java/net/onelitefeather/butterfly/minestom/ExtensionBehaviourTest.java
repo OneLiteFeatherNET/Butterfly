@@ -1,11 +1,14 @@
 package net.onelitefeather.butterfly.minestom;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ObjectComponent;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.object.PlayerHeadObjectContents;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minestom.server.color.TeamColor;
 import net.minestom.server.entity.Player;
+import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.scoreboard.Team;
@@ -18,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Path;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,7 +81,7 @@ class ExtensionBehaviourTest {
 
         PlayerChatEvent event = fixture.chat(player, "hello");
 
-        assertEquals("[Admin] Alice: hello", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()));
+        assertEquals(" [Admin] Alice: hello", textWithoutHead(event.getFormattedMessage()));
     }
 
     @Test
@@ -108,7 +112,7 @@ class ExtensionBehaviourTest {
 
         PlayerChatEvent event = fixture.chat(player, "hi");
 
-        assertEquals("[Content] Alice: hi", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()));
+        assertEquals(" [Content] Alice: hi", textWithoutHead(event.getFormattedMessage()));
     }
 
     @Test
@@ -119,7 +123,7 @@ class ExtensionBehaviourTest {
 
         PlayerChatEvent event = fixture.chat(player, "hi");
 
-        assertEquals("[VIP] Alice: hi", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()));
+        assertEquals(" [VIP] Alice: hi", textWithoutHead(event.getFormattedMessage()));
         assertEquals("[VIP] Alice", PlainTextComponentSerializer.plainText().serialize(player.getDisplayName()));
     }
 
@@ -144,7 +148,7 @@ class ExtensionBehaviourTest {
         PlayerChatEvent event = fixture.chat(player, "<blue>hello");
 
         Component message = event.getFormattedMessage();
-        assertEquals("[Admin] Alice: hello", PlainTextComponentSerializer.plainText().serialize(message), "the tag must be consumed");
+        assertEquals(" [Admin] Alice: hello", textWithoutHead(message), "the tag must be consumed");
         assertEquals(NamedTextColor.BLUE, textColor(message, "hello"), "the message part must be blue");
     }
 
@@ -155,7 +159,7 @@ class ExtensionBehaviourTest {
 
         PlayerChatEvent event = fixture.chat(player, "<blue>hello");
 
-        assertEquals("[Admin] Alice: <blue>hello", PlainTextComponentSerializer.plainText().serialize(event.getFormattedMessage()),
+        assertEquals(" [Admin] Alice: <blue>hello", textWithoutHead(event.getFormattedMessage()),
                 "the tag must stay in the text");
     }
 
@@ -178,6 +182,99 @@ class ExtensionBehaviourTest {
         PlayerChatEvent event = fixture.chat(player, "hi");
 
         assertEquals(NamedTextColor.RED, textColor(event.getFormattedMessage(), "[Admin] Alice"), "the prefix and name must stay red");
+    }
+
+    @Test
+    @DisplayName("chat starts with the sender's player head")
+    void chatStartsWithPlayerHead() {
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "hello");
+
+        PlayerHeadObjectContents head = headOf(event.getFormattedMessage());
+        assertNotNull(head, "the first part of the line is a player head");
+        assertEquals(ExtensionFixture.PLAYER_ID, head.id(), "the head belongs to the sender");
+        assertEquals(ExtensionFixture.PLAYER_NAME, head.name(), "the head carries the sender's name");
+    }
+
+    @Test
+    @DisplayName("a single space separates the head from the prefix")
+    void spaceSeparatesHeadFromPrefix() {
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "hello");
+
+        assertEquals(Component.space(), event.getFormattedMessage().children().get(1), "space right after the head");
+    }
+
+    @Test
+    @DisplayName("the head carries the sender's skin texture and signature")
+    void headCarriesSkin() {
+        Player player = fixture.spawnPlayer();
+        player.setSkin(new PlayerSkin("texture-value", "texture-signature"));
+
+        PlayerChatEvent event = fixture.chat(player, "hello");
+
+        PlayerHeadObjectContents head = headOf(event.getFormattedMessage());
+        assertNotNull(head, "the first part of the line is a player head");
+        assertEquals(1, head.profileProperties().size(), "exactly one profile property");
+        assertEquals("textures", head.profileProperties().get(0).name(), "property name");
+        assertEquals("texture-value", head.profileProperties().get(0).value(), "texture value");
+        assertEquals("texture-signature", head.profileProperties().get(0).signature(), "texture signature");
+    }
+
+    @Test
+    @DisplayName("a player without a skin still gets a head with UUID and name but no texture")
+    void headWithoutSkinHasNoTexture() {
+        Player player = fixture.spawnPlayer();
+        player.setSkin(null);
+
+        PlayerChatEvent event = fixture.chat(player, "hello");
+
+        PlayerHeadObjectContents head = headOf(event.getFormattedMessage());
+        assertNotNull(head, "the first part of the line is a player head");
+        assertEquals(ExtensionFixture.PLAYER_ID, head.id(), "the head belongs to the sender");
+        assertTrue(head.profileProperties().isEmpty(), "no texture property without a skin");
+    }
+
+    @Test
+    @DisplayName("the display name carries no player head")
+    void displayNameHasNoHead() {
+        Player player = fixture.spawnPlayer();
+
+        fixture.chat(player, "hello");
+
+        assertFalse(containsObject(player.getDisplayName()), "the display name must stay head-free");
+        assertEquals("[Admin] Alice", PlainTextComponentSerializer.plainText().serialize(player.getDisplayName()));
+    }
+
+    @Test
+    @DisplayName("the team prefix carries no player head")
+    void teamPrefixHasNoHead() {
+        Player player = fixture.spawnPlayer();
+
+        assertFalse(containsObject(player.getTeam().getPrefix()), "the team prefix must stay head-free");
+    }
+
+    /** The plain text of the line without the head glyph, so the separating space stays visible. */
+    static String textWithoutHead(Component line) {
+        return line.children().stream()
+                .filter(part -> !(part instanceof ObjectComponent))
+                .map(part -> PlainTextComponentSerializer.plainText().serialize(part))
+                .collect(Collectors.joining());
+    }
+
+    /** The head contents when the first part of the line is a player head, otherwise {@code null}. */
+    static PlayerHeadObjectContents headOf(Component line) {
+        if (line.children().isEmpty()) return null;
+        if (line.children().get(0) instanceof ObjectComponent object && object.contents() instanceof PlayerHeadObjectContents head) {
+            return head;
+        }
+        return null;
+    }
+
+    static boolean containsObject(Component component) {
+        return component instanceof ObjectComponent || component.children().stream().anyMatch(ExtensionBehaviourTest::containsObject);
     }
 
     private static NamedTextColor textColor(Component component, String content) {

@@ -4,3 +4,7 @@ butterfly:
     sort-format: "%04d"
     # true = players in the same team push each other
     collision: false
+  chat:
+    head:
+      # true = chat lines start with the sender's player head (clients 1.21.9+)
+      enabled: true

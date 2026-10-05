@@ -25,6 +25,7 @@ class ButterflySettingsTest {
 
         assertEquals("%04d", defaults.sortFormat());
         assertFalse(defaults.teamCollision(), "collision defaults to off");
+        assertTrue(defaults.chatHeadEnabled(), "the chat head defaults to on");
     }
 
     @Test
@@ -95,5 +96,33 @@ class ButterflySettingsTest {
 
         assertEquals("%04d", settings.sortFormat());
         assertTrue(log.warnings().get(0).contains("butterfly.format"), "warning names the legacy key");
+    }
+
+    @Test
+    @DisplayName("the chat head is on when the key is absent")
+    void chatHeadIsOnWhenAbsent() {
+        ButterflySettings settings = settingsFrom(Configuration.builder());
+
+        assertTrue(settings.chatHeadEnabled(), "chat head defaults to on");
+    }
+
+    @Test
+    @DisplayName("the chat head can be switched off")
+    void chatHeadCanBeSwitchedOff() {
+        ButterflySettings settings = settingsFrom(Configuration.builder().put("butterfly.chat.head.enabled", "false"));
+
+        assertFalse(settings.chatHeadEnabled(), "chat head was switched off");
+        assertEquals(List.of(), log.warnings(), "a valid value does not warn");
+    }
+
+    @Test
+    @DisplayName("a non-boolean chat head value falls back to on and warns with key and value")
+    void nonBooleanChatHeadFallsBack() {
+        ButterflySettings settings = settingsFrom(Configuration.builder().put("butterfly.chat.head.enabled", "maybe"));
+
+        assertTrue(settings.chatHeadEnabled(), "chat head falls back to on");
+        assertEquals(1, log.warnings().size(), "exactly one warning");
+        assertTrue(log.warnings().get(0).contains("butterfly.chat.head.enabled"), "warning names the key");
+        assertTrue(log.warnings().get(0).contains("maybe"), "warning names the rejected value");
     }
 }

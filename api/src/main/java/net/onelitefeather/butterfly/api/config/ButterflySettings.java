@@ -11,19 +11,23 @@ import java.util.Optional;
  *
  * @param sortFormat    {@link String#format} pattern for the numeric team-name prefix that sorts the tab list
  * @param teamCollision whether players in the same team push each other (Minestom only)
+ * @param chatHeadEnabled whether chat lines start with the sender's player head
  */
-public record ButterflySettings(String sortFormat, boolean teamCollision) {
+public record ButterflySettings(String sortFormat, boolean teamCollision, boolean chatHeadEnabled) {
 
     public static final String SORT_FORMAT_KEY = "butterfly.teams.sort-format";
     public static final String TEAM_COLLISION_KEY = "butterfly.teams.collision";
     /** Key of the system property that configured the sort format before the settings file existed. */
     static final String LEGACY_SORT_FORMAT_KEY = "butterfly.format";
 
+    public static final String CHAT_HEAD_KEY = "butterfly.chat.head.enabled";
+
     private static final String DEFAULT_SORT_FORMAT = "%04d";
     private static final boolean DEFAULT_TEAM_COLLISION = false;
+    private static final boolean DEFAULT_CHAT_HEAD = true;
 
     public static ButterflySettings defaults() {
-        return new ButterflySettings(DEFAULT_SORT_FORMAT, DEFAULT_TEAM_COLLISION);
+        return new ButterflySettings(DEFAULT_SORT_FORMAT, DEFAULT_TEAM_COLLISION, DEFAULT_CHAT_HEAD);
     }
 
     /**
@@ -33,7 +37,8 @@ public record ButterflySettings(String sortFormat, boolean teamCollision) {
     static ButterflySettings from(Configuration configuration, Logger logger) {
         return new ButterflySettings(
                 readSortFormat(configuration, logger),
-                readTeamCollision(configuration, logger)
+                readTeamCollision(configuration, logger),
+                readChatHead(configuration, logger)
         );
     }
 
@@ -59,6 +64,15 @@ public record ButterflySettings(String sortFormat, boolean teamCollision) {
         if (value.get().equalsIgnoreCase("false")) return false;
         logger.warn("Invalid value '{}' for {}, using the default '{}'", value.get(), TEAM_COLLISION_KEY, DEFAULT_TEAM_COLLISION);
         return DEFAULT_TEAM_COLLISION;
+    }
+
+    private static boolean readChatHead(Configuration configuration, Logger logger) {
+        Optional<String> value = configuration.getOptional(CHAT_HEAD_KEY);
+        if (value.isEmpty()) return DEFAULT_CHAT_HEAD;
+        if (value.get().equalsIgnoreCase("true")) return true;
+        if (value.get().equalsIgnoreCase("false")) return false;
+        logger.warn("Invalid value '{}' for {}, using the default '{}'", value.get(), CHAT_HEAD_KEY, DEFAULT_CHAT_HEAD);
+        return DEFAULT_CHAT_HEAD;
     }
 
     private static boolean canFormatSortId(String format) {

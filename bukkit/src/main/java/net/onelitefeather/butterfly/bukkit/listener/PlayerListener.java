@@ -1,10 +1,14 @@
 package net.onelitefeather.butterfly.bukkit.listener;
 
+import com.destroystokyo.paper.profile.ProfileProperty;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
+import net.onelitefeather.butterfly.api.chat.ChatLine;
 import net.onelitefeather.butterfly.api.chat.ChatMessageParser;
+import net.onelitefeather.butterfly.api.chat.PlayerHeads;
+import net.onelitefeather.butterfly.api.config.ButterflySettings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +19,12 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import java.util.UUID;
 
 public final class PlayerListener implements Listener {
+
+    private final ButterflySettings settings;
+
+    public PlayerListener(ButterflySettings settings) {
+        this.settings = settings;
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void handlePlayerLogin(PlayerLoginEvent event) {
@@ -34,10 +44,17 @@ public final class PlayerListener implements Listener {
         Component parsed = ChatMessageParser.parse(
                 PlainTextComponentSerializer.plainText().serialize(event.message()),
                 node -> LuckPermsAPI.luckPermsAPI().hasPermission(senderId, node));
-        event.renderer((source, sourceDisplayName, message, viewer) -> Component.text()
-                .append(sourceDisplayName)
-                .append(Component.text(": "))
-                .append(parsed)
-                .build());
+        // Built once per message as well; null leaves the head out
+        Component head = settings.chatHeadEnabled() ? headOf(event.getPlayer()) : null;
+        event.renderer((source, sourceDisplayName, message, viewer) -> ChatLine.compose(head, sourceDisplayName, parsed));
+    }
+
+    private static Component headOf(Player player) {
+        ProfileProperty textures = player.getPlayerProfile().getProperties().stream()
+                .filter(property -> property.getName().equals("textures"))
+                .findFirst()
+                .orElse(null);
+        return PlayerHeads.of(player.getUniqueId(), player.getName(),
+                textures == null ? null : textures.getValue(), textures == null ? null : textures.getSignature());
     }
 }
