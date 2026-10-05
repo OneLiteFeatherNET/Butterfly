@@ -69,6 +69,31 @@ public sealed interface LuckPermsAPI permits LuckPermsAPIImplementation {
         return getGroupPrefix(getPrimaryGroup(playerUUID));
     }
 
+    /**
+     * Checks a permission against the user's cached permission data, using the user's own contextual query options.
+     * This reads cached data only, so it is safe to call from any thread.
+     *
+     * @param user       the player's LuckPerms user, may be null
+     * @param permission the permission node
+     * @return true if the permission is granted, false if it is not or the user is null
+     */
+    default boolean hasPermission(User user, String permission) {
+        if (user == null) return false;
+        return user.getCachedData().getPermissionData(user.getQueryOptions())
+                .queryPermission(permission).result().asBoolean();
+    }
+
+    /**
+     * Same as {@link #hasPermission(User, String)} for a player identified by UUID.
+     *
+     * @param playerUUID the player's UUID
+     * @param permission the permission node
+     * @return true if the permission is granted, false if it is not or the user is not loaded
+     */
+    default boolean hasPermission(UUID playerUUID, String permission) {
+        return hasPermission(getUser(playerUUID), permission);
+    }
+
     default User getUser(UUID uuid) {
         return LuckPermsProvider.get().getUserManager().getUser(uuid);
     }
