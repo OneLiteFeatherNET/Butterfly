@@ -23,9 +23,12 @@ applies on Paper and on Minestom.
 - **THEN** both receive the line with the sender's head in front
 
 ### Requirement: Head carries the sender's skin
-The head component SHALL identify the sender by UUID and name and SHALL carry the
-sender's skin texture property (value and signature) when the server knows it.
-When no texture is known, the component SHALL still be sent with UUID and name.
+The head component SHALL identify the sender by UUID, and by name when the name is
+a valid player-head name (Adventure `PlayerHeadObjectContents.isValidName`), and
+SHALL carry the sender's skin texture property (value and signature) when the
+server knows it. A name that is not valid (for example a Bedrock name containing a
+space) MUST be left out instead of failing the chat message. When no texture is
+known, the component SHALL still be sent with UUID and name.
 
 #### Scenario: Online-mode player
 - **WHEN** a player whose profile has a `textures` property sends a message
@@ -34,6 +37,11 @@ When no texture is known, the component SHALL still be sent with UUID and name.
 #### Scenario: Player without textures
 - **WHEN** a player whose profile has no `textures` property sends a message
 - **THEN** the head component contains the player's UUID and name and no texture property
+
+#### Scenario: Player name not valid for a head
+- **WHEN** a player whose name contains a space sends a message
+- **THEN** the chat line is sent
+- **AND** the head component contains the player's UUID and no name
 
 ### Requirement: Head only in chat
 Adding the head MUST NOT change the player's display name, tab list name or team

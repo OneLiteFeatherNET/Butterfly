@@ -37,7 +37,8 @@ PlayerHeads.of(UUID id, String name, @Nullable String texture, @Nullable String 
 `compose` emits `head + " "` only when `head` is non-null, then
 `name + ": " + message`. Platforms pass `null` when
 `settings.chatHeadEnabled()` is false. Pure functions -> fast unit tests without a
-server.
+server. `PlayerHeads.of` leaves out a name that Adventure rejects as a head name
+(`isValidName`, e.g. Bedrock names with spaces) and keeps the UUID, so chat never fails.
 
 *Alternative:* put the head into the display name. Rejected in exploration: the tab
 list already shows heads (duplicate) and other plugins reading the display name
