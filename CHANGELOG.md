@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/OneLiteFeatherNET/Butterfly/compare/v2.0.0...v2.1.0) (2026-10-06)
+
+
+### Features
+
+* **chat:** show the player head before the prefix in chat ([#138](https://github.com/OneLiteFeatherNET/Butterfly/issues/138)) ([24ead74](https://github.com/OneLiteFeatherNET/Butterfly/commit/24ead749dfcb7bb4fb511adf6f6ad509b44105d2))
+
 ## [2.0.0](https://github.com/OneLiteFeatherNET/Butterfly/compare/v1.1.1...v2.0.0) (2026-10-05)
 
 
