@@ -1,6 +1,7 @@
 package net.onelitefeather.butterfly.minestom;
 
 import net.minestom.server.entity.Player;
+import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.testing.Env;
 import net.minestom.testing.EnvTest;
@@ -15,6 +16,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnvTest
@@ -45,6 +48,30 @@ class ExtensionConfigFileTest {
         Player player = fixture.spawnPlayer();
 
         assertEquals(TeamsPacket.CollisionRule.ALWAYS, player.getTeam().getCollisionRule());
+    }
+
+    @Test
+    @DisplayName("butterfly.chat.head.enabled false in config.yaml removes the head from chat")
+    void configFileDisablesChatHead(Env env, @TempDir Path dataDirectory) throws IOException {
+        Files.writeString(dataDirectory.resolve("config.yaml"), "butterfly:\n  chat:\n    head:\n      enabled: false\n");
+        startExtension(env, dataDirectory);
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "hello");
+
+        assertFalse(ExtensionBehaviourTest.containsObject(event.getFormattedMessage()), "no player head in the line");
+    }
+
+    @Test
+    @DisplayName("a config.yaml from an earlier version without the head key still shows the head")
+    void configFileWithoutHeadKeyShowsHead(Env env, @TempDir Path dataDirectory) throws IOException {
+        Files.writeString(dataDirectory.resolve("config.yaml"), "butterfly:\n  teams:\n    sort-format: \"%04d\"\n");
+        startExtension(env, dataDirectory);
+        Player player = fixture.spawnPlayer();
+
+        PlayerChatEvent event = fixture.chat(player, "hello");
+
+        assertNotNull(ExtensionBehaviourTest.headOf(event.getFormattedMessage()), "the line starts with the head");
     }
 
     @Test

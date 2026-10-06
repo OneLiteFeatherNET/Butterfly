@@ -25,8 +25,8 @@ that switches both platforms to the restricted parser is `feat(chat)!` with a
 ## 4. Docs and manual check
 
 - [x] 4.1 README: section listing every `butterfly.chat.tag.<type>` node (generated from or checked against `ChatTagType`), the wildcard, the literal-text behaviour and the migration line; verify every type in the spec table appears
-- [ ] 4.2 Manual Paper test via `./gradlew :bukkit:runServer` with LuckPerms: player without nodes sees `<red>x` literally; after `lp group default permission set butterfly.chat.tag.color true` the same message is red; `<click:run_command:/help>x</click>` has no click event without `butterfly.chat.tag.click` (report in the PR description)
+- [x] 4.2 Manual Paper test via `./gradlew :bukkit:runServer` with LuckPerms: player without nodes sees `<red>x` literally; after `lp group default permission set butterfly.chat.tag.color true` the same message is red; `<click:run_command:/help>x</click>` has no click event without `butterfly.chat.tag.click` (report in the PR description)
 
 ## 5. Pull request
 
-- [ ] 5.1 Open the pull request titled `feat(chat)!: restrict minimessage tags in chat by permission` with a `BREAKING CHANGE:` section (formatting now needs `butterfly.chat.tag.<type>`; grant `butterfly.chat.tag.*` to `default` to restore the old behaviour); verify `gh pr view` shows the title and CI is green
+- [x] 5.1 Open the pull request titled `feat(chat)!: restrict minimessage tags in chat by permission` with a `BREAKING CHANGE:` section (formatting now needs `butterfly.chat.tag.<type>`; grant `butterfly.chat.tag.*` to `default` to restore the old behaviour); verify `gh pr view` shows the title and CI is green

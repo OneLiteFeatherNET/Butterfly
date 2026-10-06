@@ -4,12 +4,15 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
+import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.event.Event;
 import net.minestom.server.event.EventNode;
 import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.onelitefeather.butterfly.api.LuckPermsAPI;
+import net.onelitefeather.butterfly.api.chat.ChatLine;
 import net.onelitefeather.butterfly.api.chat.ChatMessageParser;
+import net.onelitefeather.butterfly.api.chat.PlayerHeads;
 import net.onelitefeather.butterfly.api.config.ButterflySettings;
 import net.onelitefeather.butterfly.api.config.SettingsFile;
 import org.jetbrains.annotations.NotNull;
@@ -77,11 +80,12 @@ public final class Butterfly {
         var prefix = prefixOptional.get();
 
         String displayName = prefix + player.getUsername();
-        playerChatEvent.setFormattedMessage(Component.text()
-                .append(MiniMessage.miniMessage().deserialize(displayName))
-                .append(Component.text(": "))
-                .append(ChatMessageParser.parse(playerChatEvent.getRawMessage(), node -> LuckPermsAPI.luckPermsAPI().hasPermission(player.getUuid(), node)))
-                .build());
+        PlayerSkin skin = player.getSkin();
+        Component head = settings.chatHeadEnabled()
+                ? PlayerHeads.of(player.getUuid(), player.getUsername(), skin == null ? null : skin.textures(), skin == null ? null : skin.signature())
+                : null;
+        Component message = ChatMessageParser.parse(playerChatEvent.getRawMessage(), node -> LuckPermsAPI.luckPermsAPI().hasPermission(player.getUuid(), node));
+        playerChatEvent.setFormattedMessage(ChatLine.compose(head, MiniMessage.miniMessage().deserialize(displayName), message));
     }
 
     public void terminate() {

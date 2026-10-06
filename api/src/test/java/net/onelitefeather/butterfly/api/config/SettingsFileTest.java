@@ -72,7 +72,7 @@ class SettingsFileTest {
 
         ButterflySettings settings = load(dataFolder);
 
-        assertEquals(new ButterflySettings("%03d", true), settings);
+        assertEquals(new ButterflySettings("%03d", true, true), settings);
         assertEquals(custom, Files.readString(file), "the file content must not change");
     }
 
@@ -181,6 +181,6 @@ class SettingsFileTest {
         ButterflySettings settings = SettingsFile.fromSystemProperties(
                 Map.of("butterfly.format", "%02d", "butterfly.teams.collision", "true"), log.logger());
 
-        assertEquals(new ButterflySettings("%02d", true), settings);
+        assertEquals(new ButterflySettings("%02d", true, true), settings);
     }
 }

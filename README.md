@@ -8,6 +8,7 @@ Butterfly is a simple minecraft paper plugin and minestom extension/api that all
 - Set scoreboard teams
 - Set chat formats
 - Chat formatting (MiniMessage) restricted by permission, see [Chat tag permissions](#chat-tag-permissions)
+- Sender's player head in front of every chat line (`[head] [Admin] Steve: hello`); switch off with `butterfly.chat.head.enabled`, see [Configuration](#configuration). Native rendering needs a 1.21.9+ client. Display name, tab list and team prefix never contain the head.
 
 
 ## Chat tag permissions
@@ -49,7 +50,7 @@ Without any `butterfly.chat.tag.*` permission, players lose all chat formatting 
 - Put exactly one Butterfly jar into the server's `extensions/` directory (at least the release containing the extension entry point). Do not also shade it into the host or depend on it there, two copies conflict.
 - LuckPerms must run inside the host. Butterfly declares no extension dependency and only accesses LuckPerms in `initialize()`. If LuckPerms is not available it logs an error and stays inactive.
 - Settings are read from `extensions/Butterfly/config.yaml`, see [Configuration](#configuration).
-- Library users keep calling `Butterfly.create().load()` and `terminate()`. `Butterfly.create()` uses the defaults overridden only by system properties and never touches the file system; `Butterfly.create(ButterflySettings)` takes the settings from the host, for example `Butterfly.create(new ButterflySettings("%02d", true)).load()`.
+- Library users keep calling `Butterfly.create().load()` and `terminate()`. `Butterfly.create()` uses the defaults overridden only by system properties and never touches the file system; `Butterfly.create(ButterflySettings)` takes the settings from the host, for example `Butterfly.create(new ButterflySettings("%02d", true, true)).load()`.
 
 ## Configuration
 Butterfly reads `config.yaml` from its own data folder and writes it with every default on first start; an existing file is never overwritten.
@@ -63,12 +64,16 @@ Butterfly reads `config.yaml` from its own data folder and writes it with every 
 |-----|----------|---------|-------------|
 | `butterfly.teams.sort-format` | Paper, Minestom | `%04d` | `String.format` pattern for the numeric team-name prefix that sorts the tab list |
 | `butterfly.teams.collision` | Minestom | `false` | `true` makes players in the same team push each other |
+| `butterfly.chat.head.enabled` | Paper, Minestom | `true` | `false` removes the sender's player head from the front of chat lines |
 
 ```yaml
 butterfly:
   teams:
     sort-format: "%04d"
     collision: false
+  chat:
+    head:
+      enabled: true
 ```
 
 - An unusable value falls back to its default and logs a warning naming the key and the value.

@@ -2,3 +2,7 @@ butterfly:
   teams:
     # String.format pattern for the numeric team-name prefix (tab sorting)
     sort-format: "%04d"
+  chat:
+    head:
+      # true = chat lines start with the sender's player head (clients 1.21.9+)
+      enabled: true

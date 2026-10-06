@@ -35,11 +35,15 @@ If LuckPerms is unavailable during `initialize()`, the extension SHALL log an er
 - **THEN** an error is logged, no listeners are registered and the server keeps running
 
 ### Requirement: Team and prefix on spawn
-On player spawn the extension SHALL place the player in a Minestom team derived from their LuckPerms primary group (name `%04d` + group for tab list ordering) and apply the team colour and prefix as nametag prefix, identical to the library behaviour.
+On player spawn the extension SHALL place the player in a Minestom team derived from their LuckPerms primary group (name formatted with the configured sort format `butterfly.teams.sort-format`, default `%04d`, + group for tab list ordering) and apply the team colour and prefix as nametag prefix, identical to the library behaviour.
 
 #### Scenario: Player spawns
 - **WHEN** a player with a LuckPerms group spawns
 - **THEN** the player is a member of the group's team with the configured colour and prefix
+
+#### Scenario: Custom sort format
+- **WHEN** `butterfly.teams.sort-format` is `%02d` and a player whose primary group has sort id 5 spawns
+- **THEN** the player's team name starts with `05`
 
 ### Requirement: Chat format
 The extension SHALL format chat messages as the MiniMessage group prefix followed by the message, identical to the library behaviour.
@@ -54,13 +58,6 @@ On `terminate()` the extension SHALL remove the event node it registered and unr
 #### Scenario: Extension terminated
 - **WHEN** `terminate()` runs
 - **THEN** later spawn and chat events are not handled by Butterfly and the created teams no longer exist
-
-### Requirement: Feature flags under the extension classloader
-The extension SHALL configure Togglz explicitly so it works inside the extension classloader and SHALL read `flags.properties` from the extension data directory, using defaults when the file is absent.
-
-#### Scenario: No flags file
-- **WHEN** `extensions/Butterfly/flags.properties` does not exist
-- **THEN** default flag values apply and initialization succeeds
 
 ### Requirement: Library compatibility
 The `butterfly-minestom` artifact SHALL remain usable as a library through `Butterfly.create().load()` and `terminate()` without the extension system.

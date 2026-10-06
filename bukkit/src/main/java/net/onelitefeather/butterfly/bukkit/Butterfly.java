@@ -17,7 +17,7 @@ public class Butterfly extends JavaPlugin {
         ButterflySettings settings = SettingsFile.load(getDataPath(), "net/onelitefeather/butterfly/bukkit/default-config.yaml", Path.of("flags.properties"), getSLF4JLogger());
         LuckPermsAPI.setLuckPermsService(new BukkitLuckPermsService(settings));
         LuckPermsAPI.luckPermsAPI().subscribeEvents();
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(settings), this);
         getServer().getCommandMap().register("clearteams", new ClearTeamsCommand());
         getServer().getCommandMap().register("updateteams", new UpdateTeamsCommand());
     }
