@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.1](https://github.com/OneLiteFeatherNET/Butterfly/compare/v2.1.0...v2.1.1) (2026-10-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency net.onelitefeather:mycelium-bom to v1.8.9 ([#141](https://github.com/OneLiteFeatherNET/Butterfly/issues/141)) ([a78197b](https://github.com/OneLiteFeatherNET/Butterfly/commit/a78197b7e50b614fa7642b34df2baf5173706e8b))
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.19 ([#137](https://github.com/OneLiteFeatherNET/Butterfly/issues/137)) ([16c2cdd](https://github.com/OneLiteFeatherNET/Butterfly/commit/16c2cdd84d1ab0ec29d132228fc6fc1cef86cc0a))
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.20 ([#143](https://github.com/OneLiteFeatherNET/Butterfly/issues/143)) ([48d4f20](https://github.com/OneLiteFeatherNET/Butterfly/commit/48d4f20ea07738a7833fa9562eebfb27ce580e02))
+
 ## [2.1.0](https://github.com/OneLiteFeatherNET/Butterfly/compare/v2.0.0...v2.1.0) (2026-10-06)
 
 
