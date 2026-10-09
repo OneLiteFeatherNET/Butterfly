@@ -38,7 +38,7 @@ dependencyResolutionManagement {
             version("luckperms.api", "5.6-SNAPSHOT")
             version("minestom-extensions", "2.2.0")
             // must match the Minestom version resolved through the BOMs (Env lives in this artifact)
-            version("minestom-testing", "2026.09.12-26.2")
+            version("minestom-testing", "2026.10.05-26.2")
 
             // Paper
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
