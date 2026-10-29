@@ -16,6 +16,12 @@ dependencies {
     implementation(project(":api"))
     // Paper API
     compileOnly(libs.paper)
+    // Tests
+    testImplementation(platform(libs.mycelium.bom))
+    testImplementation(libs.paper)
+    testImplementation(libs.junit.api)
+    testImplementation(libs.junit.platform.launcher)
+    testRuntimeOnly(libs.junit.engine)
 }
 
 java {
@@ -40,6 +46,7 @@ tasks {
         relocate("io.avaje", "net.onelitefeather.butterfly.libs.avaje")
     }
     test {
+        useJUnitPlatform()
         finalizedBy(project.tasks.jacocoTestReport)
         testLogging {
             events("passed", "skipped", "failed")
@@ -112,7 +119,7 @@ paper {
     authors = listOf("theShadowsDust")
     serverDependencies {
         register("LuckPerms") {
-            load = PaperPluginDescription.RelativeLoadOrder.AFTER
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
         }
     }
 }
